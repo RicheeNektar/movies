@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ movie_count }} Filme
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container float-none border-2 rounded-3 p-3 bg-black bg-opacity-50" style="backdrop-filter: blur(12px)">
+        {% include 'menu.part.html.twig' %}
+
+        {{ form_start(movie_search) }}
+
+        <div class="row">
+            <div class="col col-2">
+                {{ form_label(movie_search.query) }}
+            </div>
+            <div class="col col-8">
+                {{ form_widget(movie_search.query) }}
+            </div>
+            <div class="col col-2">
+                {{ form_widget(movie_search.submit, {'attr':{'class':'btn-primary d-block position-relative start-50 top-50 translate-middle'}}) }}
+            </div>
+        </div>
+        <div class="row">
+            {{ form_errors(movie_search.query) }}
+        </div>
+
+        {{ form_end(movie_search) }}
+
+        <div class="my-4">
+            <h1 class="text-primary">Alle Filme:</h1>
+            <div class="row overflow-auto {% if movies | length > 0 %}row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-3 py-3 gy-xxl-3{% endif %}">
+                {% for movie in movies %}
+                    {% include 'movies/movie.html.twig' with {'movie': movie} %}
+                {% endfor %}
+                {% if movies | length == 0 %}
+                    {% include 'movies/no_movies.html.twig' %}
+                {% endif %}
+            </div>
+
+            {% include 'pagination.part.html.twig' %}
+        </div>
+
+        {% if latest_movies | length > 0 %}
+            <div class="my-4">
+                <h1 class="text-primary">Neuste Filme auf der Seite:</h1>
+                <div class="row overflow-auto {% if movies | length > 0 %}row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-3 py-3 gy-xxl-3{% endif %}">
+                    {% for movie in latest_movies %}
+                        {% include 'movies/movie.html.twig' with {'movie': movie} %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

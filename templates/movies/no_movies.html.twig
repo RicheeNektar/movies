@@ -1,0 +1,20 @@
+<div class="row text-white">
+    <h1 class="text-danger">No Movies Found</h1>
+
+    <span class="my-3">
+        <h4>To add a movie:</h4>
+        <ol>
+            <li>Put your mp4 in the 'movies' folder.</li>
+            <li>Your filename must be the MovieId from <a target="_blank" href="https://themoviedb.org">themoviedb</a>.</li>
+            <li>Open <a href="{{ url('command', {cmd: 'update-movies'}) }}">this page</a></li>
+        </ol>
+    </span>
+
+    <span class="my-3">
+        <h4>MovieId example</h4>
+        Let's take the following movie as an exmaple<br/>
+        <li>https://www.themoviedb.org/movie/634649-spider-man-no-way-home</li>
+        The movieId for this movie is <code>634649</code><br/>
+        <li>https://www.themoviedb.org/movie/<code>634649</code>-spider-man-no-way-home</li>
+    </span>
+</div>

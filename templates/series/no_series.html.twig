@@ -1,0 +1,22 @@
+<div class="row text-white">
+    <h1 class="text-danger">No Series found</h1>
+
+    <span class="my-3">
+        <h4>To add a series:</h4>
+        <ol>
+            <li>Find the series on <a target="_blank" href="https://themoviedb.org">themoviedb</a>.</li>
+            <li>Create a folder with the SeriesId inside the 'series' folder</li>
+            <li>Create a sub-folder with the season number as it's name</li>
+            <li>Place your episodes with their episodeNumber as their name into the sub-folder</li>
+            <li>Open <a href="{{ url('command', {cmd: 'update-series'}) }}">this page</a></li>
+        </ol>
+    </span>
+
+    <span class="my-3">
+        <h4>SeriesId example</h4>
+        Let's take the following series as an exmaple<br/>
+        <li>https://www.themoviedb.org/tv/31251-victorious</li>
+        The seriesId for this series is <code>31251</code><br/>
+        <li>https://www.themoviedb.org/tv/<code>31251</code>-victorious</li>
+    </span>
+</div>
