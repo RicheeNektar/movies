@@ -56,7 +56,7 @@ class IndexController extends AbstractController
         // TODO: Add watched state thingy
 
         return $this->render('movies/index.html.twig', [
-            'latest_movies' => $this->movieRepository->findLatestMovies(5),
+            'latest_movies' => $this->movieRepository->findLatestMovies(8),
             'backdrop' => $backdrop ?? null,
             'movie_count' => $movieCount,
             'first_page' => $page == 0,
