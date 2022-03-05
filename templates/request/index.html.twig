@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Filmanfrage
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container border-2 rounded-3 p-3 bg-black bg-opacity-50" style="backdrop-filter: blur(12px)">
+        {% include 'menu.part.html.twig' %}
+
+        {% include 'pagination.part.html.twig' %}
+
+        {{ form_start(movie_search) }}
+            <div class="row">
+                <div class="col col-2">
+                    {{ form_label(movie_search.query) }}
+                </div>
+                <div class="col col-8">
+                    {{ form_widget(movie_search.query) }}
+                </div>
+                <div class="col col-2">
+                    {{ form_widget(movie_search.submit, {'attr':{'class':'btn-primary d-block position-relative start-50 top-50 translate-middle'}}) }}
+                </div>
+            </div>
+            <div class="row">
+                {{ form_errors(movie_search.query) }}
+            </div>
+        {{ form_end(movie_search) }}
+
+        <div class="row{% if search_results | length > 0 %} row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-3 py-3 gy-xxl-3{% endif %}">
+            {% for result in search_results %}
+                <a
+                        style="background: url(https://image.tmdb.org/t/p/w300{{ result.poster_path }}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
+                        href="{{ url('request', { tmdbId: result.id }) }}"
+                        class="col border rounded-3 p-3 border-primary"
+                >
+                    <h3 class="bg-black bg-opacity-50 bg-blur-2 rounded-3 text-center position-relative translate-middle-y top-50">{{ result.title }}</h3>
+                </a>
+            {% endfor %}
+            {% if search_results | length == 0 %}
+                {% include 'request/no_movies.html.twig' %}
+            {% endif %}
+        </div>
+
+        {% include 'pagination.part.html.twig' %}
+    </div>
+{% endblock %}

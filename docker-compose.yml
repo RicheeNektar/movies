@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: movies
+      MYSQL_USER: movies
+      MYSQL_PASSWORD: M0vAv!
+    ports:
+      - '9906:3306'
+  web:
+    image: webdevops/php-apache:8.0
+    ports:
+      - '8001:80'
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - database

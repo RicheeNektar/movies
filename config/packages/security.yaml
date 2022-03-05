@@ -1,0 +1,50 @@
+security:
+    enable_authenticator_manager: true
+
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: bcrypt
+
+        App\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: login
+                check_path: login
+                enable_csrf: true
+            logout:
+                path: logout
+                target: login
+
+    access_control:
+        - { path: ^/login, roles: null }
+        - { path: ^/movie/\d+/file, roles: null }
+        - {
+            path: "^/tv/(?:\\d+/){3}file",
+            roles: null
+        }
+        - { path: ^/, roles: ROLE_USER }
+
+    hide_user_not_found: true
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: plaintext
+
+            App\Entity\User:
+                algorithm: plaintext

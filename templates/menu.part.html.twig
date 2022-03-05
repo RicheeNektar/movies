@@ -1,0 +1,24 @@
+{% set menuItems = [
+    {'title': 'Logout', 'href': url('logout')},
+    {'var': 'movies', 'title': 'Filme', 'href': url('index')},
+    {'var': 'series', 'title': 'Serien', 'href': url('series')},
+    {'var': 'search_results', 'title': 'Filmanfrage', 'href': url('request-page')},
+    {'var': 'users', 'title': 'Management', 'href': url('admin'), 'display': isAdmin()}
+] %}
+
+<div {{ stimulus_controller('menu') }} class="p-3">
+    <button class="d-flex d-sm-none btn btn-primary p-2 m-2 start-0" {{ stimulus_action('menu', 'toggle') }} {{ stimulus_target('menu', 'button') }}>
+        <img src="/menu.svg" alt="menu" />
+    </button>
+
+    <div class="row row-cols-{{ menuItems | length }} gap-2 justify-content-center align-text-bottom d-none d-sm-flex" {{ stimulus_target('menu', 'menu') }}>
+        {% for menuItem in menuItems %}
+            {% if menuItem.display is not defined or menuItem.display %}
+                <a class="col-11 col-sm-5 col-md-2 btn btn-{% if menuItem.var is defined and _context[menuItem.var] is defined %}secondary{% else %}primary{% endif %}"
+                   href="{{ menuItem.href }}">
+                    <span class="position-relative d-block top-50 translate-middle-y">{{ menuItem.title }}</span>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

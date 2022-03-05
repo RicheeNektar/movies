@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user_count }} Users - User Management{% endblock %}
+
+{% block body %}
+    <div class="container text-white text-center p-3">
+        {% include 'menu.part.html.twig' %}
+
+        {% include 'admin/divider.html.twig' %}
+
+        <div class="row row-cols-1 row-cols-lg-2">
+            <div class="col">
+                <div class="container">
+                    <h1>Users:</h1>
+
+                    <div class="row row-cols-4 text-center my-3">
+                        {% for prop in ['ID','Username','Is Admin','Delete'] %}
+                            <div class="text-primary">{{ prop }}</div>
+                        {% endfor %}
+                    </div>
+
+                    {% include 'admin/divider.html.twig' with {'my': 2} %}
+
+                    {% for user in users %}
+                        <div class="row">
+                            <div class="col">{{ user.getId() }}</div>
+                            <div class="col">{{ user.getUsername() }}</div>
+                            <div class="col">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>
+                            <a class="col" href="?deleteUser={{ user.getId() }}">
+                                <span type="submit" class="btn btn-close btn-close-white"></span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
+
+            <div class="col">
+                <div class="container">
+                    <h1>Requests:</h1>
+
+                    {% if requests | length == 0 %}
+                        <span class="row d-block text-center text-info">No requests</span>
+                    {% else %}
+                        <div class="row row-cols-3 my-4">
+                            {% for request in requests %}
+                                <div class="col gap-3">
+                                    <a target="_blank" href="https://www.themoviedb.org/movie/{{ request.getTmdbId() }}"
+                                       class="col btn btn-primary text-black">{{ request.getTmdbId() }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% include 'admin/divider.html.twig' %}
+
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col">
+                <h1>Create user</h1>
+                <br/>
+                {% for message in messages ?? [] %}
+                    <h6 class="text-danger">{{ message }}</h6>
+                {% endfor %}
+                {{ form( register_user_form ) }}
+            </div>
+
+            {% include 'admin/divider.html.twig' with {'hidden_at': 'md'} %}
+
+            <div class="col">
+                <h1 class="text-white">Admin options:</h1>
+                <br/>
+                <div class="row row-cols-1 gy-3 px-5">
+                    {% if command_success == 1 %}
+                        <span class="text-success">
+                            Command ran successfully.
+                        </span>
+                    {% endif %}
+                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-movies'}) }}">Update Movies</a>
+                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-series'}) }}">Update Series</a>
+                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'convert-old-movies'}) }}">Import from
+                        old structure</a>
+                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-movie-infos'}) }}">Update all
+                        movie infos</a>
+                    <span class="bg-dark rounded col d-block text-center text-info">
+                        "Update Movies" deletes requests as well, when the movie gets registered.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+$primary: #eeb871;
+$secondary: #99492a;
+
+@for $i from 1 through 5 {
+  .bg-blur-#{$i} {
+    backdrop-filter: blur($i * 5px);
+  }
+}
+
+@import '~bootstrap';

@@ -1,0 +1,11 @@
+<div class="row row-cols-3 p-3">
+    <a class='col-3 btn btn-primary {% if first_page %}disabled{% endif %}' href="?page={{ page - 1 }}">
+        Vorherige
+    </a>
+
+    <h3 class='col-6 text-center'>Seite {{ page + 1 }}</h3>
+
+    <a class='col-3 btn btn-primary {% if last_page %}disabled{% endif %}' href="?page={{ page + 1 }}">
+        Nächste
+    </a>
+</div>

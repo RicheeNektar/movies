@@ -1,0 +1,7 @@
+framework:
+  http_client:
+    scoped_clients:
+      tmdb.client:
+        auth_bearer: '%env(TMDB_API_TOKEN)%'
+        base_uri: https://api.themoviedb.org/3/
+        max_redirects: 0
