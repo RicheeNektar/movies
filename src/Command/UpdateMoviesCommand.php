@@ -46,52 +46,56 @@ class UpdateMoviesCommand extends Command
             }
         }
 
-        $files = scandir('../movies');
+        try {
+            $files = scandir('../movies');
 
-        foreach ($files as $file) {
-            if (preg_match('/((\d+)\.mp4)/', $file, $matches)) {
-                $id = (int) $matches[0];
+            foreach ($files as $file) {
+                if (preg_match('/((\d+)\.mp4)/', $file, $matches)) {
+                    $id = (int) $matches[0];
 
-                if (!$this->movieRepository->find($id)) {
-                    $info = $this->fetchMovieInfo($id);
+                    if (!$this->movieRepository->find($id)) {
+                        $info = $this->fetchMovieInfo($id);
 
-                    $infoMovie = $info['movie'];
+                        $infoMovie = $info['movie'];
 
-                    $movie = new Movie();
-                    $movie->setId($id);
-                    $movie->setTitle($infoMovie['title']);
-                    $movie->setPoster($infoMovie['poster_path']);
-                    $movie->setYear((int) (substr($infoMovie['release_date'], 0, 4)));
-                    $this->entityManager->persist($movie);
+                        $movie = new Movie();
+                        $movie->setId($id);
+                        $movie->setTitle($infoMovie['title']);
+                        $movie->setPoster($infoMovie['poster_path']);
+                        $movie->setYear((int) (substr($infoMovie['release_date'], 0, 4)));
+                        $this->entityManager->persist($movie);
 
-                    // Filter backdrops, we do not want any backdrops with translated titles
-                    $backdrops = $info['images']['backdrops'] ?? [];
+                        // Filter backdrops, we do not want any backdrops with translated titles
+                        $backdrops = $info['images']['backdrops'] ?? [];
 
-                    $backdrops = array_filter($backdrops, static function ($backdrop) {
-                        return $backdrop['iso_639_1'] === null;
-                    });
+                        $backdrops = array_filter($backdrops, static function ($backdrop) {
+                            return $backdrop['iso_639_1'] === null;
+                        });
 
-                    $backdrops = array_map(static function($backdrop) {
-                        return $backdrop['file_path'];
-                    }, $backdrops);
+                        $backdrops = array_map(static function($backdrop) {
+                            return $backdrop['file_path'];
+                        }, $backdrops);
 
-                    // Persist backdrops in database
-                    foreach ($backdrops as $backdropPath) {
-                        $backdrop = new MovieBackdrop();
-                        $backdrop->setMovie($movie);
-                        $backdrop->setFile($backdropPath);
+                        // Persist backdrops in database
+                        foreach ($backdrops as $backdropPath) {
+                            $backdrop = new MovieBackdrop();
+                            $backdrop->setMovie($movie);
+                            $backdrop->setFile($backdropPath);
 
-                        $this->entityManager->persist($backdrop);
+                            $this->entityManager->persist($backdrop);
+                        }
+
+                        $request = $this->requestRepository->find($id);
+                        if ($request) {
+                            $this->entityManager->remove($request);
+                        }
+
+                        echo 'Registered movie ' . $movie->getId() . ' -> ' . $movie->getTitle() . ' ( ' . count($backdrops) . ' Backdrops)' . "\n";
                     }
-
-                    $request = $this->requestRepository->find($id);
-                    if ($request) {
-                        $this->entityManager->remove($request);
-                    }
-
-                    echo 'Registered movie ' . $movie->getId() . ' -> ' . $movie->getTitle() . ' ( ' . count($backdrops) . ' Backdrops)' . "\n";
                 }
             }
+        } catch(\ErrorException $ignored) {
+            echo 'Folder missing: \'movies\'';
         }
 
         $this->entityManager->flush();
