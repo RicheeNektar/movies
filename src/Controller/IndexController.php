@@ -61,6 +61,7 @@ class IndexController extends AbstractController
             'movie_count' => $movieCount,
             'first_page' => $page == 0,
             'last_page' => $page == $maxPages,
+            'total_pages' => $maxPages,
             'page' => $page,
             'movies' => $movies,
             'movie_search' => $searchForm->createView(),
