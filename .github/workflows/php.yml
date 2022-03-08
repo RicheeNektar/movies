@@ -23,6 +23,8 @@ jobs:
       - composer
     steps:
       - uses: actions/checkout@v2
+      - name: Env File
+        run: touch .env
 
       - name: Composer Install
         run: composer install
