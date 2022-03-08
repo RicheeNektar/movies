@@ -33,7 +33,7 @@
 
         <div class="row container">
             <div class="col-12 col-lg-8 order-lg-2">
-                <h1 class="text-primary">Filme: </h1>
+                <h1>Filme: </h1>
 
                 {% if movies | length == 0 %}
                     {% include 'movies/no_movies.html.twig' %}
@@ -57,7 +57,7 @@
 
             <div class="col-12 col-lg-4">
                 {% if latest_movies | length > 0 %}
-                    <h1 class="text-primary">Neuste Filme auf der Seite:</h1>
+                    <h1>Neuste Filme auf der Seite:</h1>
                     {% include 'movies/movie_carousel.html.twig' with {'id': 'latest-movies', 'movies': latest_movies} only %}
                 {% endif %}
             </div>

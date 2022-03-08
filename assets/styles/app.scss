@@ -1,6 +1,9 @@
 $primary: #eeb871;
 $secondary: #99492a;
 
+$pagination-color: $secondary;
+$pagination-active-color: $secondary;
+
 @for $i from 1 through 5 {
   .bg-blur-#{$i} {
     backdrop-filter: blur($i * 5px);
