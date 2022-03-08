@@ -16,7 +16,7 @@ class MovieSearchType extends AbstractType
                 'label' => 'Film Titel',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'z.B.: Conjuring, Hellraiser, ...',
+                    'placeholder' => 'Film Titel - z.B.: Conjuring, Hellraiser, ...',
                 ],
             ])
             ->add('submit', SubmitType::class, [

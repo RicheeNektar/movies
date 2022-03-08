@@ -1,0 +1,21 @@
+$scroll-item-width: 200px;
+$scroll-item-gap: 8px;
+$max-scroll-items: 8;
+
+.scroller {
+  display: flex;
+
+  width: 100%;
+
+  max-width: $max-scroll-items * ($scroll-item-width + $scroll-item-gap) - $scroll-item-gap;
+  min-height: $scroll-item-width * 1.5;
+
+  overflow-x: auto;
+
+  & .scroller-item {
+    width: $scroll-item-width;
+    min-width: $scroll-item-width;
+    min-height: $scroll-item-width * 1.5;
+    margin-right: $scroll-item-gap;
+  }
+}
