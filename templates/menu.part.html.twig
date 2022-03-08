@@ -18,8 +18,8 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 {% for item in menuItems %}
-                    {% set isActive = menuItem.var is defined and _context[menuItem.var] is defined %}
-                    {% if menuItem.display is not defined or menuItem.display %}
+                    {% if item.display is not defined or item.display %}
+                        {% set isActive = item.var is defined and _context[item.var] is defined %}
                         <li class="nav-item">
                             <a
                                 class="nav-link{% if isActive %} active{% endif %}"
