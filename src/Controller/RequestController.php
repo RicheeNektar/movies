@@ -6,6 +6,7 @@ use App\Form\MovieSearchType;
 use App\Form\RequestMovieType;
 use App\Repository\MovieBackdropRepository;
 use App\Repository\MovieRepository;
+use App\Repository\RequestRepository;
 use App\Repository\SeriesRepository;
 use App\Repository\UserRepository;
 use App\Service\MovieService;
@@ -25,6 +26,7 @@ class RequestController extends AbstractController
     private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
     private MovieService $movieService;
+    private RequestRepository $requestRepository;
 
     public function __construct(
         MovieRepository $movieRepository,
@@ -32,7 +34,8 @@ class RequestController extends AbstractController
         HttpClientInterface $tmdbClient,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        MovieService $movieService
+        MovieService $movieService,
+        RequestRepository $requestRepository
     ) {
         $this->movieRepository = $movieRepository;
         $this->seriesRepository = $seriesRepository;
@@ -40,6 +43,7 @@ class RequestController extends AbstractController
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->movieService = $movieService;
+        $this->requestRepository = $requestRepository;
     }
 
     /**
@@ -63,18 +67,29 @@ class RequestController extends AbstractController
             ]);
 
         } else {
-            $movie = $this->movieService->findById($tmdbId);
+            $movie = $this->movieRepository->find($tmdbId);
 
-            if (null !== $movie) {
-                $request = new \App\Entity\Request();
-                $request->setMovie($movie);
-                $request->setUser($user);
+            if (null === $movie || null === $this->requestRepository->findOneBy([
+                'user' => $user,
+                'movie' => $movie,
+            ])) {
+                $movie = $this->movieService->findById($tmdbId);
 
-                $this->entityManager->persist($request);
-                $this->entityManager->flush();
+                if (null !== $movie) {
+                    $request = new \App\Entity\Request();
+                    $request->setMovie($movie);
+                    $request->setUser($user);
 
+                    $this->entityManager->persist($request);
+                    $this->entityManager->flush();
+
+                    return $this->redirectToRoute('request-page', [
+                        'status' => 'requested',
+                    ]);
+                }
+            } else {
                 return $this->redirectToRoute('request-page', [
-                    'requested' => true,
+                    'status' => 'alreadyRequested',
                 ]);
             }
         }
@@ -88,7 +103,7 @@ class RequestController extends AbstractController
     public function index(Request $request): Response
     {
         $page = min(0, $request->query->get('page') ?? 0);
-        $wasRequested = $request->query->getBoolean('requested', false);
+        $status = $request->query->getAlpha('status', '');
 
         $form = $this->createForm(RequestMovieType::class);
         $form->handleRequest($request);
@@ -101,7 +116,7 @@ class RequestController extends AbstractController
             'last_page' => true,
             'search_results' => [],
             'total_pages' => 0,
-            'requested' => $wasRequested,
+            'status' => $status,
         ];
 
         if ($form->isSubmitted() && $form->isValid()) {
