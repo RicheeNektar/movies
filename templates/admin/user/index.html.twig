@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.userIdentifier() }} | User Management{% endblock %}
+
+{% block body %}
+<div class="container p-md-5">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <h3>Filmanfragen von '{{ user.userIdentifier() }}'</h3>
+            <div class="scroller">
+                {% for request in requests %}
+                    {% set movie = request.getMovie() %}
+                    <div class="card scroller-item bg-blur-3 rounded-3 border-0 text-dark">
+                        <img class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ movie.getYear() }}
+                            </h5>
+                            <h6 class="card-subtitle my-3">
+                                {{ movie.getTitle() }}
+                            </h6>
+                            <div class="row">
+                                <a class="card-link text-secondary" target="_blank" href="https://themoviedb.org/movie/{{ movie.getId() }}">
+                                    More Info
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% include 'pagination.part.html.twig' %}
+        </div>
+        <div class="col-12 col-md-4">
+            <h3>
+                Administration:
+            </h3>
+            <div class="row">
+                <button class="btn btn-outline-danger" data-bs-toggle="collapse" role="button" data-bs-target="#dangerous">
+                    Dangerous Options
+                </button>
+            </div>
+            <div class="row collapse collapsed my-3" id="dangerous">
+                <a class="btn btn-danger" href="#">
+                    Delete user
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

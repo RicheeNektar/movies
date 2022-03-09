@@ -29,6 +29,11 @@
     {% endblock %}
 </head>
 <body class="bg-dark text-white">
+    {% if isLoggedIn() %}
+        <div class="container rounded bg-blur-3 bg-opacity-50 bg-black">
+            {% include 'menu.part.html.twig' %}
+        </div>
+    {% endif %}
     {% block body %}{% endblock %}
 </body>
 </html>

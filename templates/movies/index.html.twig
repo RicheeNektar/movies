@@ -10,8 +10,6 @@
 
 {% block body %}
     <div class="container float-none border-2 rounded-3 p-3 bg-black bg-opacity-50" style="backdrop-filter: blur(12px)">
-        {% include 'menu.part.html.twig' %}
-
         {{ form_start(movie_search) }}
 
         <div class="row">
@@ -40,14 +38,7 @@
                 {% else %}
                     <div class="scroller">
                         {% for movie in movies %}
-                            <div class="scroller-item bg-blur-3 rounded-3 border-0">
-                                <img class="rounded-3" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
-                                <h3 class="text-center">
-                                    {{ movie.getTitle() }}
-                                    <br/>
-                                    ({{ movie.getYear() }})
-                                </h3>
-                            </div>
+                            {% include 'movies/movie_scroller_item.html.twig' %}
                         {% endfor %}
                     </div>
                 {% endif %}

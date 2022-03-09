@@ -31,7 +31,7 @@ class Movie
     private $poster;
 
     /**
-     * @ORM\OneToMany(targetEntity=MovieBackdrop::class, mappedBy="movie")
+     * @ORM\OneToMany(targetEntity=MovieBackdrop::class, mappedBy="movie", cascade={"all"})
      */
     private $backdrops;
 
@@ -44,6 +44,11 @@ class Movie
      * @ORM\Column(type="integer", length=4)
      */
     private int $year;
+
+    /**
+     * @ORM\Column(name="is_hidden", type="boolean")
+     */
+    private bool $isHidden;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedMovies")
@@ -114,6 +119,17 @@ class Movie
     {
         $this->year = $year;
         return $this;
+    }
+
+    public function setIsHidden(bool $isHidden): self
+    {
+        $this->isHidden = $isHidden;
+        return $this;
+    }
+
+    public function getIsHidden(): bool
+    {
+        return $this->isHidden;
     }
 
     /**

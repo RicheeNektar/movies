@@ -1,0 +1,8 @@
+<a class="scroller-item bg-blur-3 rounded-3 border-0" href="{{ url('movie-player', {movie: movie.getId()}) }}">
+    <img class="rounded-3" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
+    <h3 class="text-center">
+        {{ movie.getTitle() }}
+        <br/>
+        ({{ movie.getYear() }})
+    </h3>
+</a>

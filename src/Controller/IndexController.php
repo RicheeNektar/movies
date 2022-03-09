@@ -29,7 +29,7 @@ class IndexController extends AbstractController
      */
     public function index(UserInterface $user, Request $request): Response
     {
-        $movieCount = $this->movieRepository->count([]);
+        $movieCount = $this->movieRepository->count();
         $maxPages = floor($movieCount / 8);
         $page = max(0, min($maxPages, $request->query->get('page') ?? 0));
 
@@ -52,8 +52,6 @@ class IndexController extends AbstractController
         if (count($movies) > 0) {
             $backdrop = $this->backdropRepository->findRandomBackdropFor($movies[random_int(0, count($movies) - 1)]);
         }
-
-        // TODO: Add watched state thingy
 
         return $this->render('movies/index.html.twig', [
             'latest_movies' => $this->movieRepository->findLatestMovies(8),

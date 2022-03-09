@@ -12,18 +12,37 @@ class Request
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="tmdb_id", type="integer")
+     * @ORM\OneToOne(targetEntity=Movie::class, cascade={"all"})
+     * @ORM\JoinColumn(name="tmdb_id", referencedColumnName="id", nullable=false)
      */
-    private int $tmdbId;
+    private Movie $movie;
 
-    public function setTmdbId(int $tmdbId): self
+    /**
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    private User $user;
+
+    public function setMovie(Movie $movie): self
     {
-        $this->tmdbId = $tmdbId;
+        $this->movie = $movie;
         return $this;
     }
 
-    public function getTmdbId(): int
+    public function getMovie(): Movie
     {
-        return $this->tmdbId;
+        return $this->movie;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }

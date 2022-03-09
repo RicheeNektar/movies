@@ -61,17 +61,6 @@ class AdminUserController extends AbstractController
             $this->entityManager->flush();
         }
 
-        $deleteUser = $request->query->get('deleteUser');
-
-        if ($deleteUser) {
-            $user = $this->userRepository->find((int) $deleteUser);
-
-            if ($user) {
-                $this->entityManager->remove($user);
-                $this->entityManager->flush();
-            }
-        }
-
         $userCount = $this->userRepository->count([]);
 
         return $this->render('admin/index.html.twig', [
@@ -81,6 +70,29 @@ class AdminUserController extends AbstractController
             'users' => $this->userRepository->findAll(),
             'requests' => $this->requestRepository->findAll(),
             'command_success' => $request->query->get('success') ?? 0,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/{user<\d+>}", name="user-requests")
+     */
+    public function userAdministartion(Request $request, User $user): Response
+    {
+        $page = $request->query->getInt('page', 0);
+
+        $totalPages = floor($this->requestRepository->count([
+                'user' => $user,
+            ]) / 8);
+
+        $requests = $this->requestRepository->findOnPage($page);
+
+        return $this->render('admin/user/index.html.twig', [
+            'user' => $user,
+            'page' => $page,
+            'total_pages' => $totalPages,
+            'first_page' => $page == 0,
+            'last_page' => $page == $totalPages,
+            'requests' => $requests,
         ]);
     }
 }

@@ -45,9 +45,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $watchedMovies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
+     */
+    private Collection $requests;
+
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,7 +166,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeWatchedMovie(Movie $watchedMovie): self
     {
         if ($this->watchedMovies->removeElement($watchedMovie)) {
-            $watchedMovie->removeUsersWatched($this);
+            $watchedMovie->removeUsersWatched(null);
         }
 
         return $this;
@@ -169,5 +175,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function hasWatched(Movie $movie): bool
     {
         return $this->watchedMovies->contains($movie);
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->watchedMovies->contains($request)) {
+            $this->watchedMovies[] = $request;
+            $request->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->watchedMovies->removeElement($request)) {
+            $request->setUser(null);
+        }
+
+        return $this;
+    }
+
+    public function getRequests(): Collection
+    {
+        return $this->requests;
     }
 }

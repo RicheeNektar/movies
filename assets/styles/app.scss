@@ -10,6 +10,7 @@ $pagination-active-color: $secondary;
   }
 }
 
-@import 'scroller';
-
 @import '~bootstrap';
+
+@import 'scroller';
+@import 'even-odd-children';

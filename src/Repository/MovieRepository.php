@@ -29,9 +29,28 @@ class MovieRepository extends ServiceEntityRepository
             ->setMaxResults(8);
     }
 
+    private function onlyVisible(QueryBuilder $qb): QueryBuilder
+    {
+        return $qb->andWhere('b.isHidden = false');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function count(array $criteria = []): int
+    {
+        $movies = $this->findBy(array_merge($criteria, [
+                'isHidden' => false,
+        ]));
+
+        return count($movies);
+    }
+
     public function findRandomMovie(): ?Movie
     {
-        $movies = $this->findAll();
+        $movies = $this->findBy([
+            'isHidden' => false,
+        ]);
         $count = count($movies);
 
         if ($count === 0) {
@@ -43,7 +62,9 @@ class MovieRepository extends ServiceEntityRepository
 
     public function findMoviesOnPage(int $page)
     {
-        return $this->paginate($this->createQueryBuilder('b'), $page)
+        return $this->onlyVisible(
+            $this->paginate($this->createQueryBuilder('b'), $page)
+        )
             ->orderBy('b.title')
             ->getQuery()
             ->getResult();
@@ -51,8 +72,10 @@ class MovieRepository extends ServiceEntityRepository
 
     public function findMoviesWithTitleLike(string $title, int $page)
     {
-        return $this->paginate($this->createQueryBuilder('b'), $page)
-            ->where('b.title LIKE CONCAT(:title, \'%\')')
+        return $this->onlyVisible(
+            $this->paginate($this->createQueryBuilder('b'), $page)
+        )
+            ->andWhere('b.title LIKE CONCAT(:title, \'%\')')
             ->orderBy('b.title')
             ->setParameters([
                 'title' => $title,
@@ -63,7 +86,7 @@ class MovieRepository extends ServiceEntityRepository
 
     public function findLatestMovies(int $limit)
     {
-        return $this->createQueryBuilder('b')
+        return $this->onlyVisible($this->createQueryBuilder('b'))
             ->orderBy('b.creationDate', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

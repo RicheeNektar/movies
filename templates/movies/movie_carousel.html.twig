@@ -6,7 +6,7 @@
     </div>
     <div class="carousel-inner">
         {% for movie in movies %}
-            {% include 'movies/movie.html.twig' %}
+            {% include 'movies/movie_carousel_item.html.twig' %}
         {% endfor %}
     </div>
     <button class="bg-black bg-opacity-50 bg-blur-5 carousel-control-next" data-bs-target="#{{ id }}" data-bs-slide="next">

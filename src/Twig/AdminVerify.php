@@ -19,7 +19,13 @@ class AdminVerify extends AbstractExtension
     {
         return [
             new TwigFunction('isAdmin', [$this, 'isAdmin']),
+            new TwigFunction('isLoggedIn', [$this, 'isLoggedIn']),
         ];
+    }
+
+    public function isLoggedIn(): bool
+    {
+        return $this->security->isGranted('ROLE_USER');
     }
 
     public function isAdmin(): bool

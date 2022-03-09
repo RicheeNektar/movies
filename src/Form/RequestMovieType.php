@@ -15,12 +15,15 @@ class RequestMovieType extends AbstractType
     {
         $builder
             ->add('query', TextType::class, [
-                'label' => 'Film',
-                'constraints' => [
-                    new NotBlank(),
+                'label' => 'Film Titel',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Film Titel - z.B.: Conjuring, Hellraiser, ...',
                 ],
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Suchen',
+            ])
             ->setMethod('GET')
         ;
     }

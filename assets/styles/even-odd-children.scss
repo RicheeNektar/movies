@@ -1,0 +1,13 @@
+div.even-odd-children {
+  a {
+    padding: .25rem;
+  }
+
+  a:nth-child(1) {
+    background: darken($dark, 5);
+  }
+
+  a:nth-child(2) {
+    background: lighten($dark, 5);
+  }
+}
