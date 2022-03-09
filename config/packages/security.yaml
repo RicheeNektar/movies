@@ -30,6 +30,7 @@ security:
                 target: login
 
     access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/login, roles: null }
         - { path: ^/movie/\d+/file, roles: null }
         - {
