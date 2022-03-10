@@ -15,16 +15,16 @@ final class Version20220310180033 extends AbstractMigration
 
         $this->addSql('
             ALTER TABLE series
-                ADD last_updated DATETIME NOT NULL,
-                ADD air_date DATE NOT NULL
+                ADD last_updated DATETIME,
+                ADD air_date DATE
         ');
         $this->addSql('
             ALTER TABLE season
-                ADD air_date DATE NOT NULL
+                ADD air_date DATE
         ');
         $this->addSql('
             ALTER TABLE episode
-                ADD air_date DATE NOT NULL
+                ADD air_date DATE
         ');
     }
 
