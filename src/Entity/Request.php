@@ -12,7 +12,7 @@ class Request
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Movie::class, cascade={"all"})
+     * @ORM\OneToOne(targetEntity=Movie::class, cascade={"persist"})
      * @ORM\JoinColumn(name="tmdb_id", referencedColumnName="id", nullable=false)
      */
     private Movie $movie;

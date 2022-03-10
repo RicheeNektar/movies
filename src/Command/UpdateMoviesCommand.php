@@ -62,11 +62,12 @@ class UpdateMoviesCommand extends Command
 
                     if (null === $movie) {
                         $movie = $this->movieService->findById($id);
+                        $this->entityManager->persist($movie);
                     }
 
                     if ($movie->getIsHidden()) {
                         $movie->setIsHidden(false);
-                        $this->entityManager->persist($movie);
+                        $movie->setCreationDate(new \DateTimeImmutable());
 
                         echo 'Registered movie ' . $movie->getId() . ' -> ' . $movie->getTitle() . ' ( ' . count($movie->getBackdrops()) . ' Backdrops)' . "\n";
 

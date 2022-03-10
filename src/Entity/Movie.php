@@ -74,6 +74,12 @@ class Movie
         return $this->creationDate;
     }
 
+    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
