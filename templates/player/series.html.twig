@@ -2,7 +2,7 @@
 
 {% block title %}{{ episode.getTitle() }} - {{ season.getName() }} - {{ series.getTitle() }}{% endblock %}
 
-{% block back_path %}{{ url('seasons', {'season': season.getId()}) }}{% endblock %}
+{% block back_path %}{{ url('seasons', {'series': season.series().tmdbId(), 'season': season.getId()}) }}{% endblock %}
 
 {% block player_source %}
     <source src="{{ url('tv-file', { series: series.getTmdbId(), season: season.getId(), episode: episode.getId() }) }}" type="video/mp4">
@@ -10,7 +10,7 @@
 
 {% block after_player %}
     <div class="row gap-2 bg-black bg-opacity-75 p-2">
-        {% for i in 1..episode_count+1 %}
+        {% for i in 1..episode_count %}
             <a
                     class="col-1 btn {% if i == episode.getId() %}btn-secondary{% else %}btn-primary{% endif %}"
                     href="{{ url('tv-player', { series: series.getTmdbId(), season: season.getId(), episode: i }) }}"

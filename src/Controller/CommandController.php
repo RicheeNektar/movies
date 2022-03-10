@@ -56,9 +56,9 @@ class CommandController extends AbstractController
         $output = new BufferedOutput();
         $code = $app->run($input, $output);
 
-        if ($code == 0 && $this->getParameter('kernel.environment') === 'prod') {
+        if ($code == 0) {
             return $this->redirectToRoute('admin', [
-                'success' => true,
+                'status' => 'command_success',
             ]);
         }
 

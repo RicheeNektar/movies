@@ -18,12 +18,14 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
+                'label' => 'admin.register.username',
                 'constraints' => [
                     new NotBlank(),
                     new UniqueUsername(),
                 ],
             ])
             ->add('password', PasswordType::class, [
+                'label' => 'admin.register.password',
                 'constraints' => [
                     new NotBlank(),
                     new Length([
@@ -32,10 +34,12 @@ class RegistrationType extends AbstractType
                 ],
             ])
             ->add('isAdmin', CheckboxType::class, [
-                'label' => 'Make admin',
+                'label' => 'admin.register.make_admin',
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'admin.register.submit',
+            ])
         ;
     }
 }

@@ -1,16 +1,33 @@
 {% set menuItems = [
-    {'var': 'movies', 'title': 'Filme', 'href': url('index')},
-    {'var': 'series', 'title': 'Serien', 'href': url('series')},
-    {'var': 'search_results', 'title': 'Filmanfrage', 'href': url('request-page')},
-    {'var': 'users', 'title': 'Management', 'href': url('admin'), 'display': isAdmin()},
-    {'title': 'Logout', 'href': url('logout')}
+    {
+        'id': 'movies',
+        'route': 'index',
+    },
+    {
+        'id': 'series',
+        'route': 'series',
+    },
+    {
+        'id': 'request',
+        'route': 'request-page',
+    },
+    {
+        'id': 'admin',
+        'route': 'admin',
+        'display': isAdmin()
+    },
+    {
+        'id': 'logout',
+        'route': 'logout'
+    }
 ] %}
+{% set route = app.request.get('_route') %}
 
 <nav class="navbar navbar-dark navbar-expand-sm my-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ url('index') }}">
             <img alt="icon" width="32" height="32" src="/icon.png" />
-            Menü
+            {{ 'menu.title' | trans }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar  ">
             <span class="navbar-toggler-icon"></span>
@@ -19,13 +36,12 @@
             <ul class="navbar-nav">
                 {% for item in menuItems %}
                     {% if item.display is not defined or item.display %}
-                        {% set isActive = item.var is defined and _context[item.var] is defined %}
                         <li class="nav-item">
                             <a
-                                class="nav-link{% if isActive %} active{% endif %}"
-                                href="{{ item.href }}"
+                                class="nav-link{% if route == item.route %} active{% endif %}"
+                                href="{{ url(item.route) }}"
                             >
-                                {{ item.title }}
+                                {{ ('menu.item.' ~ item.id) | trans }}
                             </a>
                         </li>
                     {% endif %}

@@ -43,6 +43,8 @@ class AdminUserController extends AbstractController
         $registerUserForm = $this->createForm(RegistrationType::class);
         $registerUserForm->handleRequest($request);
 
+        $status = $request->query->get('status', '');
+
         if ($registerUserForm->isSubmitted() && $registerUserForm->isValid()) {
             $registerUserFormData = $registerUserForm->getData();
 
@@ -59,6 +61,7 @@ class AdminUserController extends AbstractController
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+            $status = 'user_created';
         }
 
         $userCount = $this->userRepository->count([]);
@@ -69,22 +72,22 @@ class AdminUserController extends AbstractController
             'register_user_form' => $registerUserForm->createView(),
             'users' => $this->userRepository->findAll(),
             'requests' => $this->requestRepository->findAll(),
-            'command_success' => $request->query->get('success') ?? 0,
+            'status' => $status,
         ]);
     }
 
     /**
      * @Route("/admin/user/{user<\d+>}", name="user-requests")
      */
-    public function userAdministartion(Request $request, User $user): Response
+    public function userAdministration(Request $request, User $user): Response
     {
         $page = $request->query->getInt('page', 0);
 
         $totalPages = floor($this->requestRepository->count([
-                'user' => $user,
-            ]) / 8);
+            'user' => $user,
+        ]) / 8);
 
-        $requests = $this->requestRepository->findOnPage($page);
+        $requests = $this->requestRepository->fineOnPageByUser($user, $page);
 
         return $this->render('admin/user/index.html.twig', [
             'user' => $user,
@@ -93,6 +96,18 @@ class AdminUserController extends AbstractController
             'first_page' => $page == 0,
             'last_page' => $page == $totalPages,
             'requests' => $requests,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/{user<\d+>}/delete", name="delete-user")
+     */
+    public function deleteUser(User $user): Response
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('admin', [
+            'status' => 'user_deleted',
         ]);
     }
 }

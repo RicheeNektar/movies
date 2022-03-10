@@ -13,14 +13,14 @@ class MovieSearchType extends AbstractType
     {
         $builder
             ->add('query', TextType::class, [
-                'label' => 'Film Titel',
+                'label' => 'movie.search.label',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Film Titel - z.B.: Conjuring, Hellraiser, ...',
+                    'placeholder' => 'movie.search.placeholder',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Suchen',
+                'label' => 'movie.search.submit',
             ])
         ;
     }

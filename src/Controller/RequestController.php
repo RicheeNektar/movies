@@ -89,7 +89,7 @@ class RequestController extends AbstractController
                 }
             } else {
                 return $this->redirectToRoute('request-page', [
-                    'status' => 'alreadyRequested',
+                    'status' => 'already_requested',
                 ]);
             }
         }
@@ -103,7 +103,7 @@ class RequestController extends AbstractController
     public function index(Request $request): Response
     {
         $page = min(0, $request->query->get('page') ?? 0);
-        $status = $request->query->getAlpha('status', '');
+        $status = $request->query->get('status', '');
 
         $form = $this->createForm(RequestMovieType::class);
         $form->handleRequest($request);

@@ -4,10 +4,18 @@
 
 {% block body %}
     <div class="container text-white text-center p-3">
+        {% if status != '' %}
+            <div class="row alert alert-success alert-dismissible">
+                {{ ('admin.action_status.' ~ status) | trans }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% include 'admin/divider.html.twig'     %}
+        {% endif %}
+
         <div class="row row-cols-1 row-cols-lg-2">
             <div class="col">
                 <div class="container">
-                    <h1 class="">Users &amp; Requests:</h1>
+                    <h1 class="">{{ 'admin.user.title' | trans }}</h1>
 
                     <div class="row my-3">
                         {% for prop in ['ID','Username','Is Admin'] %}
@@ -31,7 +39,7 @@
             {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
 
             <div class="col">
-                <h1>Create user</h1>
+                <h1>{{ 'admin.register.title' | trans }}</h1>
                 <br/>
                 {% for message in messages ?? [] %}
                     <h6 class="text-danger">{{ message }}</h6>
@@ -42,25 +50,43 @@
 
         {% include 'admin/divider.html.twig' %}
 
-        <div class="row row-cols-1 row-cols-md-2">
+        <div class="row row-cols-1 row-cols-lg-2">
             <div class="col">
-                <h1 class="text-white">Admin options:</h1>
+                <h1 class="text-white">{{ 'admin.command.title' | trans }}</h1>
                 <br/>
                 <div class="row row-cols-1 gy-3 px-5">
-                    {% if command_success == 1 %}
-                        <span class="text-success">
-                            Command ran successfully.
-                        </span>
-                    {% endif %}
-                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-movies'}) }}">Update Movies</a>
-                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-series'}) }}">Update Series</a>
-                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'convert-old-movies'}) }}">Import from
-                        old structure</a>
-                    <a class="col btn btn-primary" href="{{ url('command', {cmd: 'update-movie-infos'}) }}">Update all
-                        movie infos</a>
-                    <span class="bg-dark rounded col d-block text-center text-info">
-                        "Update Movies" deletes requests as well, when the movie gets registered.
-                    </span>
+                    {% for command in [
+                        {
+                            'command': 'update-movies',
+                            'id': 'update_movies',
+                            'info': true,
+                        },
+                        {
+                            'command': 'update-series',
+                            'id': 'update_series',
+                        },
+                        {
+                            'command': 'convert-old-movies',
+                            'id': 'convert_old_movies',
+                        },
+                        {
+                            'command': 'update-movie-infos',
+                            'id': 'update_movie_infos',
+                        }
+                    ] %}
+                        {% set translationKey = 'admin.command.' ~ command.id ~ '.' %}
+                        <a
+                            class="col btn btn-primary"
+                            href="{{ url('command', {cmd: command.command}) }}"
+                        >
+                            {{ (translationKey ~ 'label') | trans }}
+                        </a>
+                        {% if command.info is defined %}
+                            <div class="alert alert-info">
+                                {{ (translationKey ~ 'info') | trans }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>

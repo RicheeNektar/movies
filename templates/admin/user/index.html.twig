@@ -11,7 +11,7 @@
                 {% for request in requests %}
                     {% set movie = request.getMovie() %}
                     <div class="card scroller-item bg-blur-3 rounded-3 border-0 text-dark">
-                        <img class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
+                        <img height="300px" class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ movie.getYear() }}
@@ -21,7 +21,7 @@
                             </h6>
                             <div class="row">
                                 <a class="card-link text-secondary" target="_blank" href="https://themoviedb.org/movie/{{ movie.getId() }}">
-                                    More Info
+                                    {{ 'admin.user.request.more_info' | trans }}
                                 </a>
                             </div>
                         </div>
@@ -36,12 +36,12 @@
             </h3>
             <div class="row">
                 <button class="btn btn-outline-danger" data-bs-toggle="collapse" role="button" data-bs-target="#dangerous">
-                    Dangerous Options
+                    {{ 'admin.user.action.title' | trans }}
                 </button>
             </div>
             <div class="row collapse collapsed my-3" id="dangerous">
-                <a class="btn btn-danger" href="#">
-                    Delete user
+                <a class="btn btn-danger" href="{{ url('delete-user', {'user': user.id()}) }}">
+                    {{ 'admin.user.action.delete' | trans }}
                 </a>
             </div>
         </div>

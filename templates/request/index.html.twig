@@ -10,13 +10,10 @@
 
 {% block body %}
     <div class="container border-2 rounded-3 p-3 bg-black bg-opacity-50" style="backdrop-filter: blur(12px)">
-        {% if status == 'requested' %}
-            <div class="alert alert-success">
-                Vielen Dank für deine Filmanfrage.
-            </div>
-        {% elseif status == 'alreadyRequested' %}
-            <div class="alert alert-info">
-                Der Film wurde bereits angefragt.
+        {% if status != '' %}
+            <div class="alert {% if status=='already_requested' %}alert-danger{% else %}alert-success{% endif %}">
+                {{ ('request.' ~ status) | trans }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         {% endif %}
 
@@ -37,6 +34,12 @@
             </div>
         {{ form_end(movie_search) }}
 
+        {% if search_results | length == 0 %}
+            <div class="alert alert-danger my-3">
+                No movies found.
+            </div>
+        {% endif %}
+
         <div class="row{% if search_results | length > 0 %} row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-3 py-3 gy-xxl-3{% endif %}">
             {% for result in search_results %}
                 <a
@@ -47,11 +50,6 @@
                     <h3 class="bg-black bg-opacity-50 bg-blur-2 rounded-3 text-center position-relative translate-middle-y top-50">{{ result.title }}</h3>
                 </a>
             {% endfor %}
-            {% if search_results | length == 0 %}
-                {% include 'request/no_movies.html.twig' %}
-            {% endif %}
         </div>
-
-        {% include 'pagination.part.html.twig' %}
     </div>
 {% endblock %}
