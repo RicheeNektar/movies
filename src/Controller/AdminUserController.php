@@ -71,7 +71,6 @@ class AdminUserController extends AbstractController
             'messages' => $registerUserForm->getErrors(),
             'register_user_form' => $registerUserForm->createView(),
             'users' => $this->userRepository->findAll(),
-            'requests' => $this->requestRepository->findAll(),
             'status' => $status,
         ]);
     }

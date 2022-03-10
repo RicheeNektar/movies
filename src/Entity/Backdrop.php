@@ -19,7 +19,7 @@ class Backdrop
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="backdrops")
-     * @ORM\JoinColumn(name="movie_id", referencedColumnName="tmdb_id", nullable=false)
+     * @ORM\JoinColumn(name="movie_id", referencedColumnName="id", nullable=false)
      */
     private $movie;
 

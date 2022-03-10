@@ -1,19 +1,19 @@
 {% extends 'player/index.html.twig' %}
 
-{% block title %}{{ episode.getTitle() }} - {{ season.getName() }} - {{ series.getTitle() }}{% endblock %}
+{% block title %}{{ episode.title() }} - {{ season.name() }} - {{ series.title() }}{% endblock %}
 
-{% block back_path %}{{ url('seasons', {'series': season.series().tmdbId(), 'season': season.getId()}) }}{% endblock %}
+{% block back_path %}{{ url('seasons', {'series': season.series().id(), 'season': season.id()}) }}{% endblock %}
 
 {% block player_source %}
-    <source src="{{ url('tv-file', { series: series.getTmdbId(), season: season.getId(), episode: episode.getId() }) }}" type="video/mp4">
+    <source src="{{ url('tv-file', { series: series.id(), season: season.id(), episode: episode.id() }) }}" type="video/mp4">
 {% endblock %}
 
 {% block after_player %}
     <div class="row gap-2 bg-black bg-opacity-75 p-2">
         {% for i in 1..episode_count %}
             <a
-                    class="col-1 btn {% if i == episode.getId() %}btn-secondary{% else %}btn-primary{% endif %}"
-                    href="{{ url('tv-player', { series: series.getTmdbId(), season: season.getId(), episode: i }) }}"
+                    class="col-1 btn {% if i == episode.id() %}btn-secondary{% else %}btn-primary{% endif %}"
+                    href="{{ url('tv-player', { series: series.id(), season: season.id(), episode: i }) }}"
             >
                 {{ i }}
             </a>

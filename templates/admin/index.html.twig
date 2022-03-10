@@ -28,8 +28,8 @@
                 <div class="container even-odd-children">
                     {% for user in users %}
                         <a class="row" href="{{ url('user-requests', {'user': user.id()}) }}">
-                            <div class="col">{{ user.getId() }}</div>
-                            <div class="col">{{ user.getUsername() }}</div>
+                            <div class="col">{{ user.id() }}</div>
+                            <div class="col">{{ user.username() }}</div>
                             <div class="col">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>
                         </a>
                     {% endfor %}

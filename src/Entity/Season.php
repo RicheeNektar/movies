@@ -19,13 +19,13 @@ class Season
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Series::class, inversedBy="seasons")
-     * @ORM\JoinColumn(name="series_id", referencedColumnName="tmdb_id")
+     * @ORM\ManyToOne(targetEntity=Series::class, inversedBy="seasons", cascade={"persist"})
+     * @ORM\JoinColumn(name="series_id", referencedColumnName="id")
      */
     private $series;
 
     /**
-     * @ORM\OneToMany(targetEntity=Episode::class, mappedBy="season", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Episode::class, mappedBy="season", orphanRemoval=true, cascade={"all"})
      */
     private $episodes;
 
@@ -39,9 +39,25 @@ class Season
      */
     private $name;
 
+    /**
+     * @ORM\Column(name="air_date", type="date_immutable")
+     */
+    private \DateTimeImmutable $airDate;
+
     public function __construct()
     {
         $this->episodes = new ArrayCollection();
+    }
+
+    public function getAirDate(): \DateTimeImmutable
+    {
+        return $this->airDate;
+    }
+
+    public function setAirDate(\DateTimeImmutable $airDate): self
+    {
+        $this->airDate = $airDate;
+        return $this;
     }
 
     public function getId(): ?int

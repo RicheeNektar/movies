@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SeriesRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Series
 {
@@ -16,7 +17,7 @@ class Series
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
-    private $tmdb_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -29,14 +30,24 @@ class Series
     private $poster;
 
     /**
-     * @ORM\OneToMany(targetEntity=Season::class, mappedBy="series", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Season::class, mappedBy="series", orphanRemoval=true, cascade={"all"})
      */
     private $seasons;
 
     /**
-     * @ORM\OneToMany(targetEntity=SeriesBackdrop::class, mappedBy="series")
+     * @ORM\OneToMany(targetEntity=SeriesBackdrop::class, mappedBy="series", cascade={"all"})
      */
     private $backdrops;
+
+    /**
+     * @ORM\Column(name="last_updated", type="datetime_immutable")
+     */
+    private \DateTimeImmutable $lastUpdated;
+
+    /**
+     * @ORM\Column(name="air_date", type="date_immutable")
+     */
+    private \DateTimeImmutable $airDate;
 
     public function __construct()
     {
@@ -44,14 +55,44 @@ class Series
         $this->backdrops = new ArrayCollection();
     }
 
-    public function getTmdbId(): ?int
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
     {
-        return $this->tmdb_id;
+        $this->lastUpdated = new \DateTimeImmutable();
     }
 
-    public function setTmdbId(int $tmdb_id): self
+    public function getAirDate(): \DateTimeImmutable
     {
-        $this->tmdb_id = $tmdb_id;
+        return $this->airDate;
+    }
+
+    public function setAirDate(\DateTimeImmutable $airDate): self
+    {
+        $this->airDate = $airDate;
+        return $this;
+    }
+
+    public function getCreationDate(): \DateTimeImmutable
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
         return $this;
     }
 

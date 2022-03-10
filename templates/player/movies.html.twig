@@ -1,9 +1,9 @@
 {% extends 'player/index.html.twig' %}
 
-{% block title %}{{ movie.getTitle() }}{% endblock %}
+{% block title %}{{ movie.title() }}{% endblock %}
 
 {% block back_path %}{{ url('index') }}{% endblock %}
 
 {% block player_source %}
-    <source src="{{ url('movie-file', { movie: movie.getId() }) }}" type="video/mp4">
+    <source src="{{ url('movie-file', { movie: movie.id() }) }}" type="video/mp4">
 {% endblock %}

@@ -9,18 +9,18 @@
             <h3>Filmanfragen von '{{ user.userIdentifier() }}'</h3>
             <div class="scroller">
                 {% for request in requests %}
-                    {% set movie = request.getMovie() %}
+                    {% set movie = request.movie() %}
                     <div class="card scroller-item bg-blur-3 rounded-3 border-0 text-dark">
-                        <img height="300px" class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.getPoster() }}" />
+                        <img height="300px" class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ movie.poster() }}" />
                         <div class="card-body">
                             <h5 class="card-title">
-                                {{ movie.getYear() }}
+                                {{ movie.year() }}
                             </h5>
                             <h6 class="card-subtitle my-3">
-                                {{ movie.getTitle() }}
+                                {{ movie.title() }}
                             </h6>
                             <div class="row">
-                                <a class="card-link text-secondary" target="_blank" href="https://themoviedb.org/movie/{{ movie.getId() }}">
+                                <a class="card-link text-secondary" target="_blank" href="https://themoviedb.org/movie/{{ movie.id() }}">
                                     {{ 'admin.user.request.more_info' | trans }}
                                 </a>
                             </div>

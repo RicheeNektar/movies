@@ -17,7 +17,7 @@
                 overflow-x: hidden;
 
                 {% if backdrop is defined and backdrop is not null %}
-                    background: url("https://image.tmdb.org/t/p/original{{ backdrop.getFile() }}") center center no-repeat fixed;
+                    background: url("https://image.tmdb.org/t/p/original{{ backdrop.file() }}") center center no-repeat fixed;
                     background-size: cover;
                 {% endif %}
             }

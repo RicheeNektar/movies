@@ -1,7 +1,7 @@
-{% set href = url('movie-player', { movie: movie.getId() }) %}
+{% set href = url('movie-player', { movie: movie.id() }) %}
 <div class="carousel-item{% if loop.first %} active{% endif %}">
     <a
-        style="background: url(https://image.tmdb.org/t/p/w300{{ movie.getPoster() }}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
+        style="background: url(https://image.tmdb.org/t/p/w300{{ movie.poster() }}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
         href="{{ href }}"
         class="d-block w-100"
     ></a>
@@ -9,6 +9,6 @@
         <a
             href="{{ href }}"
             class="h3 bg-black bg-opacity-50 bg-blur-2 rounded-3"
-        >{{ movie.getTitle() }}<br/>({{ movie.getYear() }})</a>
+        >{{ movie.title() }}<br/>({{ movie.year() }})</a>
     </div>
 </div>

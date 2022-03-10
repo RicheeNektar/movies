@@ -71,7 +71,7 @@ class PlayerController extends AbstractController
         $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series);
 
         $episode_count = $this->episodeRepository->count([
-            'series' => $series->getTmdbId(),
+            'series' => $series->getId(),
             'season' => $season->getId(),
         ]);
 
@@ -104,7 +104,7 @@ class PlayerController extends AbstractController
      */
     public function tvFile(Series $series, Season $season, Episode $episode): Response
     {
-        $tvId = $series->getTmdbId();
+        $tvId = $series->getId();
         $seasonId = $season->getId();
         $episodeId = $episode->getId();
 

@@ -24,7 +24,7 @@ class SeriesBackdrop
 
     /**
      * @ORM\ManyToOne(targetEntity=Series::class, inversedBy="backdrops")
-     * @ORM\JoinColumn(name="series_id", referencedColumnName="tmdb_id")
+     * @ORM\JoinColumn(name="series_id", referencedColumnName="id")
      */
     private $series;
 

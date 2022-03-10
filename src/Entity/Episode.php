@@ -22,16 +22,32 @@ class Episode
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes")
+     * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes", cascade={"persist"})
      * @ORM\JoinColumn(name="season_id")
      */
     private $season;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Series::class)
-     * @ORM\JoinColumn(name="series_id", referencedColumnName="tmdb_id")
+     * @ORM\ManyToOne(targetEntity=Series::class, cascade={"persist"})
+     * @ORM\JoinColumn(name="series_id", referencedColumnName="id")
      */
     private $series;
+
+    /**
+     * @ORM\Column(name="air_date", type="date_immutable")
+     */
+    private \DateTimeImmutable $airDate;
+
+    public function getAirDate(): \DateTimeImmutable
+    {
+        return $this->airDate;
+    }
+
+    public function setAirDate(\DateTimeImmutable $airDate): self
+    {
+        $this->airDate = $airDate;
+        return $this;
+    }
 
     public function getId(): ?int
     {
