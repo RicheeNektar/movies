@@ -10,6 +10,11 @@ use phpDocumentor\Reflection\Types\Integer;
 
 final class Version20220309172922 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return 'This Migration will fail when there are existing requests';
+    }
+
     public function up(Schema $schema): void
     {
         foreach([
