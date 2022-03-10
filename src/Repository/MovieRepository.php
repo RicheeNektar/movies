@@ -88,6 +88,7 @@ class MovieRepository extends ServiceEntityRepository
     {
         return $this->onlyVisible($this->createQueryBuilder('b'))
             ->orderBy('b.creationDate', 'DESC')
+            ->addOrderBy('b.title')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
