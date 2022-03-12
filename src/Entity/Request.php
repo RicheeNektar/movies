@@ -47,7 +47,7 @@ class Request extends AbstractMedia
     }
 
     //#region MediaInterface
-    public function getAirDate(): \DateTimeImmutable
+    public function getAirDate(): ?\DateTimeImmutable
     {
         return $this->movie->getAirDate();
     }

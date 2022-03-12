@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=MovieRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Movie
+class Movie extends AbstractMedia
 {
     /**
      * @ORM\Id;
