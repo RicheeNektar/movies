@@ -46,9 +46,9 @@ class Movie
     private bool $isHidden;
 
     /**
-     * @ORM\Column(name="air_date", type="date_immutable")
+     * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
-    private \DateTimeImmutable $airDate;
+    private ?\DateTimeImmutable $airDate = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedMovies")
@@ -116,7 +116,7 @@ class Movie
         return $this;
     }
 
-    public function getAirDate(): \DateTimeImmutable
+    public function getAirDate(): ?\DateTimeImmutable
     {
         return $this->airDate;
     }
