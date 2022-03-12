@@ -12,10 +12,24 @@ $max-scroll-items: 8;
 
   overflow-x: auto;
 
-  & .scroller-item {
+  .scroller-item {
     width: $scroll-item-width;
     min-width: $scroll-item-width;
     min-height: $scroll-item-width * 1.5;
     margin-right: $scroll-item-gap;
+  }
+
+  &::-webkit-scrollbar {
+    background: transparent;
+    height: 32px;
+
+    @include media-breakpoint-up(lg) {
+      height: 8px;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $light;
+    border-radius: 20px;
   }
 }

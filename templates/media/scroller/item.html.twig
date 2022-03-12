@@ -1,14 +1,10 @@
 {% set has_href = href is defined and href != null %}
 
-<div class="card scroller-item bg-blur-3 rounded-3 border-0 my-2">
-    <img height="300px" class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ media.poster() }}" />
+<div class="card scroller-item bg-blur-3  border-0 my-2">
+    <img height="300px" class="rounded-3 card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ media.poster() }}" />
     <div class="card-body card-img-overlay">
         <a
-            href="{% if has_href %}
-                {{ href }}
-            {% else %}
-                https://themoviedb.org/movie/{{ media.id() }}
-            {% endif %}"
+            href="{% if has_href %}{{ href }}{% else %}https://themoviedb.org/movie/{{ media.id() }}{% endif %}"
 
             {% if not has_href %}
                 target="_blank"

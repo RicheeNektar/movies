@@ -72,8 +72,8 @@ Encore
     //.autoProvidejQuery()
 
     .configureFilenames({
-        js: '[name].[hash:8].js',
-        css: '[name].[hash:8].css'
+        js: '[name].[contenthash].js',
+        css: '[name].[contenthash].css'
     })
 ;
 
