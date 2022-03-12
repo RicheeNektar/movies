@@ -36,11 +36,7 @@
                 {% if movies | length == 0 %}
                     {% include 'movies/no_movies.html.twig' %}
                 {% else %}
-                    <div class="scroller">
-                        {% for movie in movies %}
-                            {% include 'movies/movie_scroller_item.html.twig' %}
-                        {% endfor %}
-                    </div>
+                    {% include 'media/scroller/index.html.twig' with {'medias': movies, 'route': 'movie-player'} only %}
                 {% endif %}
 
                 {% include 'pagination.part.html.twig' %}
@@ -49,7 +45,7 @@
             <div class="col-12 col-lg-4">
                 {% if latest_movies | length > 0 %}
                     <h1>Neuste Filme auf der Seite:</h1>
-                    {% include 'movies/movie_carousel.html.twig' with {'id': 'latest-movies', 'movies': latest_movies} only %}
+                    {% include 'media/carousel/index.html.twig' with {'id': 'latest-movies', 'medias': latest_movies, 'route': 'movie-player'} only %}
                 {% endif %}
             </div>
         </div>

@@ -1,0 +1,25 @@
+{% set has_href = href is defined and href != null %}
+
+<div class="card scroller-item bg-blur-3 rounded-3 border-0 my-2">
+    <img height="300px" class="card-img-top" width="100%" src="https://image.tmdb.org/t/p/w300/{{ media.poster() }}" />
+    <div class="card-body card-img-overlay">
+        <a
+            href="{% if has_href %}
+                {{ href }}
+            {% else %}
+                https://themoviedb.org/movie/{{ media.id() }}
+            {% endif %}"
+
+            {% if not has_href %}
+                target="_blank"
+            {% endif %}
+        >
+            <h5 class="card-title bg-opacity-50 bg-black rounded-3 p-2 bg-blur-3">
+                {{ media.title() }}
+            </h5>
+            <h6 class="card-subtitle bg-opacity-50 bg-black rounded-3 p-2">
+                {{ media.airDate() | date('d.m.Y') }}
+            </h6>
+        </a>
+    </div>
+</div>

@@ -14,7 +14,9 @@
 {% block body %}
     <div class="container p-3">
         <div class="row">
-            <a class="btn btn-primary col-md-3" href="{% block back_path %}{% endblock %}">Zurück zur Übersicht</a>
+            <a class="btn btn-primary col-md-3" href="{% block back_path %}{% endblock %}">
+                {{ ((app.request.get('_route') | split('-'))[0] ~ '.player.goback') | trans }}
+            </a>
         </div>
         <div class="row py-3" {{ stimulus_controller('watchtime') }}>
             <video controls class="video-js vjs-theme-forest" data-setup="{}" {{ stimulus_target('watchtime', 'player') }} {{ stimulus_action('watchtime', 'ontimeupdate', 'timeupdate') }}>

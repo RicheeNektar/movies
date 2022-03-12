@@ -53,9 +53,8 @@ class UpdateMovieInfosCommand extends Command
 
                 $movie->setTitle($data['title']);
                 $movie->setPoster($data['poster_path']);
-                $movie->setYear((int) (substr($data['release_date'], 0, 4)));
+                $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $data['release_date']));
 
-                $this->entityManager->persist($movie);
                 $updated++;
             } else {
                 $io->info("Failed to fetch info for $tmdbId");

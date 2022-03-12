@@ -47,7 +47,7 @@ class MovieService {
         $movie->setId($tmdbId);
         $movie->setTitle($infoMovie['title']);
         $movie->setPoster($infoMovie['poster_path']);
-        $movie->setYear((int) (substr($infoMovie['release_date'], 0, 4)));
+        $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $infoMovie['release_date']));
         $movie->setIsHidden(true);
 
         // Filter backdrops, we do not want any backdrops with translated titles

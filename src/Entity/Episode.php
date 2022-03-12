@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=EpisodeRepository::class)
  */
-class Episode
+class Episode extends AbstractMedia
 {
     /**
      * @ORM\Id
@@ -49,7 +49,7 @@ class Episode
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -60,7 +60,7 @@ class Episode
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -93,5 +93,10 @@ class Episode
     {
         $this->series = $series;
         return $this;
+    }
+
+    public function getPoster(): string
+    {
+        return '';
     }
 }

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=SeriesRepository::class)
  * @ORM\HasLifecycleCallbacks
  */
-class Series
+class Series extends AbstractMedia
 {
     /**
      * @ORM\Id
@@ -85,7 +85,7 @@ class Series
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -96,7 +96,7 @@ class Series
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -108,7 +108,7 @@ class Series
         return $this;
     }
 
-    public function getPoster(): ?string
+    public function getPoster(): string
     {
         return $this->poster;
     }

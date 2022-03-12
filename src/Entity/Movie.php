@@ -36,19 +36,19 @@ class Movie
     private $backdrops;
 
     /**
-     * @ORM\Column(name="creation_date", type="date_immutable")
+     * @ORM\Column(name="creation_date", type="datetime_immutable")
      */
     private \DateTimeImmutable $creationDate;
-
-    /**
-     * @ORM\Column(type="integer", length=4)
-     */
-    private int $year;
 
     /**
      * @ORM\Column(name="is_hidden", type="boolean")
      */
     private bool $isHidden;
+
+    /**
+     * @ORM\Column(name="air_date", type="date_immutable")
+     */
+    private \DateTimeImmutable $airDate;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedMovies")
@@ -80,7 +80,7 @@ class Movie
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -92,7 +92,7 @@ class Movie
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -104,7 +104,7 @@ class Movie
         return $this;
     }
 
-    public function getPoster(): ?string
+    public function getPoster(): string
     {
         return $this->poster;
     }
@@ -116,14 +116,14 @@ class Movie
         return $this;
     }
 
-    public function getYear(): int
+    public function getAirDate(): \DateTimeImmutable
     {
-        return $this->year;
+        return $this->airDate;
     }
 
-    public function setYear(int $year): self
+    public function setAirDate(\DateTimeImmutable $airDate): self
     {
-        $this->year = $year;
+        $this->airDate = $airDate;
         return $this;
     }
 

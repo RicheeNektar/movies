@@ -36,7 +36,7 @@ class SeriesService
 
         $season = new Season();
         $season->setId($seasonNumber);
-        $season->setName($info['name']);
+        $season->setTitle($info['name']);
         $season->setPoster($info['poster_path']);
         $season->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));
 

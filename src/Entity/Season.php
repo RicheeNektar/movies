@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=SeasonRepository::class)
  */
-class Season
+class Season extends AbstractMedia
 {
     /**
      * @ORM\Id
@@ -35,9 +35,9 @@ class Season
     private $poster;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name",type="string", length=255)
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(name="air_date", type="date_immutable")
@@ -60,7 +60,7 @@ class Season
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -83,7 +83,7 @@ class Season
         return $this;
     }
 
-    public function getPoster(): ?string
+    public function getPoster(): string
     {
         return $this->poster;
     }
@@ -94,14 +94,14 @@ class Season
         return $this;
     }
 
-    public function getName(): ?string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
         return $this;
     }
 

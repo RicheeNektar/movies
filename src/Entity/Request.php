@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=RequestRepository::class)
  */
-class Request
+class Request extends AbstractMedia
 {
     /**
      * @ORM\Id
@@ -45,4 +45,31 @@ class Request
     {
         return $this->user;
     }
+
+    //#region MediaInterface
+    public function getAirDate(): \DateTimeImmutable
+    {
+        return $this->movie->getAirDate();
+    }
+
+    public function getCreationDate(): \DateTimeImmutable
+    {
+        return $this->movie->getCreationDate();
+    }
+
+    public function getId(): int
+    {
+        return $this->movie->getId();
+    }
+
+    public function getPoster(): string
+    {
+        return $this->movie->getPoster();
+    }
+
+    public function getTitle(): string
+    {
+        return $this->movie->getTitle();
+    }
+    //#endregion
 }
