@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Movie;
 use App\Repository\MovieRepository;
+use App\Service\MovieService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,18 +18,18 @@ class UpdateMovieInfosCommand extends Command
     protected static $defaultDescription = 'Updates all movies';
 
     private MovieRepository $movieRepository;
-    private HttpClientInterface $tmdbClient;
     private EntityManagerInterface $entityManager;
+    private MovieService $movieService;
 
     public function __construct(
         MovieRepository $movieRepository,
-        HttpClientInterface $tmdbClient,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MovieService $movieService
     ) {
         parent::__construct();
         $this->movieRepository = $movieRepository;
-        $this->tmdbClient = $tmdbClient;
         $this->entityManager = $entityManager;
+        $this->movieService = $movieService;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -36,34 +37,14 @@ class UpdateMovieInfosCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $movies = $this->movieRepository->findAll();
-        $count = count($movies);
-
-        $updated = 0;
 
         foreach ($movies as $movie) {
-            $tmdbId = $movie->getId();
-            $response = $this->tmdbClient->request('GET', "movie/$tmdbId", [
-                'query' => [
-                    'language' => 'de-DE',
-                ],
-            ]);
-
-            if ($response->getStatusCode() === 200) {
-                $data = json_decode($response->getContent(), true);
-
-                $movie->setTitle($data['title']);
-                $movie->setPoster($data['poster_path']);
-                $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $data['release_date']));
-
-                $updated++;
-            } else {
-                $io->info("Failed to fetch info for $tmdbId");
-            }
+            $this->movieService->updateMovie($movie);
         }
 
         $this->entityManager->flush();
 
-        $io->success("Updated $updated / $count movies");
+        $io->success("Updated movies");
         return Command::SUCCESS;
     }
 }

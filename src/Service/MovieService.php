@@ -71,4 +71,13 @@ class MovieService {
 
         return $movie;
     }
+
+    public function updateMovie(Movie $movie): void
+    {
+        $info = $this->fetchMovieInfo($movie->getId())['movie'];
+
+        $movie->setTitle($info['title']);
+        $movie->setPoster($info['poster_path']);
+        $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));
+    }
 }
