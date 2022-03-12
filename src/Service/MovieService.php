@@ -79,7 +79,7 @@ class MovieService {
         $movie->setTitle($info['title']);
         $movie->setPoster($info['poster_path']);
 
-        if (isset($info['release_date'])) {
+        if ($info['release_date'] !== '') {
             $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));
         }
     }
