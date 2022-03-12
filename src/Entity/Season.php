@@ -40,7 +40,7 @@ class Season extends AbstractMedia
     private $title;
 
     /**
-     * @ORM\Column(name="air_date", type="date_immutable")
+     * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
     private \DateTimeImmutable $airDate;
 

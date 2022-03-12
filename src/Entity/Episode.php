@@ -34,7 +34,7 @@ class Episode extends AbstractMedia
     private $series;
 
     /**
-     * @ORM\Column(name="air_date", type="date_immutable")
+     * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
     private \DateTimeImmutable $airDate;
 
