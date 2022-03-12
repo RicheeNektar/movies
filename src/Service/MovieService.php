@@ -78,6 +78,9 @@ class MovieService {
 
         $movie->setTitle($info['title']);
         $movie->setPoster($info['poster_path']);
-        $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));
+
+        if (isset($info['release_date'])) {
+            $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));
+        }
     }
 }
