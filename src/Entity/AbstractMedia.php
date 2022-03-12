@@ -14,5 +14,5 @@ abstract class AbstractMedia {
         return null;
     }
 
-    public abstract function getAirDate(): \DateTimeImmutable;
+    public abstract function getAirDate(): ?\DateTimeImmutable;
 }

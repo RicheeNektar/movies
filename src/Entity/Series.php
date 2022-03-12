@@ -47,7 +47,7 @@ class Series extends AbstractMedia
     /**
      * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
-    private \DateTimeImmutable $airDate;
+    private ?\DateTimeImmutable $airDate = null;
 
     public function __construct()
     {
@@ -63,7 +63,7 @@ class Series extends AbstractMedia
         $this->lastUpdated = new \DateTimeImmutable();
     }
 
-    public function getAirDate(): \DateTimeImmutable
+    public function getAirDate(): ?\DateTimeImmutable
     {
         return $this->airDate;
     }

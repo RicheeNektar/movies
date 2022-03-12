@@ -36,9 +36,9 @@ class Episode extends AbstractMedia
     /**
      * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
-    private \DateTimeImmutable $airDate;
+    private ?\DateTimeImmutable $airDate = null;
 
-    public function getAirDate(): \DateTimeImmutable
+    public function getAirDate(): ?\DateTimeImmutable
     {
         return $this->airDate;
     }
