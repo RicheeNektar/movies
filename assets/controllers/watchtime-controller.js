@@ -14,7 +14,7 @@ export default class extends Controller {
 
         if (player && player?.currentTime && player?.duration) {
             if (!(this.sent || this.debounce) &&
-                (player.currentTime / player.duration) >= .9) {
+                (player.currentTime / player.duration) >= .8) {
                 this.debounce = true;
 
                 $.post({

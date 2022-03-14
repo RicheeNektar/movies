@@ -172,9 +172,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function hasWatched(Movie $movie): bool
+    public function hasWatched(AbstractMedia $media): bool
     {
-        return $this->watchedMovies->contains($movie);
+        if (!($media instanceof Movie)) {
+            return false;
+        }
+
+        return $this->watchedMovies->contains($media);
     }
 
     public function addRequest(Request $request): self

@@ -1,4 +1,5 @@
 base:
+  watched: 'Bereits gesehen'
   og:
     title: 'Richee.Me Movies'
     description: 'Private Streaming-Plattform'
@@ -66,9 +67,12 @@ admin:
     update_movies:
       label: 'Filme Aktualisieren'
       info: 'Filmanfragen für einen neuen Film werden automatisch entfernt.'
+
     update_series:
       label: 'Serien Aktualisieren'
+
     convert_old_movies:
       label: 'Alte Datenstruktur importieren'
+
     update_movie_infos:
       label: 'Alle Filminfos aktualiseren'

@@ -1,5 +1,7 @@
 <div class="scroller">
     {% for media in medias %}
+        {% set params = {'media': media, 'user': user} %}
+
         {% if route is defined %}
             {% set parameters = [] %}
             {% set required = getRoutePath(route) | preg_match_all('/{(.+?)}/') %}
@@ -12,9 +14,9 @@
 
             {% set href = url(route, parameters) %}
 
-            {% include 'media/scroller/item.html.twig' with {'media': media, 'href': href} only %}
+            {% include 'media/scroller/item.html.twig' with (params | merge({'href': href})) only %}
         {% else %}
-            {% include 'media/scroller/item.html.twig' with {'media': media} only %}
+            {% include 'media/scroller/item.html.twig' with params only %}
         {% endif %}
     {% endfor %}
 </div>
