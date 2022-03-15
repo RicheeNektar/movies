@@ -94,6 +94,7 @@ class AdminUserController extends AbstractController
             'first_page' => $page == 0,
             'last_page' => $page == $totalPages,
             'requests' => $requests,
+            'user' => $user,
         ]);
     }
 
