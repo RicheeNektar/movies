@@ -38,7 +38,7 @@
             style="z-index: 11"
             {{ stimulus_controller('notify') }}
             {{ stimulus_target('notify', 'list') }}
-            data-notify-fetch-value="{{ url('api_list_messages', {'user': user().id}) }}"
+            data-notify-fetch-value="{{ url('api_list_messages') }}"
             data-notify-ack-value="{{ url('api_ack_message') }}"
         >
         </div>
