@@ -14,19 +14,12 @@ use Psr\Log\LoggerInterface;
  * @method Movie[]    findAll()
  * @method Movie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MovieRepository extends ServiceEntityRepository
+class MovieRepository extends AbstractRepository
 {
     public function __construct(
         ManagerRegistry $registry
     ) {
         parent::__construct($registry, Movie::class);
-    }
-
-    private function paginate(QueryBuilder $qb, int $page): QueryBuilder
-    {
-        return $qb
-            ->setFirstResult($page * 8)
-            ->setMaxResults(8);
     }
 
     private function onlyVisible(QueryBuilder $qb): QueryBuilder

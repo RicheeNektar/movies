@@ -63,7 +63,6 @@ class IndexController extends AbstractController
             'page' => $page,
             'movies' => $movies,
             'movie_search' => $searchForm->createView(),
-            'user' => $user,
         ]);
     }
 }

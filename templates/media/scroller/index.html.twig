@@ -1,6 +1,6 @@
 <div class="scroller">
     {% for media in medias %}
-        {% set params = {'media': media, 'user': user} %}
+        {% set params = {'media': media, 'user': user()} %}
 
         {% if route is defined %}
             {% set parameters = [] %}

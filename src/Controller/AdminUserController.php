@@ -89,7 +89,6 @@ class AdminUserController extends AbstractController
         $requests = $this->requestRepository->fineOnPageByUser($user, $page);
 
         return $this->render('admin/user/index.html.twig', [
-            'user' => $user,
             'page' => $page,
             'total_pages' => $totalPages,
             'first_page' => $page == 0,

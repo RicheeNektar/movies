@@ -36,7 +36,7 @@
                 {% if movies | length == 0 %}
                     {% include 'movies/no_movies.html.twig' %}
                 {% else %}
-                    {% include 'media/scroller/index.html.twig' with {'medias': movies, 'user': user, 'route': 'movie-player'} only %}
+                    {% include 'media/scroller/index.html.twig' with {'medias': movies, 'user': user(), 'route': 'movie-player'} only %}
                 {% endif %}
 
                 {% include 'pagination.part.html.twig' %}

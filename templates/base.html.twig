@@ -33,6 +33,15 @@
         <div class="container rounded bg-blur-3 bg-opacity-50 bg-black">
             {% include 'menu.part.html.twig' %}
         </div>
+        <div
+            class="position-fixed bottom-0 start-0 p-3 w-100"
+            style="z-index: 11"
+            {{ stimulus_controller('notify') }}
+            {{ stimulus_target('notify', 'list') }}
+            data-notify-fetch-value="{{ url('api_list_messages', {'user': user().id}) }}"
+            data-notify-ack-value="{{ url('api_ack_message') }}"
+        >
+        </div>
     {% endif %}
     {% block body %}{% endblock %}
 </body>

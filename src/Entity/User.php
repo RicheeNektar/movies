@@ -46,6 +46,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $watchedMovies;
 
     /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user")
+     */
+    private Collection $messages;
+
+    /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
      */
     private Collection $requests;

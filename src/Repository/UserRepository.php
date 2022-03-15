@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -38,10 +38,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findOnPage(int $page)
     {
-        return $this->createQueryBuilder('u')
+        return $this->paginate($this->createQueryBuilder('u'), $page)
             ->orderBy('u.id')
-            ->setFirstResult($page * 20)
-            ->setMaxResults(8)
             ->getQuery()
             ->getResult();
     }

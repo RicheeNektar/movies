@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Series[]    findAll()
  * @method Series[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SeriesRepository extends ServiceEntityRepository
+class SeriesRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -21,10 +21,8 @@ class SeriesRepository extends ServiceEntityRepository
 
     public function findOnPage(int $page)
     {
-        return $this->createQueryBuilder('b')
+        return $this->paginate($this->createQueryBuilder('b'), $page)
             ->orderBy('b.title')
-            ->setFirstResult($page * 8)
-            ->setMaxResults(8)
             ->getQuery()
             ->getResult();
     }
