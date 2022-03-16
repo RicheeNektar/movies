@@ -32,11 +32,9 @@ class MovieRepository extends AbstractRepository
      */
     public function count(array $criteria = []): int
     {
-        $movies = $this->findBy(array_merge($criteria, [
-                'isHidden' => false,
+        return parent::count(array_merge($criteria, [
+            'isHidden' => true,
         ]));
-
-        return count($movies);
     }
 
     public function findRandomMovie(): ?Movie

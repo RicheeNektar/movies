@@ -3,18 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\DeleteUserForm;
 use App\Form\RegistrationType;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminUserController extends AbstractController
 {
@@ -40,6 +37,10 @@ class AdminUserController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $page = $request->query->getInt('page', 0);
+        $userCount = $this->userRepository->count();
+        $maxPages = floor($userCount / 8);
+
         $registerUserForm = $this->createForm(RegistrationType::class);
         $registerUserForm->handleRequest($request);
 
@@ -64,14 +65,17 @@ class AdminUserController extends AbstractController
             $status = 'user_created';
         }
 
-        $userCount = $this->userRepository->count([]);
-
         return $this->render('admin/index.html.twig', [
+            'first_page' => $page == 0,
+            'last_page' => $page == $maxPages,
+            'total_pages' => $maxPages,
+            'page' => $page,
+            'users' => $this->userRepository->findOnPage($page),
             'user_count' => $userCount,
             'messages' => $registerUserForm->getErrors(),
             'register_user_form' => $registerUserForm->createView(),
-            'users' => $this->userRepository->findAll(),
             'status' => $status,
+            'commands' => CommandController::getCommands(),
         ]);
     }
 

@@ -9,7 +9,7 @@
                 {{ ('admin.action_status.' ~ status) | trans }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-            {% include 'admin/divider.html.twig'     %}
+            {% include 'admin/divider.html.twig' %}
         {% endif %}
 
         <div class="row row-cols-1 row-cols-lg-2">
@@ -34,6 +34,8 @@
                         </a>
                     {% endfor %}
                 </div>
+
+                {% include 'pagination.part.html.twig' %}
             </div>
 
             {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
@@ -55,33 +57,15 @@
                 <h1 class="text-white">{{ 'admin.command.title' | trans }}</h1>
                 <br/>
                 <div class="row row-cols-1 gy-3 px-5">
-                    {% for command in [
-                        {
-                            'command': 'update-movies',
-                            'id': 'update_movies',
-                            'info': true,
-                        },
-                        {
-                            'command': 'update-series',
-                            'id': 'update_series',
-                        },
-                        {
-                            'command': 'convert-old-movies',
-                            'id': 'convert_old_movies',
-                        },
-                        {
-                            'command': 'update-movie-infos',
-                            'id': 'update_movie_infos',
-                        }
-                    ] %}
-                        {% set translationKey = 'admin.command.' ~ command.id ~ '.' %}
+                    {% for command, hasInfo in commands %}
+                        {% set translationKey = 'admin.command.' ~ command ~ '.' %}
                         <a
                             class="col btn btn-primary"
-                            href="{{ url('command', {cmd: command.command}) }}"
+                            href="{{ url('command', {cmd: command}) }}"
                         >
                             {{ (translationKey ~ 'label') | trans }}
                         </a>
-                        {% if command.info is defined %}
+                        {% if hasInfo %}
                             <div class="alert alert-info">
                                 {{ (translationKey ~ 'info') | trans }}
                             </div>

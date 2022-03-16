@@ -35,12 +35,7 @@ class CommandController extends AbstractController
     {
         if (false === array_search(
                 $cmd,
-                [
-                    self::COMMAND_CONVERT_OLD_MOVIES,
-                    self::COMMAND_UPDATE_MOVIES,
-                    self::COMMAND_UPDATE_SERIES,
-                    self::COMMAND_UPDATE_MOVIE_INFOS,
-                ]
+                self::getCommands()
             ) || !$this->security->isGranted('ROLE_ADMIN')
         ) {
             return $this->redirectToRoute('index');
@@ -63,5 +58,15 @@ class CommandController extends AbstractController
         }
 
         return new Response($output->fetch());
+    }
+
+    public static function getCommands(): array
+    {
+        return [
+            self::COMMAND_UPDATE_MOVIES => true,
+            self::COMMAND_UPDATE_SERIES => false,
+            self::COMMAND_UPDATE_MOVIE_INFOS => false,
+            self::COMMAND_CONVERT_OLD_MOVIES => false,
+        ];
     }
 }

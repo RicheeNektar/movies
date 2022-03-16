@@ -1,20 +1,34 @@
 <div class="row text-white">
-    <h1 class="text-danger">No Movies Found</h1>
+    <h1 class="text-danger">
+        {{ 'movie.none_found.title' | trans | raw }}
+    </h1>
 
-    <span class="my-3">
-        <h4>To add a movie:</h4>
+    <div>
+        <h4>{{ 'movie.none_found.instructions.title' | trans | raw }}</h4>
+
         <ol>
-            <li>Put your mp4 in the 'movies' folder.</li>
-            <li>Your filename must be the MovieId from <a target="_blank" href="https://themoviedb.org">themoviedb</a>.</li>
-            <li>Open <a href="{{ url('command', {cmd: 'update-movies'}) }}">this page</a></li>
+            <li>{{ 'movie.none_found.instructions.1' | trans | raw }}</li>
+            <li>{{ 'movie.none_found.instructions.2' | trans | raw }}</li>
+            <li>{{ 'movie.none_found.instructions.3' | trans({'url': url('command', {cmd: 'update-movies'})}) | raw }}</li>
         </ol>
-    </span>
+    </div>
 
-    <span class="my-3">
-        <h4>MovieId example</h4>
-        Let's take the following movie as an exmaple<br/>
-        <li>https://www.themoviedb.org/movie/634649-spider-man-no-way-home</li>
-        The movieId for this movie is <code>634649</code><br/>
-        <li>https://www.themoviedb.org/movie/<code>634649</code>-spider-man-no-way-home</li>
-    </span>
+    <div>
+        {% set id = 634649 %}
+        <h4>{{ 'movie.none_found.example.title' | trans | raw }}</h4>
+
+        <p>{{ 'movie.none_found.example.1' | trans | raw }}</p>
+
+        <ul>
+            <li>https://www.themoviedb.org/movie/{{ id }}-spider-man-no-way-home</li>
+        </ul>
+
+        <p>{{ 'movie.none_found.example.2' | trans({'id': id}) | raw }}</p>
+
+        <ul>
+            <li>https://www.themoviedb.org/movie/<code>{{ id }}</code>-spider-man-no-way-home</li>
+        </ul>
+
+        <p>{{ 'movie.none_found.example.3' | trans({'filename': id ~ '.mp4'}) | raw }}</p>
+    </div>
 </div>

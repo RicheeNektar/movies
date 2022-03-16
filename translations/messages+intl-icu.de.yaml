@@ -32,6 +32,21 @@ movie:
     placeholder: 'Film Titel - z. B.: Conjuring, Hellraiser, ...'
     submit: 'Suchen'
 
+  none_found:
+    title: 'Keine Filme gefunden'
+
+    instructions:
+      title: 'Film hinzufügen'
+      1: 'Benenne deine mp4 nach der Film-ID von <a target="_blank" href="https://themoviedb.org">themoviedb</a>.'
+      2: 'Lege die mp4 in den "movies" Ordner.'
+      3: 'Dann <a target="_blank" href="{url}">klicke hier</a>'
+
+    example:
+      title: 'Film ID Beispiel'
+      1: 'Nehmen wir als Beispiel folgenden Film:'
+      2: 'Die Film ID lautet in diesem Fall <code>{id}</code>'
+      3: 'Daraus folgt der Dateiname <code>{filename}</code>'
+
 tv:
   player:
     goback: 'Zurück zur Staffelübersicht'
@@ -64,18 +79,19 @@ admin:
   command:
     title: 'Daten Optionen'
 
-    update_movies:
+    update-movies:
       label: 'Filme Aktualisieren'
       info: 'Filmanfragen für einen neuen Film werden automatisch entfernt.'
 
-    update_series:
+    update-series:
       label: 'Serien Aktualisieren'
 
-    convert_old_movies:
+    update-movie-infos:
+      label: 'Alle Filminfos aktualiseren'
+
+    convert-old-movies:
       label: 'Alte Datenstruktur importieren'
 
-    update_movie_infos:
-      label: 'Alle Filminfos aktualiseren'
 
 messages:
   request:
