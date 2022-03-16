@@ -4,8 +4,21 @@
     {% set isLastPage = page >= total_pages - 1 %}
     {% set isFirstPage = page <= 0 %}
 
-    {% set prePages = page < 2 ? page-1 : (page > pagesAfter - 2 ? pagesAfter - page : 2) %}
-    {% set postPages = page < 2 ? 4 -page : (page > pagesAfter - 2 ? pagesAfter - page : 2) %}
+    {% set prePages = page < 2
+        ? page - 1
+        : (pagesAfter < 2
+            ? 2 - pagesAfter
+            : 1
+        )
+    %}
+
+    {% set postPages = page < 2
+        ? 3 - page
+        : (pagesAfter < 2
+            ? pagesAfter - 1
+            : 1
+        )
+    %}
 
     <!--
         page: {{ page }}
@@ -23,7 +36,7 @@
 
     {% if prePages > -1 %}
         {% for i in 0..(max(min(prePages, 4), 0)) %}
-            {% set target_page = i %}
+            {% set target_page = page - (prePages - i) - 1 %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ target_page }}">{{ target_page + 1 }}</a>
             </li>
@@ -34,9 +47,9 @@
         <a class="page-link">{{ page + 1 }}</a>
     </li>
 
-    {% if postPages > 0 %}
-        {% for i in 1..(max(min(postPages, 4), 0)) %}
-            {% set target_page = page + i %}
+    {% if postPages > -1 %}
+        {% for i in 0..postPages %}
+            {% set target_page = page + i + 1 %}
             {% set disabled = target_page >= total_pages %}
 
             <li class="page-item{% if disabled %} disabled{% endif %}">
