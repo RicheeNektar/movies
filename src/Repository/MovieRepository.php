@@ -33,7 +33,17 @@ class MovieRepository extends AbstractRepository
     public function count(array $criteria = []): int
     {
         return parent::count(array_merge($criteria, [
-            'isHidden' => true,
+            'isHidden' => false,
+        ]));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function countPages(array $criteria = []): int
+    {
+        return parent::countPages(array_merge($criteria, [
+            'isHidden' => false,
         ]));
     }
 

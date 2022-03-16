@@ -29,9 +29,8 @@ class IndexController extends AbstractController
      */
     public function index(UserInterface $user, Request $request): Response
     {
-        $movieCount = $this->movieRepository->count();
-        $maxPages = floor($movieCount / 8);
-        $page = max(0, min($maxPages, $request->query->get('page') ?? 0));
+        $totalPages = $this->movieRepository->countPages();
+        $page = $request->query->get('page', 0);
 
         $searchForm = $this->createForm(MovieSearchType::class, null, [
             'method' => 'GET',
@@ -56,10 +55,8 @@ class IndexController extends AbstractController
         return $this->render('movies/index.html.twig', [
             'latest_movies' => $this->movieRepository->findLatestMovies(8),
             'backdrop' => $backdrop ?? null,
-            'movie_count' => $movieCount,
-            'first_page' => $page == 0,
-            'last_page' => $page == $maxPages,
-            'total_pages' => $maxPages,
+            'movie_count' => $this->movieRepository->count(),
+            'total_pages' => $totalPages,
             'page' => $page,
             'movies' => $movies,
             'movie_search' => $searchForm->createView(),

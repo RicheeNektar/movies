@@ -38,8 +38,7 @@ class AdminUserController extends AbstractController
     public function index(Request $request): Response
     {
         $page = $request->query->getInt('page', 0);
-        $userCount = $this->userRepository->count();
-        $maxPages = floor($userCount / 8);
+        $totalPages = $this->userRepository->countPages();
 
         $registerUserForm = $this->createForm(RegistrationType::class);
         $registerUserForm->handleRequest($request);
@@ -66,12 +65,10 @@ class AdminUserController extends AbstractController
         }
 
         return $this->render('admin/index.html.twig', [
-            'first_page' => $page == 0,
-            'last_page' => $page == $maxPages,
-            'total_pages' => $maxPages,
+            'total_pages' => $totalPages,
             'page' => $page,
             'users' => $this->userRepository->findOnPage($page),
-            'user_count' => $userCount,
+            'user_count' => $this->userRepository->count(),
             'messages' => $registerUserForm->getErrors(),
             'register_user_form' => $registerUserForm->createView(),
             'status' => $status,
@@ -85,18 +82,15 @@ class AdminUserController extends AbstractController
     public function userAdministration(Request $request, User $user): Response
     {
         $page = $request->query->getInt('page', 0);
-
-        $totalPages = floor($this->requestRepository->count([
+        $totalPages = $this->requestRepository->countPages([
             'user' => $user,
-        ]) / 8);
+        ]);
 
         $requests = $this->requestRepository->fineOnPageByUser($user, $page);
 
         return $this->render('admin/user/index.html.twig', [
             'page' => $page,
             'total_pages' => $totalPages,
-            'first_page' => $page == 0,
-            'last_page' => $page == $totalPages,
             'requests' => $requests,
             'user' => $user,
         ]);

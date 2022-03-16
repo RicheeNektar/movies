@@ -32,10 +32,8 @@ class SeriesController extends AbstractController
      */
     public function seriesList(Request $request): Response
     {
-        $seriesCount = $this->seriesRepository->count([]);
-        $maxPages = floor($seriesCount / 8);
-
-        $page = max(0, min($maxPages, $request->query->get('page') ?? 0));
+        $totalPages = $this->seriesRepository->countPages();
+        $page = $request->query->get('page', 0);
 
         $series = $this->seriesRepository->findOnPage($page);
 
@@ -43,14 +41,10 @@ class SeriesController extends AbstractController
             $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series[random_int(0, count($series) - 1)]);
         }
 
-        $totalPages = floor($seriesCount / 8);
-
         return $this->render('series/index.html.twig', [
             'series' => $series,
             'backdrop' => $backdrop ?? null,
-            'series_count' => $seriesCount,
-            'first_page' => $page == 0,
-            'last_page' => $page == $totalPages,
+            'series_count' => $this->seriesRepository->count(),
             'total_pages' => $totalPages,
             'page' => $page,
         ]);
@@ -62,22 +56,20 @@ class SeriesController extends AbstractController
     public function seasonList(Request $request, Series $series): Response
     {
         $page = $request->query->get('page') ?? 0;
-
-        $seasonCount = $this->seasonRepository->count([
+        $criteria = [
             'series' => $series,
-        ]);
+        ];
+
+        $totalPages = $this->seasonRepository->countPages($criteria);
+        $seasonCount = $this->seasonRepository->count($criteria);
 
         $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series);
-
-        $totalPages = floor($seasonCount / 8);
 
         if ($seasonCount > 0) {
             return $this->render('series/seasons.html.twig', [
                 'series' => $series,
                 'seasons' => $series->getSeasons(),
                 'backdrop' => $backdrop,
-                'first_page' => $page == 0,
-                'last_page' => $page == $totalPages,
                 'total_pages' => $totalPages,
                 'page' => $page,
                 'season_count' => $seasonCount,

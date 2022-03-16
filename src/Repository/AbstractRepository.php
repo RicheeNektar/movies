@@ -7,11 +7,13 @@ use Doctrine\ORM\QueryBuilder;
 
 abstract class AbstractRepository extends ServiceEntityRepository
 {
+    private const ITEMS_PER_PAGE = 8;
+
     protected function paginate(QueryBuilder $qb, int $page): QueryBuilder
     {
         return $qb
-            ->setFirstResult($page * 8)
-            ->setMaxResults(8);
+            ->setFirstResult($page * self::ITEMS_PER_PAGE)
+            ->setMaxResults(self::ITEMS_PER_PAGE);
     }
 
     /**
@@ -20,5 +22,10 @@ abstract class AbstractRepository extends ServiceEntityRepository
     public function count(array $criteria = []): int
     {
         return parent::count($criteria);
+    }
+
+    public function countPages(array $criteria = []): int
+    {
+        return ceil($this->count($criteria) / self::ITEMS_PER_PAGE);
     }
 }

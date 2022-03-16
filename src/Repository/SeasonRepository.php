@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Season[]    findAll()
  * @method Season[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SeasonRepository extends ServiceEntityRepository
+class SeasonRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
