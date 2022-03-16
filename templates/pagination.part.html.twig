@@ -1,16 +1,20 @@
 <nav class="pagination justify-content-center my-3">
-    {% set postPages = 4 - page %}
-    {% set prePages = 4 - postPages - 1 %}
+    {% set pagesAfter = total_pages - page - 1 %}
+
     {% set isLastPage = page >= total_pages - 1 %}
     {% set isFirstPage = page <= 0 %}
+
+    {% set prePages = page < 2 ? page-1 : (page > pagesAfter - 2 ? pagesAfter - page : 2) %}
+    {% set postPages = page < 2 ? 4 -page : (page > pagesAfter - 2 ? pagesAfter - page : 2) %}
 
     <!--
         page: {{ page }}
         total_pages: {{ total_pages }}
-        prePages: {{ prePages }}
-        postPages: {{ postPages }}
+        pagesAfter: {{ pagesAfter }}
         isLastPage: {{ isLastPage }}
         isFirstPage: {{ isFirstPage }}
+        prePages: {{ prePages }}
+        postPages: {{ postPages }}
     -->
 
     <li class="page-item{% if isFirstPage %} disabled{% endif %}">
