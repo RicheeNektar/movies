@@ -97,7 +97,9 @@ admin:
 
 
 messages:
-  request:
-    movie_added:
-      title: 'Neuer Film'
-      text: 'Der Film "{title}", aus deinen Filmanfragen, ist nun verfügbar.'
+  movie_added:
+    title: 'Neuer Film'
+    text: 'Der Film "{title}", aus deinen Filmanfragen, ist nun verfügbar.'
+  new_request:
+    title: 'Neue Anfrage'
+    text: 'Der Film "{title}" wurde von {username} angefragt.'

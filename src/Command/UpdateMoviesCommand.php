@@ -78,10 +78,10 @@ class UpdateMoviesCommand extends Command
                                 $message = new Message();
                                 $message
                                     ->setUser($request->getUser())
-                                    ->setTitle($this->translator->trans('messages.request.movie_added.title'))
+                                    ->setTitle($this->translator->trans('messages.movie_added.title'))
                                     ->setText(
                                         $this->translator->trans(
-                                            'messages.request.movie_added.text',
+                                            'messages.movie_added.text',
                                             [
                                                 'title' => $request->getTitle(),
                                             ]

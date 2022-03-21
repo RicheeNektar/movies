@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Form\RequestMovieType;
 use App\Repository\MovieRepository;
 use App\Repository\RequestRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RequestController extends AbstractController
 {
@@ -23,6 +25,7 @@ class RequestController extends AbstractController
     private UserRepository $userRepository;
     private MovieService $movieService;
     private RequestRepository $requestRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         MovieRepository $movieRepository,
@@ -30,7 +33,8 @@ class RequestController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
         MovieService $movieService,
-        RequestRepository $requestRepository
+        RequestRepository $requestRepository,
+        TranslatorInterface $translator
     ) {
         $this->movieRepository = $movieRepository;
         $this->tmdbClient = $tmdbClient;
@@ -38,6 +42,7 @@ class RequestController extends AbstractController
         $this->userRepository = $userRepository;
         $this->movieService = $movieService;
         $this->requestRepository = $requestRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -72,6 +77,18 @@ class RequestController extends AbstractController
         $request = new \App\Entity\Request();
         $request->setMovie($movie);
         $request->setUser($user);
+
+        foreach ($this->userRepository->findAllAdmins() as $admin) {
+            $message = new Message();
+            $message->setUser($admin);
+            $message->setTitle($this->translator->trans('messages.new_request.title'));
+            $message->setText($this->translator->trans('messages.new_request.text', [
+                'username' => $user->getUserIdentifier(),
+                'title' => $movie->getTitle()
+            ]));
+
+            $this->entityManager->persist($message);
+        }
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
