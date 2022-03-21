@@ -9,45 +9,43 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container float-none border-2 rounded-3 p-3 bg-black bg-opacity-50" style="backdrop-filter: blur(12px)">
-        {{ form_start(movie_search) }}
+    {{ form_start(movie_search) }}
 
-        <div class="row">
-            <div class="col col-2">
-                {{ form_label(movie_search.query) }}
-            </div>
-            <div class="col col-8">
-                {{ form_widget(movie_search.query) }}
-            </div>
-            <div class="col col-2">
-                {{ form_widget(movie_search.submit, {'attr':{'class':'btn-primary d-block position-relative start-50 top-50 translate-middle'}}) }}
-            </div>
+    <div class="row">
+        <div class="col col-2">
+            {{ form_label(movie_search.query) }}
         </div>
-        <div class="row">
-            {{ form_errors(movie_search.query) }}
+        <div class="col col-8">
+            {{ form_widget(movie_search.query) }}
+        </div>
+        <div class="col col-2">
+            {{ form_widget(movie_search.submit, {'attr':{'class':'btn-primary d-block position-relative start-50 top-50 translate-middle'}}) }}
+        </div>
+    </div>
+    <div class="row">
+        {{ form_errors(movie_search.query) }}
+    </div>
+
+    {{ form_end(movie_search) }}
+
+    <div class="row container">
+        <div class="col-12 col-lg-8 order-lg-2">
+            <h1>Filme: </h1>
+
+            {% if movies | length == 0 %}
+                {% include 'movies/no_movies.html.twig' %}
+            {% else %}
+                {% include 'media/scroller/index.html.twig' with {'medias': movies, 'user': user(), 'route': 'movie-player'} only %}
+            {% endif %}
+
+            {% include 'pagination.part.html.twig' %}
         </div>
 
-        {{ form_end(movie_search) }}
-
-        <div class="row container">
-            <div class="col-12 col-lg-8 order-lg-2">
-                <h1>Filme: </h1>
-
-                {% if movies | length == 0 %}
-                    {% include 'movies/no_movies.html.twig' %}
-                {% else %}
-                    {% include 'media/scroller/index.html.twig' with {'medias': movies, 'user': user(), 'route': 'movie-player'} only %}
-                {% endif %}
-
-                {% include 'pagination.part.html.twig' %}
-            </div>
-
-            <div class="col-12 col-lg-4">
-                {% if latest_movies | length > 0 %}
-                    <h1>Neuste Filme auf der Seite:</h1>
-                    {% include 'media/carousel/index.html.twig' with {'id': 'latest-movies', 'medias': latest_movies, 'route': 'movie-player'} only %}
-                {% endif %}
-            </div>
+        <div class="col-12 col-lg-4">
+            {% if latest_movies | length > 0 %}
+                <h1>Neuste Filme auf der Seite:</h1>
+                {% include 'media/carousel/index.html.twig' with {'id': 'latest-movies', 'medias': latest_movies, 'route': 'movie-player'} only %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

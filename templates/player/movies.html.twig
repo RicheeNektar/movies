@@ -2,7 +2,7 @@
 
 {% block title %}{{ movie.title() }}{% endblock %}
 
-{% block back_path %}{{ url('index') }}{% endblock %}
+{% block back_path %}{{ url('movies') }}{% endblock %}
 
 {% block player_source %}
     <source src="{{ url('movie-file', { movie: movie.id() }) }}" type="video/mp4">

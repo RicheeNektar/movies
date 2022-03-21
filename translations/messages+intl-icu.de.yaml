@@ -11,6 +11,9 @@ menu:
     series: 'Serien'
     request: 'Filmanfragen'
     admin: 'Verwaltung'
+    admin_index: 'Benutzer und System'
+    admin_requests: 'Anfragen'
+
     logout: 'Ausloggen'
 
 pagination:

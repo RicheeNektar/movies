@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Form\MovieSearchType;
 use App\Form\RequestMovieType;
-use App\Repository\MovieBackdropRepository;
 use App\Repository\MovieRepository;
 use App\Repository\RequestRepository;
-use App\Repository\SeriesRepository;
 use App\Repository\UserRepository;
 use App\Service\MovieService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +18,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class RequestController extends AbstractController
 {
     private MovieRepository $movieRepository;
-    private SeriesRepository $seriesRepository;
     private HttpClientInterface $tmdbClient;
     private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
@@ -30,7 +26,6 @@ class RequestController extends AbstractController
 
     public function __construct(
         MovieRepository $movieRepository,
-        SeriesRepository $seriesRepository,
         HttpClientInterface $tmdbClient,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
@@ -38,7 +33,6 @@ class RequestController extends AbstractController
         RequestRepository $requestRepository
     ) {
         $this->movieRepository = $movieRepository;
-        $this->seriesRepository = $seriesRepository;
         $this->tmdbClient = $tmdbClient;
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
@@ -47,9 +41,9 @@ class RequestController extends AbstractController
     }
 
     /**
-     * @Route("/request/{tmdbId<\d+>}", name="request")
+     * @Route("/request/{tmdbId<\d+>}", name="request-page")
      */
-    public function request(UserInterface $iUser, int $tmdbId)
+    public function request(UserInterface $iUser, int $tmdbId): Response
     {
         $user = $this->userRepository->findOneBy(['username' => $iUser->getUserIdentifier()]);
 
@@ -60,45 +54,35 @@ class RequestController extends AbstractController
             return $this->redirectToRoute('movie-player', [
                 'movie' => $tmdbId,
             ]);
-
-        } else if ($this->seriesRepository->find($tmdbId) !== null) {
-            return $this->redirectToRoute('seasons', [
-                'series' => $tmdbId,
-            ]);
-
-        } else {
-            $movie = $this->movieRepository->find($tmdbId);
-
-            if (null === $movie || null === $this->requestRepository->findOneBy([
-                'user' => $user,
-                'movie' => $movie,
-            ])) {
-                $movie = $this->movieService->findById($tmdbId);
-
-                if (null !== $movie) {
-                    $request = new \App\Entity\Request();
-                    $request->setMovie($movie);
-                    $request->setUser($user);
-
-                    $this->entityManager->persist($request);
-                    $this->entityManager->flush();
-
-                    return $this->redirectToRoute('request-page', [
-                        'status' => 'requested',
-                    ]);
-                }
-            } else {
-                return $this->redirectToRoute('request-page', [
-                    'status' => 'already_requested',
-                ]);
-            }
         }
 
-        return $this->redirectToRoute('request-page');
+        $movie = $this->movieRepository->find($tmdbId);
+
+        if (null === $movie) {
+            $movie = $this->movieService->findById($tmdbId);
+        } else if (null !== $this->requestRepository->findOneBy([
+            'user' => $user,
+            'movie' => $movie,
+        ])) {
+            return $this->redirectToRoute('request', [
+                'status' => 'already_requested',
+            ]);
+        }
+
+        $request = new \App\Entity\Request();
+        $request->setMovie($movie);
+        $request->setUser($user);
+
+        $this->entityManager->persist($request);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('request', [
+            'status' => 'requested',
+        ]);
     }
 
     /**
-     * @Route("/request-page", name="request-page")
+     * @Route("/request", name="request")
      */
     public function index(Request $request): Response
     {

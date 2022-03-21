@@ -25,7 +25,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="movies")
      */
     public function index(UserInterface $user, Request $request): Response
     {

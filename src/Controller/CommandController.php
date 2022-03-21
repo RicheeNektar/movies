@@ -52,7 +52,7 @@ class CommandController extends AbstractController
         $code = $app->run($input, $output);
 
         if ($code == 0) {
-            return $this->redirectToRoute('admin', [
+            return $this->redirectToRoute('admin_index', [
                 'status' => 'command_success',
             ]);
         }

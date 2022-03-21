@@ -1,48 +1,75 @@
 {% set menuItems = [
     {
         'id': 'movies',
-        'route': 'index',
+        'routes': [
+            'movie-player'
+        ]
     },
     {
         'id': 'series',
-        'route': 'series',
+        'routes': [
+            'seasons',
+            'tv-player'
+        ]
     },
-    {
-        'id': 'request',
-        'route': 'request-page',
-    },
+    'request',
     {
         'id': 'admin',
-        'route': 'admin',
-        'display': isAdmin()
+        'display': isAdmin(),
+        'sub_items': [
+            'admin_index',
+            'admin_requests'
+        ]
     },
-    {
-        'id': 'logout',
-        'route': 'logout'
-    }
+    'logout'
 ] %}
 {% set route = app.request.get('_route') %}
 
-<nav class="navbar navbar-dark navbar-expand-sm my-3">
+<nav class="navbar navbar-dark navbar-expand-sm my-3 rounded container-lg bg-blur-3 bg-opacity-50 bg-black position-relative" style="z-index: 2">
+    <!-- {{ route }} -->
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url('index') }}">
-            <img alt="icon" width="32" height="32" src="/icon.png" />
+        <a class="navbar-brand" href="{{ url('movies') }}">
+            <img alt="icon" width="32" height="32" src="{{ asset('icon.png') }}" />
             {{ 'menu.title' | trans }}
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar  ">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 {% for item in menuItems %}
                     {% if item.display is not defined or item.display %}
-                        <li class="nav-item">
-                            <a
-                                class="nav-link{% if route == item.route %} active{% endif %}"
-                                href="{{ url(item.route) }}"
-                            >
-                                {{ ('menu.item.' ~ item.id) | trans }}
-                            </a>
+                        {% set isSubMenu = item.sub_items is defined %}
+
+                        <li class="nav-item{% if isSubMenu %} dropdown{% endif %}">
+                            {% if isSubMenu %}
+                                {% set isActive = route in item.sub_items %}
+                                <a
+                                    class="nav-link dropdown-toggle{% if isActive %} active{% endif %}"
+                                    data-bs-toggle="dropdown"
+                                    role="button"
+                                >
+                                    {{ ('menu.item.' ~ item.id) | trans }}
+                                </a>
+                                <ul id="{{ item.id }}-sub" class="dropdown-menu dropdown-menu-dark">
+                                    {% for subItem in item.sub_items %}
+                                        <li class="dropdown-item">
+                                            <a href="{{ url(subItem) }}">
+                                                {{ ('menu.item.' ~ subItem) | trans }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                {% set link = item.id ?? item %}
+                                {% set isActive = route == link or (item.routes is defined and route in item.routes) %}
+                                <a
+                                        class="nav-link{% if isActive %} active{% endif %}"
+                                        href="{{ url(link) }}"
+                                >
+                                    {{ ('menu.item.' ~ link) | trans }}
+                                </a>
+                            {% endif %}
                         </li>
                     {% endif %}
                 {% endfor %}

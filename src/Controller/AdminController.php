@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminUserController extends AbstractController
+/**
+ * @Route(path="/admin", name="admin_")
+ */
+class AdminController extends AbstractController
 {
     private UserRepository $userRepository;
     private UserPasswordHasherInterface $userPasswordHasher;
@@ -33,7 +36,7 @@ class AdminUserController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/", name="index")
      */
     public function index(Request $request): Response
     {
@@ -77,9 +80,9 @@ class AdminUserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user/{user<\d+>}", name="user-requests")
+     * @Route("/user/{user<\d+>}", name="user")
      */
-    public function userAdministration(Request $request, User $user): Response
+    public function user(Request $request, User $user): Response
     {
         $page = $request->query->getInt('page', 0);
         $totalPages = $this->requestRepository->countPages([
@@ -97,14 +100,38 @@ class AdminUserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user/{user<\d+>}/delete", name="delete-user")
+     * @Route("/user/{user<\d+>}/delete", name="delete-user")
      */
     public function deleteUser(User $user): Response
     {
         $this->entityManager->remove($user);
         $this->entityManager->flush();
-        return $this->redirectToRoute('admin', [
+        return $this->redirectToRoute('admin_index', [
             'status' => 'user_deleted',
+        ]);
+    }
+
+    /**
+     * @Route(path="/requests", name="requests")
+     */
+    public function requests(Request $request): Response
+    {
+        $page = $request->query->getInt('page', 0);
+        $totalPages = $this->requestRepository->countPages();
+
+        $requests = $this->requestRepository->findOnPage($page);
+        $top10 = $this->requestRepository->findTop10();
+
+        $totalVotes = array_reduce($top10, static function($carry, $item) {
+            return $carry + $item['votes'];
+        });
+
+        return $this->render('admin/all_requests.html.twig', [
+            'top10' => $top10,
+            'total_votes' => $totalVotes,
+            'page' => $page,
+            'total_pages' => $totalPages,
+            'requests' => $requests,
         ]);
     }
 }

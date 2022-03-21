@@ -2,10 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Movie;
 use App\Entity\Request;
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,6 +26,30 @@ class RequestRepository extends AbstractRepository
         return $this->paginate($this->createQueryBuilder('r'), $page)
             ->andWhere('r.user = :user')
             ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOnPage(int $page): array
+    {
+        return $this->paginate($this->createQueryBuilder('r'), $page)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findTop10(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join(Movie::class, 'm', Join::WITH, 'm.id = r.movie')
+            ->select([
+                'm.id',
+                'm.title AS title',
+                'COUNT(m.title) AS votes'
+            ])
+            ->groupBy('r.movie')
+            ->orderBy('votes', 'DESC')
+            ->addOrderBy('title')
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult();
     }

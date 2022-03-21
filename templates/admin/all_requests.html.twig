@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Requests{% endblock %}
+
+{% block body %}
+    <h2>Top 10 Requests:</h2>
+
+    <div class="row container">
+        {% for data in top10 %}
+            <div class="col-12 col-md-6 my-1">
+                <a
+                   class="h6"
+                   target="_blank"
+                   href="https://themoviedb.org/movie/{{ data.id }}"
+                >
+                    {{ data.title }}
+                </a>
+                <div class="progress bg-dark">
+                    <div
+                        class="progress-bar bg-secondary"
+                        style="width: {{ data.votes / total_votes * 100 }}%"
+                    ></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <h2>All Requests:</h2>
+
+    <div class="row container">
+        {% include 'media/scroller/index.html.twig' with {'medias': requests} only %}
+        {% include 'pagination.part.html.twig' %}
+    </div>
+{% endblock %}

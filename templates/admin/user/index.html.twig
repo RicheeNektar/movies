@@ -3,7 +3,6 @@
 {% block title %}{{ user.userIdentifier() }} | User Management{% endblock %}
 
 {% block body %}
-<div class="container p-md-5">
     <div class="row">
         <div class="col-12 col-md-8">
             <h3>Filmanfragen von '{{ user.userIdentifier() }}'</h3>
@@ -21,11 +20,10 @@
                 </button>
             </div>
             <div class="row collapse collapsed my-3" id="dangerous">
-                <a class="btn btn-danger" href="{{ url('delete-user', {'user': user.id()}) }}">
+                <a class="btn btn-danger" href="{{ url('admin_delete-user', {'user': user.id()}) }}">
                     {{ 'admin.user.action.delete' | trans }}
                 </a>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

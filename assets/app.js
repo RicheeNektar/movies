@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import bootstrap from 'bootstrap';
 
 import './styles/app.scss';
 

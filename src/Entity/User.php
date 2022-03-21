@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Movie::class, inversedBy="usersWatched")
+     * @ORM\ManyToMany(targetEntity=Movie::class, inversedBy="usersWatched", cascade={"all"})
      * @ORM\JoinTable(name="user_watched_movie",
      *     joinColumns={@ORM\JoinColumn(name="user_id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="movie_id")}
@@ -46,12 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $watchedMovies;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", cascade={"all"})
      */
     private Collection $messages;
 
     /**
-     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user", cascade={"all"})
      */
     private Collection $requests;
 
