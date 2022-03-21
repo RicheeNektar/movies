@@ -12,13 +12,18 @@ class Request extends AbstractMedia
 {
     /**
      * @ORM\Id
+     * @ORM\Column
+     * @ORM\GeneratedValue
+     */
+    private int $id;
+
+    /**
      * @ORM\OneToOne(targetEntity=Movie::class, cascade={"persist"})
-     * @ORM\JoinColumn(name="tmdb_id", nullable=false)
+     * @ORM\JoinColumn(name="movie_id", nullable=false)
      */
     private Movie $movie;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
      * @ORM\JoinColumn(name="user_id", nullable=false)
      */
