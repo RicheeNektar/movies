@@ -76,10 +76,10 @@ class MovieRepository extends AbstractRepository
         return $this->onlyVisible(
             $this->paginate($this->createQueryBuilder('b'), $page)
         )
-            ->andWhere('b.title LIKE CONCAT(:title, \'%\')')
+            ->andWhere('b.title LIKE :title')
             ->orderBy('b.title')
             ->setParameters([
-                'title' => $title,
+                'title' => "%$title%",
             ])
             ->getQuery()
             ->getResult();
