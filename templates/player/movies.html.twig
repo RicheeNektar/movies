@@ -5,5 +5,5 @@
 {% block back_path %}{{ url('movies') }}{% endblock %}
 
 {% block player_source %}
-    <source src="{{ url('movie-file', { movie: movie.id() }) }}" type="video/mp4">
+    <source src="{{ url('movie-file', { movie: movie.id(), token: user().accessToken() }) }}" type="video/mp4">
 {% endblock %}

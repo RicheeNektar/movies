@@ -55,6 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $requests;
 
+    /**
+     * @ORM\Column(name="access_token", type="string", length=88, unique=true)
+     */
+    private string $accessToken;
+
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
@@ -208,5 +213,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRequests(): Collection
     {
         return $this->requests;
+    }
+
+    public function setAccessToken(string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
+        return $this;
+    }
+
+    public function getAccessToken(): string
+    {
+        return $this->accessToken;
     }
 }
