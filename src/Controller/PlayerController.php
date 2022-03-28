@@ -92,10 +92,9 @@ class PlayerController extends AbstractController
         return $this->denyAccess();
     }
 
-    private function denyAccessOrResponse(Request $request, ?UserInterface $user, Response $response): Response
+    private function denyAccessOrResponse(string $token, ?UserInterface $user, Response $response): Response
     {
         if (null === $user) {
-            $token = $request->query->get('token', '');
             $user = $this->userRepository->findOneBy(['accessToken' => $token]);
 
             if (null === $user) {
@@ -107,12 +106,12 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/movie/{movie<\d+>}/file", name="movie-file")
+     * @Route("/movie/{movie<\d+>}/file/{token}", name="movie-file")
      */
-    public function movieFile(Movie $movie, Request $request, ?UserInterface $user): Response
+    public function movieFile(Movie $movie, string $token, ?UserInterface $user): Response
     {
         return $this->denyAccessOrResponse(
-            $request,
+            $token,
             $user,
             $this->file("../movies/" . $movie->getId() . ".mp4")
                 ->setCache([
@@ -125,16 +124,16 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{series<\d+>}/{season<\d+>}/{episode<\d+>}/file", name="tv-file")
+     * @Route("/tv/{series<\d+>}/{season<\d+>}/{episode<\d+>}/file/{token}", name="tv-file")
      */
-    public function tvFile(Series $series, Season $season, Episode $episode, Request $request, ?UserInterface $user): Response
+    public function tvFile(Series $series, Season $season, Episode $episode, ?UserInterface $user, string $token): Response
     {
         $tvId = $series->getId();
         $seasonId = $season->getId();
         $episodeId = $episode->getId();
 
         return $this->denyAccessOrResponse(
-            $request,
+            $token,
             $user,
             $this->file("../series/$tvId/$seasonId/$episodeId.mp4")
                 ->setCache([
