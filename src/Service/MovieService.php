@@ -8,11 +8,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MovieService {
     private HttpClientInterface $tmdbClient;
+    private UtilService $utilService;
 
     public function __construct(
-        HttpClientInterface $tmdbClient
+        HttpClientInterface $tmdbClient,
+        UtilService $utilService
     ) {
         $this->tmdbClient = $tmdbClient;
+        $this->utilService = $utilService;
     }
 
     public function fetchMovieInfo(int $tmdbId): array
@@ -86,6 +89,6 @@ class MovieService {
 
     public function getFolderSize(): int
     {
-        return (new \RecursiveDirectoryIterator('../movies'))->getSize();
+        return $this->utilService->getFolderSize('../series');
     }
 }

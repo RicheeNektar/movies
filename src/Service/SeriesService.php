@@ -11,11 +11,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class SeriesService
 {
     private HttpClientInterface $tmdbClient;
+    private UtilService $utilService;
 
     public function __construct(
-        HttpClientInterface $tmdbClient
+        HttpClientInterface $tmdbClient,
+        UtilService $utilService
     ) {
         $this->tmdbClient = $tmdbClient;
+        $this->utilService = $utilService;
     }
 
     public function findEpisodeById(int $seriesId, int $seasonNumber, int $episodeNumber): Episode
@@ -112,6 +115,6 @@ class SeriesService
 
     public function getFolderSize(): int
     {
-        return (new \RecursiveDirectoryIterator('../series'))->getSize();
+        return $this->utilService->getFolderSize('../series');
     }
 }
