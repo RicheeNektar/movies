@@ -95,6 +95,11 @@ admin:
     convert-old-movies:
       label: 'Alte Datenstruktur importieren'
 
+  disk_space:
+    movies: 'Filme'
+    series: 'Serien'
+    others: 'Sonstiges'
+    free: 'Verfügbar'
 
 messages:
   movie_added:

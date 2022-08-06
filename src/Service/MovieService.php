@@ -83,4 +83,9 @@ class MovieService {
             $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));
         }
     }
+
+    public function getFolderSize(): int
+    {
+        return (new \RecursiveDirectoryIterator('../movies'))->getSize();
+    }
 }

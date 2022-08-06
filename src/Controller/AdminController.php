@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Series;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
+use App\Service\MovieService;
+use App\Service\SeriesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,17 +25,23 @@ class AdminController extends AbstractController
     private UserPasswordHasherInterface $userPasswordHasher;
     private EntityManagerInterface $entityManager;
     private RequestRepository $requestRepository;
+    private MovieService $movieService;
+    private SeriesService $seriesService;
 
     public function __construct(
         UserRepository $userRepository,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
-        RequestRepository $requestRepository
+        RequestRepository $requestRepository,
+        MovieService $movieService,
+        SeriesService $seriesService
     ) {
         $this->userRepository = $userRepository;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->entityManager = $entityManager;
         $this->requestRepository = $requestRepository;
+        $this->movieService = $movieService;
+        $this->seriesService = $seriesService;
     }
 
     /**
@@ -67,6 +76,16 @@ class AdminController extends AbstractController
             $status = 'user_created';
         }
 
+        $sizes = [
+            $this->movieService->getFolderSize(),
+            $this->seriesService->getFolderSize(),
+        ];
+
+        $free_size = disk_free_space(__DIR__);
+        $total_size = disk_total_space(__DIR__);
+
+        $sizes[] = $total_size - $free_size - array_sum($sizes);
+
         return $this->render('admin/index.html.twig', [
             'total_pages' => $totalPages,
             'page' => $page,
@@ -76,6 +95,14 @@ class AdminController extends AbstractController
             'register_user_form' => $registerUserForm->createView(),
             'status' => $status,
             'commands' => CommandController::getCommands(),
+            'sizes_map' => [
+                'movies',
+                'series',
+                'others',
+            ],
+            'sizes' => $sizes,
+            'total_size' => $total_size,
+            'free_size' => $free_size,
         ]);
     }
 

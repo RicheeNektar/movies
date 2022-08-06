@@ -109,4 +109,9 @@ class SeriesService
             'images' => $seriesImages,
         ];
     }
+
+    public function getFolderSize(): int
+    {
+        return (new \RecursiveDirectoryIterator('../series'))->getSize();
+    }
 }
