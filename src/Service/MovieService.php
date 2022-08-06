@@ -89,6 +89,6 @@ class MovieService {
 
     public function getFolderSize(): int
     {
-        return $this->utilService->getFolderSize('../series');
+        return $this->utilService->getFolderSize('../movies');
     }
 }
