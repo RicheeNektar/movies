@@ -7,7 +7,8 @@
             {% set required = getRoutePath(route) | preg_match_all('/{(.+?)}/') %}
 
             {% for parameter in required %}
-                {% set value = _context[parameter].id ?? attribute(media, parameter).id ?? media.id %}
+                {% set mediaId = media.id %}
+                {% set value = _context[parameter] ?? attribute(media, parameter).id ?? mediaId %}
 
                 {% set parameters = parameters | merge({(parameter): value}) %}
             {% endfor %}
