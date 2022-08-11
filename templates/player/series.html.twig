@@ -15,7 +15,12 @@
                     class="col-1 btn {% if i == episode.id() %}btn-secondary{% else %}btn-primary{% endif %}"
                     href="{{ url('tv-player', { series: series.id(), season: season.id(), episode: i }) }}"
             >
-                {{ i }}
+                {% if user().hasWatched(episode) %}
+                    <img title="{{ 'base.watched' | trans() }}" class="float-start bg-black p-1 rounded-circle" src="{{ asset('eye.svg') }}" alt="already_watched" />
+                {% endif %}
+                <span class="float-end">
+                    {{ i }}
+                </span>
             </a>
         {% endfor %}
     </div>

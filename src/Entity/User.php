@@ -46,6 +46,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $watchedMovies;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Episode::class, inversedBy="usersWatched", cascade={"all"})
+     * @ORM\JoinTable(name="user_watched_episode",
+     *     joinColumns={@ORM\JoinColumn(name="user_id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="series_id"),@ORM\JoinColumn(name="season_id"),@ORM\JoinColumn(name="episode_id")}
+     * )
+     */
+    private Collection $watchedEpisodes;
+
+    /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", cascade={"all"})
      */
     private Collection $messages;
@@ -182,13 +191,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function hasWatched(AbstractMedia $media): bool
+    public function addWatchedEpisode(Episode $watchedEpisode): self
     {
-        if (!($media instanceof Movie)) {
-            return false;
+        if (!$this->watchedEpisodes->contains($watchedEpisode)) {
+            $this->watchedEpisodes[] = $watchedEpisode;
+            $watchedEpisode->addUsersWatched($this);
         }
 
-        return $this->watchedMovies->contains($media);
+        return $this;
+    }
+
+    public function removeWatchedEpisode(Episode $watchedEpisode): self
+    {
+        if ($this->watchedEpisodes->removeElement($watchedEpisode)) {
+            $watchedEpisode->removeUsersWatched(null);
+        }
+
+        return $this;
+    }
+
+    public function hasWatched(AbstractMedia $media): bool
+    {
+        if ($media instanceof Movie) {
+            return $this->watchedMovies->contains($media);
+        } else if ($media instanceof Episode) {
+            return $this->watchedEpisodes->contains($media);
+        }
+
+        return false;
     }
 
     public function addRequest(Request $request): self

@@ -18,7 +18,7 @@
             </h6>
         </a>
         {% if user().hasWatched(media) %}
-            <img title="{{ 'base.watched' | trans() }}" class="position-absolute start-0 bottom-0 m-3 bg-black p-1 rounded-circle" src="{{ asset('eye.svg') }}" />
+            <img title="{{ 'base.watched' | trans() }}" class="position-absolute start-0 bottom-0 m-3 bg-black p-1 rounded-circle" src="{{ asset('eye.svg') }}" alt="already_watched" />
         {% endif %}
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EpisodeRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +24,7 @@ class Episode extends AbstractMedia
 
     /**
      * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes", cascade={"persist"})
-     * @ORM\JoinColumn(name="season_id")
+     * @ORM\JoinColumn(name="season_id", referencedColumnName="id)
      */
     private $season;
 
@@ -37,6 +38,11 @@ class Episode extends AbstractMedia
      * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
     private ?\DateTimeImmutable $airDate = null;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedEpisodes")
+     */
+    private $usersWatched;
 
     public function getAirDate(): ?\DateTimeImmutable
     {
@@ -98,5 +104,30 @@ class Episode extends AbstractMedia
     public function getPoster(): string
     {
         return '';
+    }
+
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsersWatched(): Collection
+    {
+        return $this->usersWatched;
+    }
+
+    public function addUsersWatched(User $usersWatched): self
+    {
+        if (!$this->usersWatched->contains($usersWatched)) {
+            $this->usersWatched[] = $usersWatched;
+        }
+
+        return $this;
+    }
+
+    public function removeUsersWatched(User $usersWatched): self
+    {
+        $this->usersWatched->removeElement($usersWatched);
+
+        return $this;
     }
 }

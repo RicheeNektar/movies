@@ -48,8 +48,11 @@ class UpdateSeriesCommand extends Command
             $tmdbId = $series->getId();
             if (!file_exists("../series/$tmdbId")) {
                 $this->entityManager->remove($series);
+                $this->entityManager->flush();
             }
         }
+
+        echo "hi";
 
         foreach (scandir('../series') as $seriesF) {
             if (preg_match('/(\d+)/', $seriesF, $matches)) {
