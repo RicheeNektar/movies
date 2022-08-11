@@ -24,7 +24,7 @@ class Episode extends AbstractMedia
 
     /**
      * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes", cascade={"persist"})
-     * @ORM\JoinColumn(name="season_id", referencedColumnName="id)
+     * @ORM\JoinColumn(name="season_id", referencedColumnName="id")
      */
     private $season;
 
