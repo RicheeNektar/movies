@@ -133,18 +133,18 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{series<\d+>}/{season<\d+>}/{episode<\d+>}/file/{token}", name="tv-file")
+     * @Route("/tv/{episode<\d+>}/file/{token}", name="tv-file")
      */
-    public function tvFile(Series $series, Season $season, Episode $episode, ?UserInterface $user, string $token): Response
+    public function tvFile(Episode $episode, ?UserInterface $user, string $token): Response
     {
-        $tvId = $series->getId();
-        $seasonId = $season->getId();
-        $episodeId = $episode->getId();
+        $seriesId = $episode->getSeries()->getId();
+        $seasonId = $episode->getSeason()->getSeasonId();
+        $episodeId = $episode->getEpisodeId();
 
         return $this->denyAccessOrResponse(
             $token,
             $user,
-            $this->file("../series/$tvId/$seasonId/$episodeId.mp4")
+            $this->file("../series/$seriesId/$seasonId/$episodeId.mp4")
                 ->setCache([
                     'no_cache' => true,
                     'no_store' => true,

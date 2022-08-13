@@ -5,7 +5,7 @@
 {% block back_path %}{{ url('seasons', {'series': series.id()}) }}{% endblock %}
 
 {% block player_source %}
-    <source src="{{ url('tv-file', { series: series.id(), season: season.id(), episode: episode.id(), token: user().accessToken() }) }}" type="video/mp4">
+    <source src="{{ url('tv-file', { episode: episode.id(), token: user().accessToken() }) }}" type="video/mp4">
 {% endblock %}
 
 {% block after_player %}
