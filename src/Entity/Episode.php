@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EpisodeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,9 +14,15 @@ class Episode extends AbstractMedia
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $episodeId;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,6 +50,11 @@ class Episode extends AbstractMedia
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedEpisodes")
      */
     private $usersWatched;
+
+    public function __construct()
+    {
+        $this->usersWatched = new ArrayCollection();
+    }
 
     public function getAirDate(): ?\DateTimeImmutable
     {
@@ -106,6 +118,16 @@ class Episode extends AbstractMedia
         return '';
     }
 
+    public function setEpisodeId(int $episodeId): self
+    {
+        $this->episodeId = $episodeId;
+        return $this;
+    }
+
+    public function getEpisodeId(): int
+    {
+        return $this->episodeId;
+    }
 
     /**
      * @return Collection<int, User>
@@ -119,6 +141,7 @@ class Episode extends AbstractMedia
     {
         if (!$this->usersWatched->contains($usersWatched)) {
             $this->usersWatched[] = $usersWatched;
+            $usersWatched->addWatchedEpisode($this);
         }
 
         return $this;
@@ -126,7 +149,9 @@ class Episode extends AbstractMedia
 
     public function removeUsersWatched(User $usersWatched): self
     {
-        $this->usersWatched->removeElement($usersWatched);
+        if ($this->usersWatched->removeElement($usersWatched)) {
+            $usersWatched->removeWatchedEpisode($this);
+        }
 
         return $this;
     }

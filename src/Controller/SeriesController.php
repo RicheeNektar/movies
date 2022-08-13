@@ -28,7 +28,7 @@ class SeriesController extends AbstractController
     }
 
     /**
-     * @Route("/tv", name="series")
+     * @Route("/series", name="series")
      */
     public function seriesList(Request $request): Response
     {
@@ -51,7 +51,7 @@ class SeriesController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{series<\d+>}", name="seasons")
+     * @Route("/season/{series<\d+>}", name="seasons")
      */
     public function seasonList(Request $request, Series $series): Response
     {

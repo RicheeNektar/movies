@@ -38,21 +38,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity=Movie::class, inversedBy="usersWatched", cascade={"all"})
-     * @ORM\JoinTable(name="user_watched_movie",
-     *     joinColumns={@ORM\JoinColumn(name="user_id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="movie_id")}
-     *     )
      */
     private Collection $watchedMovies;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Episode::class, inversedBy="usersWatched", cascade={"all"})
-     * @ORM\JoinTable(name="user_watched_episode",
-     *     joinColumns={@ORM\JoinColumn(name="user_id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="series_id"),@ORM\JoinColumn(name="season_id"),@ORM\JoinColumn(name="episode_id")}
-     * )
-     */
-    private Collection $watchedEpisodes;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", cascade={"all"})
@@ -65,14 +52,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $requests;
 
     /**
-     * @ORM\Column(name="access_token", type="string", length=88, unique=true)
+     * @ORM\Column(name="access_token", type="string", length=88, unique=true, nullable=true)
      */
     private string $accessToken;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Episode::class, inversedBy="usersWatched", cascade={"all"})
+     */
+    private $watchedEpisodes;
 
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->watchedEpisodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,25 +184,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function addWatchedEpisode(Episode $watchedEpisode): self
-    {
-        if (!$this->watchedEpisodes->contains($watchedEpisode)) {
-            $this->watchedEpisodes[] = $watchedEpisode;
-            $watchedEpisode->addUsersWatched($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWatchedEpisode(Episode $watchedEpisode): self
-    {
-        if ($this->watchedEpisodes->removeElement($watchedEpisode)) {
-            $watchedEpisode->removeUsersWatched(null);
-        }
-
-        return $this;
-    }
-
     public function hasWatched(AbstractMedia $media): bool
     {
         if ($media instanceof Movie) {
@@ -254,5 +228,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getAccessToken(): string
     {
         return $this->accessToken;
+    }
+
+    /**
+     * @return Collection<int, Episode>
+     */
+    public function getWatchedEpisodes(): Collection
+    {
+        return $this->watchedEpisodes;
+    }
+
+    public function addWatchedEpisode(Episode $watchedEpisode): self
+    {
+        if (!$this->watchedEpisodes->contains($watchedEpisode)) {
+            $this->watchedEpisodes[] = $watchedEpisode;
+        }
+
+        return $this;
+    }
+
+    public function removeWatchedEpisode(Episode $watchedEpisode): self
+    {
+        $this->watchedEpisodes->removeElement($watchedEpisode);
+
+        return $this;
     }
 }

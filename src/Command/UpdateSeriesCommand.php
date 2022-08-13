@@ -44,19 +44,43 @@ class UpdateSeriesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->seriesRepository->findAll() as $series) {
-            $tmdbId = $series->getId();
-            if (!file_exists("../series/$tmdbId")) {
-                $this->entityManager->remove($series);
-                $this->entityManager->flush();
+        foreach ($this->episodeRepository->findAll() as $episode) {
+            $seriesId = $episode->getSeries()->getId();
+            $seasonId = $episode->getSeason()->getId();
+            $episodeId = $episode->getId();
+            if (!file_exists("../series/$seriesId/$seasonId/$episodeId.mp4")) {
+                $this->entityManager->remove($episode);
             }
         }
 
-        echo "hi";
+        foreach ($this->seasonRepository->findAll() as $season) {
+            $seriesId = $season->getSeries()->getId();
+            $seasonId = $season->getId();
+            if (!file_exists("../series/$seriesId/$seasonId")) {
+                foreach($season->getEpisodes() as $episode)
+                $this->entityManager->remove($episode);
+            }
+            $this->entityManager->remove($season);
+        }
+
+        foreach ($this->seriesRepository->findAll() as $series) {
+            $seriesId = $series->getId();
+            if (!file_exists("../series/$seriesId")) {
+                foreach($series->getSeasons() as $season) {
+                    foreach ($season->getEpisodes() as $episode) {
+                        $this->entityManager->remove($episode);
+                    }
+                    $this->entityManager->remove($season);
+                }
+            }
+            $this->entityManager->remove($series);
+        }
+
+        $this->entityManager->flush();
 
         foreach (scandir('../series') as $seriesF) {
             if (preg_match('/(\d+)/', $seriesF, $matches)) {
-                $seriesId = (int) $matches[0];
+                $seriesId = (int)$matches[0];
 
                 if (!($series = $this->seriesRepository->find($seriesId))) {
                     $series = $this->seriesService->findSeriesById($seriesId);
@@ -64,29 +88,33 @@ class UpdateSeriesCommand extends Command
 
                 foreach (scandir("../series/$seriesId") as $seasonF) {
                     if (preg_match('/(\d+)/', $seasonF, $matches)) {
-                        $seasonNumber = (int) $matches[1];
+                        $seasonNumber = (int)$matches[1];
 
                         if (!($season = $this->seasonRepository->findOneBy([
-                                'id' => $seasonNumber,
-                                'series' => $series->getId(),
-                            ]))
+                            'seasonId' => $seasonNumber,
+                            'series' => $series->getId(),
+                        ]))
                         ) {
                             $season = $this->seriesService->findSeasonById($seriesId, $seasonNumber);
+                            $season->setSeries($series);
+                            $season->setSeasonId($seasonNumber);
                             $series->addSeason($season);
                         }
 
                         foreach (scandir("../series/$seriesId/$seasonNumber/") as $episodeF) {
                             if (preg_match('/(\d+)\.mp4/', $episodeF, $matches)) {
-                                $episodeNumber = (int) $matches[0];
+                                $episodeNumber = (int)$matches[0];
 
                                 if (!$this->episodeRepository->findOneBy([
-                                        'id' => $episodeNumber,
-                                        'season' => $season->getId(),
-                                        'series' => $seriesId,
-                                    ])
+                                    'episodeId' => $episodeNumber,
+                                    'season' => $season->getId(),
+                                    'series' => $seriesId,
+                                ])
                                 ) {
                                     $episode = $this->seriesService->findEpisodeById($seriesId, $seasonNumber, $episodeNumber);
+                                    $episode->setEpisodeId($episodeNumber);
                                     $episode->setSeries($series);
+                                    $episode->setSeason($season);
                                     $season->addEpisode($episode);
                                 }
                             }
