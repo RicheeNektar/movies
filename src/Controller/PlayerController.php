@@ -133,7 +133,7 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{series<\d+>}/{season<\d+>}/{episode<\d+>}/file/{token}", name="tv-file")
+     * @Route("/tv/{episode<\d+>}/file/{token}", name="tv-file")
      */
     public function tvFile(Series $series, Season $season, Episode $episode, ?UserInterface $user, string $token): Response
     {
