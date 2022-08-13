@@ -10,16 +10,16 @@
 
 {% block after_player %}
     <div class="row gap-2 bg-black bg-opacity-75 p-2">
-        {% for i in 1..episode_count %}
+        {% for episodeEntry in season.getEpisodes() | sort((a, b) => a.episodeId <=> b.episodeId) %}
             <a
-                    class="col-1 btn {% if i == episode.id() %}btn-secondary{% else %}btn-primary{% endif %}"
-                    href="{{ url('tv-player', { series: series.id(), season: season.id(), episode: i }) }}"
+                    class="col-1 btn {% if episodeEntry.id == episode.id %}btn-secondary{% else %}btn-primary{% endif %}"
+                    href="{{ url('tv-player', { episode: episodeEntry.id }) }}"
             >
-                {% if user().hasWatched(season.getEpisodes()[i - 1]) %}
+                {% if user().hasWatched(episodeEntry) %}
                     <img title="{{ 'base.watched' | trans() }}" class="float-start bg-black p-1 rounded-circle" src="{{ asset('eye.svg') }}" alt="already_watched" />
                 {% endif %}
                 <span class="float-end">
-                    {{ i }}
+                    {{ episodeEntry.episodeId }}
                 </span>
             </a>
         {% endfor %}

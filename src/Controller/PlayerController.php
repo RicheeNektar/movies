@@ -66,9 +66,9 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{series<\d+>}/{season<\d+>}/{episode<\d+>}", name="tv-player")
+     * @Route("/tv/{episode<\d+>}", name="tv-player")
      */
-    public function tvPlayer(Request $request, ?UserInterface $iUser, Series $series, Season $season, Episode $episode): Response
+    public function tvPlayer(Request $request, ?UserInterface $iUser, Episode $episode): Response
     {
         if ($iUser instanceof User) {
             if ($request->query->getBoolean('watched', false) === true) {
@@ -78,6 +78,8 @@ class PlayerController extends AbstractController
                 return $this->json(['success' => 'true']);
             }
 
+            $series = $episode->getSeries();
+            $season = $episode->getSeason();
             $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series);
 
             $episode_count = $this->episodeRepository->count([

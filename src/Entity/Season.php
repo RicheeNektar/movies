@@ -14,9 +14,15 @@ class Season extends AbstractMedia
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $seasonId;
 
     /**
      * @ORM\ManyToOne(targetEntity=Series::class, inversedBy="seasons", cascade={"persist"})
@@ -102,6 +108,17 @@ class Season extends AbstractMedia
     public function setTitle(string $title): self
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function getSeasonId(): int
+    {
+        return $this->seasonId;
+    }
+
+    public function setSeasonId(int $seasonId): self
+    {
+        $this->seasonId = $seasonId;
         return $this;
     }
 

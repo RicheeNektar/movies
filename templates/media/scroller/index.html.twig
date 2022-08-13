@@ -7,7 +7,12 @@
             {% set required = getRoutePath(route) | preg_match_all('/{(.+?)}/') %}
 
             {% for parameter in required %}
-                {% set mediaId = media.id %}
+                {% if isSeason(media) %}
+                    {% set mediaId = media.getEpisodes()[0].getId() %}
+                {% else %}
+                    {% set mediaId = media.id %}
+                {% endif %}
+
                 {% set value = _context[parameter] ?? attribute(media, parameter).id ?? mediaId %}
 
                 {% set parameters = parameters | merge({(parameter): value}) %}
