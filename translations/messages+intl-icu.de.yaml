@@ -3,6 +3,8 @@ base:
   og:
     title: 'Richee.Me Movies'
     description: 'Private Streaming-Plattform'
+  username: 'Benutzername'
+  password: 'Passwort'
 
 menu:
   title: 'Menü'
@@ -63,6 +65,7 @@ admin:
     command_success: 'Die Operation wurde erfolgreich ausgeführt'
     user_deleted: 'Der Benutzer wurde erfolgreich gelöscht.'
     user_created: 'Der Benutzer wurde erfoglreich angelegt.'
+    invite_created: 'Die Einlaundg wurde erstellt.'
 
   user:
     title: 'Benutzer und Anfragen'
@@ -71,13 +74,18 @@ admin:
     action:
       title: 'Verwaltungsaktionen'
       delete: 'Benutzer löschen'
+    roles:
+      title: 'Rechte'
+      admin: 'Admin Rechte'
+      save: 'Rechte Speichern'
 
-  register:
-    title: 'Benutzer anlegen'
-    username: 'Benutzername'
-    password: 'Passwort'
-    make_admin: 'Mit Administratorrechten anlegen'
-    submit: 'Anlegen'
+  invitation:
+    title: 'Einladungen'
+    invite: 'Einladung erstellen'
+    info: 'Eine Einladung ist für 24 Stunden ab Erstellung gültig. Du kannst keine weitere Einladung erstellen, bis die vorherige eingelöst oder abgelaufen ist.'
+    link:
+      copy: 'Link kopieren'
+      copied: 'Link kopiert!'
 
   command:
     title: 'Daten Optionen'
@@ -100,6 +108,12 @@ admin:
     series: 'Serien'
     others: 'Sonstiges'
     free: 'Verfügbar'
+
+login:
+  submit: 'Einloggen'
+
+register:
+  submit: 'Account erstellen'
 
 messages:
   movie_added:

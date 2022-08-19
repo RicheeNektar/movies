@@ -10,17 +10,24 @@
 
             {% include 'pagination.part.html.twig' %}
         </div>
-        <div class="col-12 col-md-4">
+        <div class="d-flex flex-column col-12 col-md-4">
             <h3>
-                Administration:
+                {{ 'admin.user.roles.title' | trans }}:
             </h3>
+
+            {{ form_start(form, {action: url('user_index', {'user': user.id()}) }) }}
+                {{ form_widget(form.is_admin) }}
+                {{ form_widget(form.submit, {attr: {class: "btn btn-primary my-3"}}) }}
+            {{ form_end(form) }}
+
             <div class="row">
+                <h3>
+                    Administration:
+                </h3>
                 <button class="btn btn-outline-danger" data-bs-toggle="collapse" role="button" data-bs-target="#dangerous">
                     {{ 'admin.user.action.title' | trans }}
                 </button>
-            </div>
-            <div class="row collapse collapsed my-3" id="dangerous">
-                <a class="btn btn-danger" href="{{ url('admin_delete-user', {'user': user.id()}) }}">
+                <a id="dangerous" class="collapse collapsed my-3 btn btn-danger" href="{{ url('user_delete', {'user': user.id()}) }}">
                     {{ 'admin.user.action.delete' | trans }}
                 </a>
             </div>

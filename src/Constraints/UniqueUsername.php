@@ -10,8 +10,15 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueUsername extends Constraint
 {
-    public string $message = "This username cannot be used. User already exists.";
+    public string $message = "register.username.not_unique";
     public string $mode = 'strict';
+
+    public function __construct($options = null, array $groups = null, $payload = null)
+    {
+        parent::__construct($options ?? [], $groups, $payload);
+
+        $this->message = $message ?? $this->message;
+    }
 
     public function validatedBy(): string
     {

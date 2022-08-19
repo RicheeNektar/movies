@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Invitation;
 use App\Entity\Series;
 use App\Entity\User;
+use App\Form\CreateInviteType;
 use App\Form\RegistrationType;
+use App\Repository\InvitationRepository;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use App\Service\MovieService;
@@ -22,26 +25,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     private UserRepository $userRepository;
-    private UserPasswordHasherInterface $userPasswordHasher;
     private EntityManagerInterface $entityManager;
     private RequestRepository $requestRepository;
     private MovieService $movieService;
     private SeriesService $seriesService;
+    private InvitationRepository $invitationRepository;
 
     public function __construct(
         UserRepository $userRepository,
-        UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         RequestRepository $requestRepository,
         MovieService $movieService,
-        SeriesService $seriesService
+        SeriesService $seriesService,
+        InvitationRepository $invitationRepository
     ) {
         $this->userRepository = $userRepository;
-        $this->userPasswordHasher = $userPasswordHasher;
         $this->entityManager = $entityManager;
         $this->requestRepository = $requestRepository;
         $this->movieService = $movieService;
         $this->seriesService = $seriesService;
+        $this->invitationRepository = $invitationRepository;
     }
 
     /**
@@ -52,28 +55,21 @@ class AdminController extends AbstractController
         $page = $request->query->getInt('page', 0);
         $totalPages = $this->userRepository->countPages();
 
-        $registerUserForm = $this->createForm(RegistrationType::class);
-        $registerUserForm->handleRequest($request);
+        $status = $request->query->getAlnum('status', '');
 
-        $status = $request->query->get('status', '');
+        $createInviteForm = $this->createForm(CreateInviteType::class);
+        $createInviteForm->handleRequest($request);
+        $user = $this->getUser();
 
-        if ($registerUserForm->isSubmitted() && $registerUserForm->isValid()) {
-            $registerUserFormData = $registerUserForm->getData();
+        $invitation = $this->invitationRepository->findLatestByUser($user);
 
-            $roles = ['ROLE_USER'];
-
-            if ($registerUserFormData['isAdmin']) {
-                $roles[] = 'ROLE_ADMIN';
-            }
-
-            $user = new User();
-            $user->setUsername($registerUserFormData['username']);
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $registerUserFormData['password']));
-            $user->setRoles($roles);
-
-            $this->entityManager->persist($user);
+        if (!$invitation && $createInviteForm->isSubmitted() && $createInviteForm->isValid()) {
+            $invitation = new Invitation();
+            $invitation->setCreatedBy($user);
+            $this->entityManager->persist($invitation);
             $this->entityManager->flush();
-            $status = 'user_created';
+
+            $status = 'invite_created';
         }
 
         $sizes = [
@@ -86,57 +82,28 @@ class AdminController extends AbstractController
 
         $sizes[] = $total_size - $free_size - array_sum($sizes);
 
-        return $this->render('admin/index.html.twig', [
+        return $this->renderForm('admin/index.html.twig', [
             'total_pages' => $totalPages,
             'page' => $page,
             'users' => $this->userRepository->findOnPage($page),
             'user_count' => $this->userRepository->count(),
-            'messages' => $registerUserForm->getErrors(),
-            'register_user_form' => $registerUserForm->createView(),
             'status' => $status,
             'commands' => CommandController::getCommands(),
+            'create_invite_form' => $createInviteForm,
             'sizes_map' => [
                 'movies',
                 'series',
                 'others',
             ],
+            'invitation' => $invitation,
             'sizes' => $sizes,
             'total_size' => $total_size,
             'free_size' => $free_size,
+            'latest_invite' => $invitation,
         ]);
     }
 
-    /**
-     * @Route("/user/{user<\d+>}", name="user")
-     */
-    public function user(Request $request, User $user): Response
-    {
-        $page = $request->query->getInt('page', 0);
-        $totalPages = $this->requestRepository->countPages([
-            'user' => $user,
-        ]);
 
-        $requests = $this->requestRepository->fineOnPageByUser($user, $page);
-
-        return $this->render('admin/user/index.html.twig', [
-            'page' => $page,
-            'total_pages' => $totalPages,
-            'requests' => $requests,
-            'user' => $user,
-        ]);
-    }
-
-    /**
-     * @Route("/user/{user<\d+>}/delete", name="delete-user")
-     */
-    public function deleteUser(User $user): Response
-    {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('admin_index', [
-            'status' => 'user_deleted',
-        ]);
-    }
 
     /**
      * @Route(path="/requests", name="requests")

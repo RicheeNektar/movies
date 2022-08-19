@@ -26,7 +26,7 @@
             </div>
             <div class="container even-odd-children">
                 {% for user in users %}
-                    <a class="row" href="{{ url('admin_user', {'user': user.id()}) }}">
+                    <a class="row" href="{{ url('user_index', {'user': user.id()}) }}">
                         <div class="col">{{ user.id() }}</div>
                         <div class="col">{{ user.username() }}</div>
                         <div class="col">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>
@@ -40,12 +40,31 @@
         {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
 
         <div class="col">
-            <h1>{{ 'admin.register.title' | trans }}</h1>
+            <h1>{{ 'admin.invitation.title' | trans }}</h1>
             <br/>
             {% for message in messages ?? [] %}
                 <h6 class="text-danger">{{ message }}</h6>
             {% endfor %}
-            {{ form( register_user_form ) }}
+            <div class="alert alert-info">{{ 'admin.invitation.info' | trans }}</div>
+            {% if invitation %}
+                {% set link = url('register', {'id': invitation.id()}) %}
+                <span>{{ 'admin.invitation.link.copy' | trans }}:</span>
+                <button
+                        class="w-100 m-1 btn btn-outline-primary"
+                        {{ stimulus_controller('copy') }}
+                        {{ stimulus_target('copy', 'button') }}
+                        data-copy-link-value="{{ link }}"
+                        {{ stimulus_action('copy', 'copy') }}
+                        data-bs-title="{{ 'admin.invitation.link.copied' | trans }}"
+                        data-bs-placement="top"
+                >
+                    {{ link }}
+                </button>
+            {% else %}
+                {{ form_start(create_invite_form, {attr:{class: "m-1 row"}}) }}
+                    {{ form_widget(create_invite_form.submit, {attr:{class:"btn btn-primary"}}) }}
+                {{ form_end(create_invite_form) }}
+            {% endif %}
         </div>
     </div>
 
