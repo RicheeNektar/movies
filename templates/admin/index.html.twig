@@ -45,14 +45,12 @@
             {% for message in messages ?? [] %}
                 <h6 class="text-danger">{{ message }}</h6>
             {% endfor %}
-            {{ form_start(create_invite_form, {attr:{class: "m-1 row"}}) }}
-                {{ form_widget(create_invite_form.submit, {attr:{class:"btn btn-primary"}}) }}
-            {{ form_end(create_invite_form) }}
-            <br/>
+            <div class="alert alert-info">{{ 'admin.invitation.info' | trans }}</div>
             {% if invitation %}
                 {% set link = url('register', {'id': invitation.id()}) %}
+                <span>{{ 'admin.invitation.link.copy' | trans }}:</span>
                 <button
-                        class="m-1 btn btn-outline-primary"
+                        class="w-100 m-1 btn btn-outline-primary"
                         {{ stimulus_controller('copy') }}
                         {{ stimulus_target('copy', 'button') }}
                         data-copy-link-value="{{ link }}"
@@ -60,8 +58,12 @@
                         data-bs-title="{{ 'admin.invitation.link.copied' | trans }}"
                         data-bs-placement="top"
                 >
-                    {{ 'admin.invitation.link.copy' | trans }}: {{ link }}
+                    {{ link }}
                 </button>
+            {% else %}
+                {{ form_start(create_invite_form, {attr:{class: "m-1 row"}}) }}
+                    {{ form_widget(create_invite_form.submit, {attr:{class:"btn btn-primary"}}) }}
+                {{ form_end(create_invite_form) }}
             {% endif %}
         </div>
     </div>

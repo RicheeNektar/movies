@@ -14,9 +14,6 @@
             <h3>
                 {{ 'admin.user.roles.title' | trans }}:
             </h3>
-            <!--
-                {{ data |json_encode | raw }}
-            !-->
 
             {{ form_start(form, {action: url('user_index', {'user': user.id()}) }) }}
                 {{ form_widget(form.is_admin) }}

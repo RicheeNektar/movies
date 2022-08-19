@@ -82,6 +82,7 @@ admin:
   invitation:
     title: 'Einladungen'
     invite: 'Einladung erstellen'
+    info: 'Eine Einladung ist für 24 Stunden ab Erstellung gültig. Du kannst keine weitere Einladung erstellen, bis die vorherige eingelöst oder abgelaufen ist.'
     link:
       copy: 'Link kopieren'
       copied: 'Link kopiert!'

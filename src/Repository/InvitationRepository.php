@@ -70,6 +70,8 @@ class InvitationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('i')
             ->where('i.created_by = :user')
             ->andWhere('i.used_by IS NULL')
+            ->andWhere('i.created_at > :date')
+            ->setParameter('date', new \DateTimeImmutable("-24 Hours"))
             ->setParameter('user', $user)
             ->setMaxResults(1)
             ->orderBy('i.created_at', 'DESC')

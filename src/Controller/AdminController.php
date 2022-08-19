@@ -61,15 +61,15 @@ class AdminController extends AbstractController
         $createInviteForm->handleRequest($request);
         $user = $this->getUser();
 
-        if ($createInviteForm->isSubmitted() && $createInviteForm->isValid()) {
+        $invitation = $this->invitationRepository->findLatestByUser($user);
+
+        if (!$invitation && $createInviteForm->isSubmitted() && $createInviteForm->isValid()) {
             $invitation = new Invitation();
             $invitation->setCreatedBy($user);
             $this->entityManager->persist($invitation);
             $this->entityManager->flush();
 
             $status = 'invite_created';
-        } else {
-            $invitation = $this->invitationRepository->findLatestByUser($user);
         }
 
         $sizes = [
