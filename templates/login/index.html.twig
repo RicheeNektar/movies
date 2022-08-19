@@ -15,17 +15,17 @@
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="row">
-                <label class="col-form-label" for="username">Username:</label>
+                <label class="col-form-label" for="username">{{ 'base.username' | trans }}</label>
                 <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
             </div>
 
             <div class="row my-4">
-                <label class="form-label" for="password">Password:</label>
+                <label class="form-label" for="password">{{ 'base.password' | trans }}</label>
                 <input class="form-control" type="password" name="_password" />
             </div>
 
             <div class="row">
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">{{ 'login.submit' | trans }}</button>
             </div>
         </form>
     </div>
