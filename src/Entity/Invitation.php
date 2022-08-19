@@ -30,7 +30,7 @@ class Invitation
     private $created_by;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="invitation", cascade={"persist", "remove"})
      */
     private $used_by;
 
