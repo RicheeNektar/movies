@@ -10,7 +10,7 @@
             <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <form action="{{ url('login') }}" method="post" class="container gy-3">
+        <form action="{{ url('login') }}" method="post">
             <input type="hidden" name="_target_path" value="/"/>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
