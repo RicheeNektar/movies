@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Constraints\UniqueUsername;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,27 +20,41 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'admin.register.username',
-                'constraints' => [
-                    new NotBlank(),
-                    new UniqueUsername(),
+                'label' => 'base.username',
+                'attr' => [
+                    'autocomplete' => 'off',
                 ],
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'admin.register.password',
                 'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                        'min' => 8,
+                    new NotBlank([
+                        'message' => 'register.username.not_blank',
+                    ]),
+                    new UniqueUsername([
+                        'message' => 'register.username.not_unique',
                     ]),
                 ],
             ])
-            ->add('isAdmin', CheckboxType::class, [
-                'label' => 'admin.register.make_admin',
-                'required' => false,
+            ->add('password', PasswordType::class, [
+                'label' => 'base.password',
+                'attr' => [
+                    'autocomplete' => 'off',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'register.password.not_blank',
+                    ]),
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'register.password.min_length',
+                    ]),
+                ],
+            ])
+            ->add('invitation', HiddenType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'admin.register.submit',
+                'label' => 'register.submit',
             ])
         ;
     }

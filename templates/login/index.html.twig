@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container col-lg-4 my-5 text-white">
 	    <img class="position-relative start-50 translate-middle-x" width="192px" height="192px" src="/favicon.ico" />
-	
+
         {% if error %}
             <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -16,12 +16,12 @@
 
             <div class="row">
                 <label class="col-form-label" for="username">Username:</label>
-                <input class="form-text" type="text" id="username" name="_username" value="{{ last_username }}" />
+                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
             </div>
 
             <div class="row my-4">
                 <label class="form-label" for="password">Password:</label>
-                <input class="form-text" type="password" name="_password" />
+                <input class="form-control" type="password" name="_password" />
             </div>
 
             <div class="row">

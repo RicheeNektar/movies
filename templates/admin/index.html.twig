@@ -40,12 +40,29 @@
         {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
 
         <div class="col">
-            <h1>{{ 'admin.register.title' | trans }}</h1>
+            <h1>{{ 'admin.invitation.title' | trans }}</h1>
             <br/>
             {% for message in messages ?? [] %}
                 <h6 class="text-danger">{{ message }}</h6>
             {% endfor %}
-            {{ form( register_user_form ) }}
+            {{ form_start(create_invite_form, {attr:{class: "m-1 row"}}) }}
+                {{ form_widget(create_invite_form.submit, {attr:{class:"btn btn-primary"}}) }}
+            {{ form_end(create_invite_form) }}
+            <br/>
+            {% if invitation %}
+                {% set link = url('register', {'id': invitation.id()}) %}
+                <button
+                        class="m-1 btn btn-outline-primary"
+                        {{ stimulus_controller('copy') }}
+                        {{ stimulus_target('copy', 'button') }}
+                        data-copy-link-value="{{ link }}"
+                        {{ stimulus_action('copy', 'copy') }}
+                        data-bs-title="{{ 'admin.invitation.link.copied' | trans }}"
+                        data-bs-placement="top"
+                >
+                    {{ 'admin.invitation.link.copy' | trans }}: {{ link }}
+                </button>
+            {% endif %}
         </div>
     </div>
 

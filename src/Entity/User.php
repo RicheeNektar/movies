@@ -61,11 +61,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $watchedEpisodes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="created_by", orphanRemoval=true)
+     */
+    private $invitations;
+
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->watchedEpisodes = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -250,6 +256,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeWatchedEpisode(Episode $watchedEpisode): self
     {
         $this->watchedEpisodes->removeElement($watchedEpisode);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invitation>
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getCreatedBy() === $this) {
+                $invitation->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }
