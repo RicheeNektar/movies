@@ -67,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $invitations;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Invitation::class, mappedBy="used_by", cascade={"persist", "remove"})
+     */
+    private $invitation;
+
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
@@ -287,6 +292,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $invitation->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInvitation(): ?Invitation
+    {
+        return $this->invitation;
+    }
+
+    public function setInvitation(?Invitation $invitation): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($invitation === null && $this->invitation !== null) {
+            $this->invitation->setUsedBy(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($invitation !== null && $invitation->getUsedBy() !== $this) {
+            $invitation->setUsedBy($this);
+        }
+
+        $this->invitation = $invitation;
 
         return $this;
     }

@@ -55,7 +55,7 @@ class AdminController extends AbstractController
         $page = $request->query->getInt('page', 0);
         $totalPages = $this->userRepository->countPages();
 
-        $status = $request->query->getAlnum('status', '');
+        $status = $request->query->get('status', '');
 
         $createInviteForm = $this->createForm(CreateInviteType::class);
         $createInviteForm->handleRequest($request);
