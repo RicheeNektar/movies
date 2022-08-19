@@ -26,7 +26,7 @@
             </div>
             <div class="container even-odd-children">
                 {% for user in users %}
-                    <a class="row" href="{{ url('admin_user', {'user': user.id()}) }}">
+                    <a class="row" href="{{ url('user_index', {'user': user.id()}) }}">
                         <div class="col">{{ user.id() }}</div>
                         <div class="col">{{ user.username() }}</div>
                         <div class="col">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>

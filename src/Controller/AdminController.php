@@ -103,37 +103,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/user/{user<\d+>}", name="user")
-     */
-    public function user(Request $request, User $user): Response
-    {
-        $page = $request->query->getInt('page', 0);
-        $totalPages = $this->requestRepository->countPages([
-            'user' => $user,
-        ]);
 
-        $requests = $this->requestRepository->fineOnPageByUser($user, $page);
-
-        return $this->render('admin/user/index.html.twig', [
-            'page' => $page,
-            'total_pages' => $totalPages,
-            'requests' => $requests,
-            'user' => $user,
-        ]);
-    }
-
-    /**
-     * @Route("/user/{user<\d+>}/delete", name="delete-user")
-     */
-    public function deleteUser(User $user): Response
-    {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('admin_index', [
-            'status' => 'user_deleted',
-        ]);
-    }
 
     /**
      * @Route(path="/requests", name="requests")

@@ -74,6 +74,10 @@ admin:
     action:
       title: 'Verwaltungsaktionen'
       delete: 'Benutzer löschen'
+    roles:
+      title: 'Rechte'
+      admin: 'Admin Rechte'
+      save: 'Rechte Speichern'
 
   invitation:
     title: 'Einladungen'
