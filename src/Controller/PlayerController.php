@@ -53,16 +53,15 @@ class PlayerController extends AbstractController
                 return $this->json(['success' => 'true']);
             }
 
-            $backdrop = $this->movieBackdropRepository->findRandomBackdropFor($movie);
             $this->generateWatchToken($iUser);
-
-            return $this->render('player/movies.html.twig', [
-                'movie' => $movie,
-                'backdrop' => $backdrop,
-            ]);
         }
 
-        return $this->denyAccess();
+        $backdrop = $this->movieBackdropRepository->findRandomBackdropFor($movie);
+
+        return $this->render('player/movies.html.twig', [
+            'movie' => $movie,
+            'backdrop' => $backdrop,
+        ]);
     }
 
     /**
@@ -78,27 +77,25 @@ class PlayerController extends AbstractController
                 return $this->json(['success' => 'true']);
             }
 
-            $series = $episode->getSeries();
-            $season = $episode->getSeason();
-            $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series);
-
-            $episode_count = $this->episodeRepository->count([
-                'series' => $series->getId(),
-                'season' => $season->getId(),
-            ]);
-
             $this->generateWatchToken($iUser);
-
-            return $this->render('player/series.html.twig', [
-                'series' => $series,
-                'season' => $season,
-                'episode' => $episode,
-                'episode_count' => $episode_count,
-                'backdrop' => $backdrop,
-            ]);
         }
 
-        return $this->denyAccess();
+        $series = $episode->getSeries();
+        $season = $episode->getSeason();
+        $backdrop = $this->seriesBackdropRepository->findRandomBackdropFor($series);
+
+        $episode_count = $this->episodeRepository->count([
+            'series' => $series->getId(),
+            'season' => $season->getId(),
+        ]);
+
+        return $this->render('player/series.html.twig', [
+            'series' => $series,
+            'season' => $season,
+            'episode' => $episode,
+            'episode_count' => $episode_count,
+            'backdrop' => $backdrop,
+        ]);
     }
 
     private function denyAccessOrResponse(string $token, ?UserInterface $user, Response $response): Response
