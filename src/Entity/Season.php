@@ -36,7 +36,7 @@ class Season extends AbstractMedia
     private $episodes;
 
     /**
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $poster;
 
@@ -89,12 +89,12 @@ class Season extends AbstractMedia
         return $this;
     }
 
-    public function getPoster(): string
+    public function getPoster(): ?string
     {
         return $this->poster;
     }
 
-    public function setPoster(string $poster): self
+    public function setPoster(?string $poster): self
     {
         $this->poster = $poster;
         return $this;

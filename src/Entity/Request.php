@@ -67,7 +67,7 @@ class Request extends AbstractMedia
         return $this->movie->getId();
     }
 
-    public function getPoster(): string
+    public function getPoster(): ?string
     {
         return $this->movie->getPoster();
     }

@@ -113,7 +113,7 @@ class Episode extends AbstractMedia
         return $this;
     }
 
-    public function getPoster(): string
+    public function getPoster(): ?string
     {
         return '';
     }

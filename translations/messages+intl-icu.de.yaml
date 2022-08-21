@@ -1,8 +1,7 @@
 base:
   watched: 'Bereits gesehen'
-  og:
-    title: 'Richee.Me Movies'
-    description: 'Private Streaming-Plattform'
+  title: 'Richee.Me Movies'
+  description: 'Private Streaming-Plattform'
   username: 'Benutzername'
   password: 'Passwort'
 

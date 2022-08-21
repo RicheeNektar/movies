@@ -25,7 +25,7 @@ class Series extends AbstractMedia
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $poster;
 
@@ -48,6 +48,11 @@ class Series extends AbstractMedia
      * @ORM\Column(name="air_date", type="date_immutable", nullable=true)
      */
     private ?\DateTimeImmutable $airDate = null;
+
+    /**
+     * @ORM\Column(type="string", length=4096)
+     */
+    private $description;
 
     public function __construct()
     {
@@ -108,12 +113,12 @@ class Series extends AbstractMedia
         return $this;
     }
 
-    public function getPoster(): string
+    public function getPoster(): ?string
     {
         return $this->poster;
     }
 
-    public function setPoster(string $poster): self
+    public function setPoster(?string $poster): self
     {
         $this->poster = $poster;
 
@@ -176,6 +181,18 @@ class Series extends AbstractMedia
                 $backdrop->setSeries(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

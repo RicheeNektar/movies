@@ -7,7 +7,7 @@ abstract class AbstractMedia {
 
     public abstract function getTitle(): string;
 
-    public abstract function getPoster(): string;
+    public abstract function getPoster(): ?string;
 
     public function getCreationDate(): ?\DateTimeImmutable
     {

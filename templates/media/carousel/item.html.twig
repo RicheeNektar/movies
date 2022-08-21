@@ -1,6 +1,6 @@
 <div class="carousel-item{% if is_active %} active{% endif %}">
     <a
-            style="background: url(https://image.tmdb.org/t/p/w300{{ media.poster() }}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
+            style="background: url({% if media.poster() %}https://image.tmdb.org/t/p/w300{{ media.poster() }}{% else %}{{ asset('missing.png') }}{% endif %}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
             href="{{ href }}"
             class="d-block w-100"
     ></a>
