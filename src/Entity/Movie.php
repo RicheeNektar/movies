@@ -25,9 +25,9 @@ class Movie extends AbstractMedia
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
-    private $poster;
+    private ?string $poster;
 
     /**
      * @ORM\OneToMany(targetEntity=MovieBackdrop::class, mappedBy="movie", cascade={"all"})
@@ -53,6 +53,11 @@ class Movie extends AbstractMedia
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchedMovies")
      */
     private $usersWatched;
+
+    /**
+     * @ORM\Column(type="string", length=4096)
+     */
+    private $description;
 
     public function __construct()
     {
@@ -103,12 +108,12 @@ class Movie extends AbstractMedia
         return $this;
     }
 
-    public function getPoster(): string
+    public function getPoster(): ?string
     {
         return $this->poster;
     }
 
-    public function setPoster(string $poster): self
+    public function setPoster(?string $poster): self
     {
         $this->poster = $poster;
 
@@ -187,6 +192,18 @@ class Movie extends AbstractMedia
     public function removeUsersWatched(User $usersWatched): self
     {
         $this->usersWatched->removeElement($usersWatched);
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -19,6 +19,7 @@ class CommandController extends AbstractController
     private const COMMAND_UPDATE_SERIES = 'update-series';
     private const COMMAND_CONVERT_OLD_MOVIES = 'convert-old-movies';
     private const COMMAND_UPDATE_MOVIE_INFOS = 'update-movie-infos';
+    private const COMMAND_UPDATE_SERIES_INFOS = 'update-series-infos';
 
     private Security $security;
 
@@ -64,8 +65,9 @@ class CommandController extends AbstractController
     {
         return [
             self::COMMAND_UPDATE_MOVIES => true,
-            self::COMMAND_UPDATE_SERIES => false,
             self::COMMAND_UPDATE_MOVIE_INFOS => false,
+            self::COMMAND_UPDATE_SERIES => false,
+            self::COMMAND_UPDATE_SERIES_INFOS => false,
             self::COMMAND_CONVERT_OLD_MOVIES => false,
         ];
     }

@@ -1,6 +1,9 @@
 {% extends 'player/index.html.twig' %}
 
-{% block title %}{{ episode.title() }} - {{ season.title() }} - {{ series.title() }}{% endblock %}
+{% block title %}{{ series.title() }} - S{{ season.seasonId() }} E{{ episode.episodeId() }}{% endblock %}
+
+{% block og_description %}{{ series.description() }}{% endblock %}
+{% block og_image %}{{ season.poster() }}{% endblock %}
 
 {% block back_path %}{{ url('seasons', {'series': series.id()}) }}{% endblock %}
 

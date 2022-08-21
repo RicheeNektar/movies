@@ -23,7 +23,7 @@ class MovieService {
         $movieInfo = json_decode(
             $this->tmdbClient->request('GET', "movie/$tmdbId", [
                 'query' => [
-                    'language' => 'de'
+                    'language' => 'de-DE'
                 ]
             ])->getContent(),
             true
@@ -81,6 +81,7 @@ class MovieService {
 
         $movie->setTitle($info['title']);
         $movie->setPoster($info['poster_path']);
+        $movie->setDescription($info['overview']);
 
         if ($info['release_date'] !== '') {
             $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));

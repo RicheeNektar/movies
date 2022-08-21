@@ -72,7 +72,7 @@ class SeriesService
         return json_decode(
             $this->tmdbClient->request('GET', "tv/$seriesId/season/$seasonNumber/episode/$episodeNumber", [
                 'query' => [
-                    'language' => 'de'
+                    'language' => 'de-DE'
                 ]
             ])->getContent(),
             true
@@ -84,7 +84,7 @@ class SeriesService
         return json_decode(
             $this->tmdbClient->request('GET', "tv/$seriesId/season/$seasonNumber", [
                 'query' => [
-                    'language' => 'de'
+                    'language' => 'de-DE'
                 ]
             ])->getContent(),
             true
@@ -96,7 +96,7 @@ class SeriesService
         $seriesInfo = json_decode(
             $this->tmdbClient->request('GET', "tv/$tmdbId", [
                 'query' => [
-                    'language' => 'de'
+                    'language' => 'de-DE'
                 ]
             ])->getContent(),
             true
@@ -111,6 +111,42 @@ class SeriesService
             'series' => $seriesInfo,
             'images' => $seriesImages,
         ];
+    }
+
+    public function updateSeries(Series $series): void
+    {
+        $info = $this->fetchSeriesInfo($series->getId())['series'];
+
+        $series->setTitle($info['name']);
+        $series->setPoster($info['poster_path']);
+        $series->setDescription($info['overview']);
+
+        if ($info['first_air_date']) {
+            $series->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['first_air_date']));
+        }
+    }
+
+    public function updateSeason(Season $season): void
+    {
+        $info = $this->fetchSeasonInfo($season->getSeries()->getId(), $season->getSeasonId());
+
+        $season->setTitle($info['name']);
+        $season->setPoster($info['poster_path']);
+
+        if ($info['air_date']) {
+            $season->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));
+        }
+    }
+
+    public function updateEpisode(Episode $episode): void
+    {
+        $info = $this->fetchEpisodeInfo($episode->getSeries()->getId(), $episode->getSeason()->getSeasonId(), $episode->getEpisodeId());
+
+        $episode->setTitle($info['name']);
+
+        if ($info['air_date']) {
+            $episode->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));
+        }
     }
 
     public function getFolderSize(): int

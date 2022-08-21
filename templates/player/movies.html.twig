@@ -2,6 +2,9 @@
 
 {% block title %}{{ movie.title() }}{% endblock %}
 
+{% block og_description %}{{ movie.description() }}{% endblock %}
+{% block og_image %}{{ movie.poster() }}{% endblock %}
+
 {% block back_path %}{{ url('movies') }}{% endblock %}
 
 {% block player_source %}

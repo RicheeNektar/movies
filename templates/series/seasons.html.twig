@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ season_count }} Serien
-{% endblock %}
+{% block title %}{{ series.title() }}{% endblock %}
+
+{% block og_description %}{{ series.description() }}{% endblock %}
+{% block og_image %}{{ series.poster() }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}

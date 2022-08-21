@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% set titleContent %}{% block title %}{% endblock %} - {{ 'base.title' | trans }}{% endset %}
+    {% set _block_og_image %}{% block og_image %}{% endblock %}{% endset %}
+    <title>{{ titleContent }}</title>
     <meta charset="UTF-8"/>
+    <meta property="og:title" content="{{ titleContent }}" />
+    <meta property="og:description" content="{% block og_description %}{{ 'base.description' | trans }}{% endblock %}"/>
+    <meta property="og:image" content="{% if _block_og_image is not empty %}https://image.tmdb.org/t/p/w300{{ _block_og_image }}{% else %}https://movies.richee.me/favicon.ico{% endif %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="{{ 'base.og.title' | trans }}" />
-    <meta property="og:description" content="{{ 'base.og.description' | trans }}"/>
-    <meta property="og:image" content="https://movies.richee.me/favicon.ico" />
-
-    <title>{% block title %}{% endblock %} | Richee.Me Movies</title>
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
