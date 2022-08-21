@@ -39,7 +39,7 @@ class CommandController extends AbstractController
                 self::getCommands()
             ) || !$this->security->isGranted('ROLE_ADMIN')
         ) {
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('movies');
         }
 
         $app = new Application($kernel);

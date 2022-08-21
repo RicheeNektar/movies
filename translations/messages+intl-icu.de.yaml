@@ -4,6 +4,7 @@ base:
   description: 'Private Streaming-Plattform'
   username: 'Benutzername'
   password: 'Passwort'
+  no_account: 'Du besitzt kein Benutzerkonto.'
 
 menu:
   title: 'Menü'
@@ -101,6 +102,9 @@ admin:
 
     convert-old-movies:
       label: 'Alte Datenstruktur importieren'
+
+    update-series-infos:
+      label: 'Alle Serieninfos aktualisieren'
 
   disk_space:
     movies: 'Filme'

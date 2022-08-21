@@ -12,7 +12,10 @@
             'tv-player'
         ]
     },
-    'request',
+    {
+        'id': 'request',
+        'display': isLoggedIn()
+    },
     {
         'id': 'admin',
         'display': isAdmin(),
@@ -21,7 +24,10 @@
             'admin_requests'
         ]
     },
-    'logout'
+    {
+        'id': 'logout',
+        'display': isLoggedIn()
+    }
 ] %}
 {% set route = app.request.get('_route') %}
 
@@ -75,5 +81,12 @@
                 {% endfor %}
             </ul>
         </div>
+        <span>
+            {% if isLoggedIn() %}
+                Willkommen, {{ user().username() }}!
+            {% else %}
+                Kein Benutzerkonto: Du darfst nur durchstöbern.
+            {% endif %}
+        </span>
     </div>
 </nav>
