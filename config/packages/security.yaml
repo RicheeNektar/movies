@@ -41,11 +41,7 @@ security:
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/login, roles: null }
-        - { path: ^/register, roles: null }
-        - { path: ^/movie/\d+/file, roles: null }
-        - { path: ^/tv/\d+/file, roles: null }
-        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/, roles: null }
 
     hide_user_not_found: true
 

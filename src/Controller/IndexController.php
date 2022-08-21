@@ -27,7 +27,7 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="movies")
      */
-    public function index(UserInterface $user, Request $request): Response
+    public function index(Request $request): Response
     {
         $totalPages = $this->movieRepository->countPages();
         $page = $request->query->get('page', 0);

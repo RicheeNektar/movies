@@ -48,6 +48,10 @@ class Messages extends AbstractExtension
 
     public function getUser(): ?User
     {
+        if (!$this->security->getUser()) {
+            return null;
+        }
+
         return $this->userRepository->findOneBy(['username' => $this->security->getUser()->getUserIdentifier()]);
     }
 }

@@ -30,8 +30,9 @@
     {% endblock %}
 </head>
 <body class="bg-dark text-white">
+    {% include 'menu.part.html.twig' %}
+    
     {% if isLoggedIn() %}
-        {% include 'menu.part.html.twig' %}
         <div
             class="position-fixed bottom-0 start-0 p-3 w-100"
             style="z-index: 11"
