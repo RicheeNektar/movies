@@ -85,7 +85,7 @@
             {% if isLoggedIn() %}
                 Willkommen, {{ user().username() }}!
             {% else %}
-                Kein Benutzerkonto: Du darfst nur durchstöbern.
+                Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="/login">melde dich an</a>.
             {% endif %}
         </span>
     </div>
