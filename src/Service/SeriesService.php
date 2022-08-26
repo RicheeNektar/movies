@@ -56,6 +56,7 @@ class SeriesService
         $series->setPoster($seriesInfo['poster_path']);
         $series->setTitle($seriesInfo['name']);
         $series->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $seriesInfo['first_air_date']));
+        $series->setDescription($seriesInfo['overview']);
 
         foreach ($info['images']['backdrops'] as $backdropI) {
             $backdrop = new SeriesBackdrop();
