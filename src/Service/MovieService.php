@@ -52,7 +52,7 @@ class MovieService {
         $movie->setPoster($infoMovie['poster_path']);
         $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $infoMovie['release_date']));
         $movie->setIsHidden(true);
-        $movie->setDescription($info['overview']);
+        $movie->setDescription($infoMovie['overview']);
 
         // Filter backdrops, we do not want any backdrops with translated titles
         $backdrops = $info['images']['backdrops'] ?? [];
