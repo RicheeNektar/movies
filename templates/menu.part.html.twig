@@ -25,6 +25,10 @@
         ]
     },
     {
+        'id': 'profile_index',
+        'display': isLoggedIn()
+    },
+    {
         'id': 'logout',
         'display': isLoggedIn()
     }
@@ -32,7 +36,6 @@
 {% set route = app.request.get('_route') %}
 
 <nav class="navbar navbar-dark navbar-expand-sm my-3 rounded container-lg bg-blur-3 bg-opacity-50 bg-black position-relative" style="z-index: 2">
-    <!-- {{ route }} -->
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('movies') }}">
             <img alt="icon" width="32" height="32" src="{{ asset('icon.png') }}" />
@@ -81,12 +84,10 @@
                 {% endfor %}
             </ul>
         </div>
-        <span>
-            {% if isLoggedIn() %}
-                Willkommen, {{ user().username() }}!
-            {% else %}
-                Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="/login">melde dich an</a>.
-            {% endif %}
-        </span>
+        {% if not isLoggedIn() %}
+            <span>
+                {{ 'base.no_account' | trans({url: url('login')}) | raw }}
+            </span>
+        {% endif %}
     </div>
 </nav>

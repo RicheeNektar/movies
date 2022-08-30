@@ -14,17 +14,17 @@
             <input type="hidden" name="_target_path" value="/"/>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="row">
-                <label class="col-form-label" for="username">{{ 'base.username' | trans }}</label>
+            <div class="mb-3">
+                <label class="form-label" for="username">{{ 'base.username' | trans }}</label>
                 <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
             </div>
 
-            <div class="row my-4">
+            <div class="mb-3">
                 <label class="form-label" for="password">{{ 'base.password' | trans }}</label>
                 <input class="form-control" type="password" name="_password" />
             </div>
 
-            <div class="row">
+            <div class="mb-3">
                 <button class="btn btn-primary" type="submit">{{ 'login.submit' | trans }}</button>
             </div>
         </form>

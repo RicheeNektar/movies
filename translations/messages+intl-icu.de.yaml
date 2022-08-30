@@ -4,7 +4,7 @@ base:
   description: 'Private Streaming-Plattform'
   username: 'Benutzername'
   password: 'Passwort'
-  no_account: 'Du besitzt kein Benutzerkonto.'
+  no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="{url}">melde dich an</a>.'
 
 menu:
   title: 'Menü'
@@ -15,6 +15,7 @@ menu:
     admin: 'Verwaltung'
     admin_index: 'Benutzer und System'
     admin_requests: 'Anfragen'
+    profile_index: 'Konto'
 
     logout: 'Ausloggen'
 
@@ -61,6 +62,8 @@ request:
   already_requested: 'Diesen Film hast du bereits angefragt.'
 
 admin:
+  title: 'Benutzer und System'
+
   action_status:
     command_success: 'Die Operation wurde erfolgreich ausgeführt'
     user_deleted: 'Der Benutzer wurde erfolgreich gelöscht.'
@@ -112,11 +115,28 @@ admin:
     others: 'Sonstiges'
     free: 'Verfügbar'
 
+profile:
+  title: 'Dein Konto'
+  update_password: 'Passwort ändern'
+
 login:
   submit: 'Einloggen'
 
 register:
-  submit: 'Account erstellen'
+  repeat_password: 'Passwort wiederholen'
+  submit: 'Konto erstellen'
+
+update_password:
+  old: 'Aktuelles Passwort'
+  new: 'Neues Passwort'
+  repeat: 'Neues Passwort wiederholen'
+  submit: 'Ändern'
+  errors:
+    old:
+      invalid: 'Fehlerhaftes Passwort'
+
+update_email:
+
 
 messages:
   movie_added:

@@ -1,35 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ user_count }} Users | User Management{% endblock %}
+{% block title %}{{ 'admin.title' | trans }}{% endblock %}
 
 {% block body %}
+    <h1>{{ 'admin.title' | trans }}</h1>
+
+    {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
     {% if status != '' %}
         <div class="row alert alert-success alert-dismissible">
             {{ ('admin.action_status.' ~ status) | trans }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-        {% include 'admin/divider.html.twig' %}
+        {% include 'divider.html.twig' %}
     {% endif %}
 
     <div class="row row-cols-1 row-cols-lg-2">
         <div class="col">
             <div class="container">
-                <h1 class="">{{ 'admin.user.title' | trans }}</h1>
+                <h3 class="">{{ 'admin.user.title' | trans }}</h3>
 
                 <div class="row my-3">
-                    {% for prop in ['ID','Username','Is Admin'] %}
-                        <div class="col">{{ prop }}</div>
-                    {% endfor %}
+                    <div class="col-2 text-center">ID</div>
+                    <div class="col">Username</div>
+                    <div class="col-2">Is Admin</div>
                 </div>
 
-                {% include 'admin/divider.html.twig' with {'my': 2} %}
+                {% include 'divider.html.twig' with {'my': 2} %}
             </div>
             <div class="container even-odd-children">
                 {% for user in users %}
                     <a class="row" href="{{ url('user_index', {'user': user.id()}) }}">
-                        <div class="col">{{ user.id() }}</div>
-                        <div class="col">{{ user.username() }}</div>
-                        <div class="col">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>
+                        <div class="col-2 text-end">{{ user.id() }}</div>
+                        <div class="col text-truncate">{{ user.username() }}</div>
+                        <div class="col-2 text-center">{% if user.isAdmin() %}yes{% else %}no{% endif %}</div>
                     </a>
                 {% endfor %}
             </div>
@@ -37,10 +41,10 @@
             {% include 'pagination.part.html.twig' %}
         </div>
 
-        {% include 'admin/divider.html.twig' with {'hidden_at': 'lg'} %}
+        {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
 
         <div class="col">
-            <h1>{{ 'admin.invitation.title' | trans }}</h1>
+            <h3>{{ 'admin.invitation.title' | trans }}</h3>
             <br/>
             {% for message in messages ?? [] %}
                 <h6 class="text-danger">{{ message }}</h6>
@@ -68,11 +72,11 @@
         </div>
     </div>
 
-    {% include 'admin/divider.html.twig' %}
+    {% include 'divider.html.twig' %}
 
     <div class="row row-cols-1 row-cols-lg-2">
         <div class="col">
-            <h1 class="text-white">{{ 'admin.command.title' | trans }}</h1>
+            <h3 class="text-white">{{ 'admin.command.title' | trans }}</h3>
             <br/>
             <div class="row row-cols-1 gy-3 px-5">
                 {% for command, hasInfo in commands %}
@@ -91,8 +95,11 @@
                 {% endfor %}
             </div>
         </div>
+
+        {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
         <div class="col">
-            <h1 class="text-white">Disk Space:</h1>
+            <h3 class="text-white">Disk Space:</h3>
             <ul>
                 {% for i, size in sizes %}
                     <li class="row"><span class="col-3 badge p-2 m-1 text-{{ cycle(['dark', 'light', 'light'], i) }} bg-{{ cycle(['primary', 'secondary', 'dark'], i) }}">{{ ('admin.disk_space.' ~ sizes_map[i]) | trans }}</span><span class="text-end col-8">{{ size | bytes }}</span></li>

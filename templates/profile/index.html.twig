@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'profile.title' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'profile.title' | trans }}</h1>
+
+    {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
+    <div class="container row-cols-lg-2 gap-2">
+        <div class="col">
+            <h3>{{ 'profile.update_password' | trans }}</h3>
+            {{ form(update_password_form) }}
+        </div>
+    </div>
+{% endblock %}

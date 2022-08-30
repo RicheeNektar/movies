@@ -3,11 +3,19 @@ div.even-odd-children {
     padding: .25rem;
   }
 
-  a:nth-child(1) {
+  a:nth-child(even) {
+    background: $dark;
+  }
+
+  a:nth-child(odd) {
     background: darken($dark, 5);
   }
 
-  a:nth-child(2) {
-    background: lighten($dark, 5);
+  a:first-child {
+    border-radius: 5px 5px 0 0;
+  }
+
+  a:last-child {
+    border-radius: 0 0 5px 5px;
   }
 }

@@ -2,44 +2,30 @@
 
 namespace App\Form;
 
-use App\Constraints\UniqueUsername;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationType extends AbstractType
+class UpdatePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class, [
-                'label' => 'base.username',
-                'attr' => [
-                    'autocomplete' => 'off',
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'register.username.not_blank',
-                    ]),
-                    new UniqueUsername([
-                        'message' => 'register.username.not_unique',
-                    ]),
-                ],
+            ->add('password', PasswordType::class, [
+                'label' => 'update_password.old'
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('new', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'base.password',
+                    'label' => 'update_password.new'
                 ],
                 'second_options' => [
-                    'label' => 'register.repeat_password'
+                    'label' => 'update_password.repeat'
                 ],
                 'attr' => [
                     'autocomplete' => 'off',
@@ -55,13 +41,8 @@ class RegistrationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('invitation', HiddenType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                ],
-            ])
             ->add('submit', SubmitType::class, [
-                'label' => 'register.submit',
+                'label' => 'update_password.submit'
             ])
         ;
     }
