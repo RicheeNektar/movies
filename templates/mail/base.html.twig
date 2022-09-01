@@ -1,0 +1,14 @@
+<div>
+    <img
+        style="display: inline-block; background-color: #212529; padding: 5px; border-radius: 5%;"
+        width="64px"
+        height="64px"
+        src="{{ email.image('@public/icon.png') }}"
+        alt="Logo"
+    />
+    <h1 style="display: inline-block; vertical-align: bottom">{{ 'base.title' | trans }}</h1>
+    <h3 style="margin-top: 1rem;">{{ email.subject }}</h3>
+</div>
+<div>
+    {% block body %}{% endblock %}
+</div>

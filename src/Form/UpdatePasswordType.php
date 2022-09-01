@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -17,7 +18,12 @@ class UpdatePasswordType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, [
-                'label' => 'update_password.old'
+                'label' => 'update_password.old',
+                'constraints' => [
+                    new UserPassword([
+                        'message' => 'password.invalid',
+                    ]),
+                ],
             ])
             ->add('new', RepeatedType::class, [
                 'type' => PasswordType::class,

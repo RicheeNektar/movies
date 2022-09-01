@@ -2,18 +2,33 @@ version: '3'
 
 services:
   database:
+    container_name: database
     image: mysql:8.0
     environment:
       MYSQL_DATABASE: movies
       MYSQL_USER: movies
       MYSQL_PASSWORD: M0vAv!
+      MYSQL_ROOT_PASSWORD: admin
     ports:
       - '9906:3306'
+    volumes:
+      - ./var/data/mysql:/var/lib/mysql/
+    networks:
+      movies:
+
   web:
-    image: webdevops/php-apache:8.0
+    container_name: web
+    build:
+      dockerfile: Dockerfile
+      context: ./
     ports:
       - '8001:80'
     volumes:
       - ./:/var/www/html
     depends_on:
       - database
+    networks:
+      movies:
+
+networks:
+  movies:

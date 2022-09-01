@@ -3,14 +3,46 @@
 {% block title %}{{ 'profile.title' | trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'profile.title' | trans }}</h1>
+    <h1 class="mb-3">{{ 'profile.title' | trans }}</h1>
 
     {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
 
-    <div class="container row-cols-lg-2 gap-2">
+    <h3>{{ 'profile.overview' | trans }}</h3>
+
+    <div class="row row-cols-1 mb-3">
+        <div>
+            <span class="h6 d-inline-block">Username:</span>
+            <span class="d-inline-block">{{ user().username() }}</span>
+        </div>
+        <div>
+            <span class="h6 d-inline-block">E-Mail Adresse:</span>
+            <span class="d-inline-block">{{ mail.mail() }}</span>
+        </div>
+    </div>
+
+    {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
+    <div class="row row-cols-2">
         <div class="col">
             <h3>{{ 'profile.update_password' | trans }}</h3>
             {{ form(update_password_form) }}
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <h3>{{ 'profile.update_mail' | trans }}</h3>
+                {{ form(update_mail_form) }}
+            </div>
+            {% if unverified_mail != null %}
+                <div class="row">
+                    <h3>{{ 'profile.verify_mail' | trans }}</h3>
+                    <div>
+                        <span class="h6 d-inline-block">E-Mail Adresse:</span>
+                        <span class="d-inline-block">{{ mail.mail() }}</span>
+                    </div>
+                    {{ form(verify_mail_form) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

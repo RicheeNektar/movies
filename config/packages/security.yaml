@@ -39,10 +39,13 @@ security:
                 path: logout
                 target: login
 
+    access_denied_url: /verify
+
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/, roles: null }
+        - { path: ^/(verify|logout), roles: ROLE_USER }
+        - { path: ^/(login|register), roles: null }
+        - { path: ^/, roles: ROLE_VERIFIED }
 
     hide_user_not_found: true
 

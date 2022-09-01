@@ -61,13 +61,13 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-            $roles = ['ROLE_USER'];
 
             if ($formData['is_admin']) {
-                $roles[] = 'ROLE_ADMIN';
+                $user->addRole('ROLE_ADMIN');
+            } else {
+                $user->removeRole('ROLE_ADMIN');
             }
 
-            $user->setRoles($roles);
             $this->entityManager->flush();
         } else {
             $form->setData([

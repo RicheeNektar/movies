@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserMail;
 use App\Form\RegistrationType;
 use App\Repository\InvitationRepository;
 use App\Repository\UserRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,24 +22,27 @@ class RegisterController extends AbstractController
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
     private InvitationRepository $invitationRepository;
+    private MailService $mailService;
 
     public function __construct(
         UserPasswordHasherInterface $userPasswordHasher,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
-        InvitationRepository $invitationRepository
+        InvitationRepository $invitationRepository,
+        MailService $mailService
     )
     {
         $this->userPasswordHasher = $userPasswordHasher;
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->invitationRepository = $invitationRepository;
+        $this->mailService = $mailService;
     }
 
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, AuthenticationUtils $authenticationUtils): Response
+    public function register(Request $request, ): Response
     {
         if ($this->getUser() !== null) {
             return $this->redirectToRoute('movies');
@@ -57,14 +62,27 @@ class RegisterController extends AbstractController
             $user = new User();
             $user->setUsername($formData['username']);
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $formData['password']));
-            $user->setRoles(['ROLE_USER']);
 
+            $userMail = new UserMail();
+            $userMail->setMail($formData['mail']);
+            $userMail->setVerificationCode(random_int(111111, 999999));
+
+            $user->addUserMail($userMail);
             $invitation->setUsedBy($user);
 
             $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            $this->entityManager->persist($userMail);
 
-            return $this->redirectToRoute('login');
+            $this->mailService->sendMail(
+                $formData['username'],
+                $formData['mail'],
+                'verification',
+                [],
+                ['verification_code' => $userMail->getVerificationCode()]
+            );
+
+            $this->entityManager->flush();
+            return $this->redirectToRoute('verify');
         }
 
         $inviteId = $request->query->getInt('id', -1);
@@ -83,5 +101,13 @@ class RegisterController extends AbstractController
             'invitation' => $invitation,
             'register_user_form' => $registerUserForm,
         ]);
+    }
+
+    /**
+     * @Route("/verify", name="verify")
+     */
+    public function verify(Request $request)
+    {
+
     }
 }

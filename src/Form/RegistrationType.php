@@ -2,9 +2,11 @@
 
 namespace App\Form;
 
+use App\Constraints\UniqueMail;
 use App\Constraints\UniqueUsername;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -20,6 +22,21 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('mail', EmailType::class, [
+                'label' => 'base.mail',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'mail.not_blank',
+                    ]),
+                    new Length([
+                        'max' => 320,
+                        'maxMessage' => 'mail.too_long',
+                    ]),
+                    new UniqueMail([
+                        'message' => 'mail.not_unique',
+                    ]),
+                ],
+            ])
             ->add('username', TextType::class, [
                 'label' => 'base.username',
                 'attr' => [
