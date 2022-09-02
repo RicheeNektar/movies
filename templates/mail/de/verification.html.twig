@@ -1,0 +1,16 @@
+{% extends 'mail/base.html.twig' %}
+
+{% block body %}
+    <p>
+        Ich freue mich, dass du meinen Service benutzen möchtest.
+        <br/>
+        Um deine Registrierung abzuschließen,<br/>
+        gebe bitte, nach dem Login, den folgenden Bestätitungscode auf der Seite ein.
+    </p>
+    <h3>Dein Bestätigungscode:</h3>
+    <span style="display: inline-block; background-color: #ddd; border-radius: 5px; padding: 1rem;">
+        <b>
+            {{ verification_code }}
+        </b>
+    </span>
+{% endblock %}

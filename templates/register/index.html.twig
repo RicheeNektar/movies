@@ -8,22 +8,6 @@
 
         {{ form_start(register_user_form) }}
             {{ form_widget(register_user_form.invitation, {value: invitation.id()}) }}
-
-            <div class="row">
-                {{ form_label(register_user_form.username) }}
-                {{ form_widget(register_user_form.username) }}
-                {{ form_errors(register_user_form.username) }}
-            </div>
-
-            <div class="row my-4">
-                {{ form_label(register_user_form.password) }}
-                {{ form_widget(register_user_form.password) }}
-                {{ form_errors(register_user_form.password) }}
-            </div>
-
-            <div class="row">
-                {{ form_widget(register_user_form.submit) }}
-            </div>
         {{ form_end(register_user_form) }}
     </div>
 {% endblock %}

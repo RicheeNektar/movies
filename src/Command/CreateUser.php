@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\User;
+use App\Entity\UserMail;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -36,6 +37,7 @@ class CreateUser extends Command
         $this->addOption('make-admin');
         $this->addArgument('username', InputArgument::REQUIRED);
         $this->addArgument('password', InputArgument::REQUIRED);
+        $this->addArgument('mail', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -58,14 +60,20 @@ class CreateUser extends Command
         $user = new User();
         $user->setUsername($username);
 
-        $roles = ['ROLE_USER'];
         if ($isAdmin) {
-            $roles[] = 'ROLE_ADMIN';
+            $user->addRole('ROLE_ADMIN');
         }
 
-        $user->setRoles($roles);
-        $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
+        $userMail = new UserMail();
+        $userMail->setMail($input->getArgument('mail'));
+        $userMail->setVerifiedAt(new \DateTimeImmutable());
+        $userMail->setVerificationCode(random_int(111111,999999));
+        $user->addRole('ROLE_VERIFIED');
 
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
+        $user->addUserMail($userMail);
+
+        $this->entityManager->persist($userMail);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

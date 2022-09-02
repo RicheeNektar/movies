@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'verify.title' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'verify.title' | trans }}</h1>
+    <div class="alert alert-info">
+        {{ 'verify.info' | trans | raw }}
+    </div>
+    {{ form(verify_form) }}
+{% endblock %}

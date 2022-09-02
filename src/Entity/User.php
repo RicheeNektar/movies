@@ -3,15 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function Webmozart\Assert\Tests\StaticAnalysis\contains;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @HasLifecycleCallbacks
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -72,12 +76,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $invitation;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserMail::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $userMails;
+
     public function __construct()
     {
         $this->watchedMovies = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->watchedEpisodes = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->userMails = new ArrayCollection();
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->roles = array_unique(array_merge(['ROLE_USER'], $this->roles));
     }
 
     public function getId(): ?int
@@ -122,9 +146,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function removeRole(string $role): self
     {
-        $this->roles = $roles;
+        if ($index = array_search($role, $this->roles) !== false) {
+            unset($this->roles[$index]);
+        }
+
+        return $this;
+    }
+
+    public function addRole(string $role): self
+    {
+        if (array_search($role, $this->roles) === false) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }
@@ -314,6 +349,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->invitation = $invitation;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserMail>
+     */
+    public function getUserMails(): Collection
+    {
+        return $this->userMails;
+    }
+
+    public function addUserMail(UserMail $userMail): self
+    {
+        if (!$this->userMails->contains($userMail)) {
+            $this->userMails[] = $userMail;
+            $userMail->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMail(UserMail $userMail): self
+    {
+        if ($this->userMails->removeElement($userMail)) {
+            // set the owning side to null (unless already changed)
+            if ($userMail->getUser() === $this) {
+                $userMail->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,14 +1,6 @@
 doctrine:
     dbal:
-        dbname: movies
-        driver: pdo_mysql
-        user: movies
-        password: M0vAv!
-        host: 127.0.0.1
-        port: 3306
-        charset: UTF8
-
-        server_version: 13
+        url: '%env(resolve:DATABASE_URL)%'
 
     orm:
         auto_generate_proxy_classes: true

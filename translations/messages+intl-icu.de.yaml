@@ -4,7 +4,8 @@ base:
   description: 'Private Streaming-Plattform'
   username: 'Benutzername'
   password: 'Passwort'
-  no_account: 'Du besitzt kein Benutzerkonto.'
+  mail: 'E-Mail Adresse'
+  no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="{url}">melde dich an</a>.'
 
 menu:
   title: 'Menü'
@@ -15,6 +16,7 @@ menu:
     admin: 'Verwaltung'
     admin_index: 'Benutzer und System'
     admin_requests: 'Anfragen'
+    profile: 'Benutzerkonto'
 
     logout: 'Ausloggen'
 
@@ -61,6 +63,8 @@ request:
   already_requested: 'Diesen Film hast du bereits angefragt.'
 
 admin:
+  title: 'Benutzer und System'
+
   action_status:
     command_success: 'Die Operation wurde erfolgreich ausgeführt'
     user_deleted: 'Der Benutzer wurde erfolgreich gelöscht.'
@@ -112,11 +116,50 @@ admin:
     others: 'Sonstiges'
     free: 'Verfügbar'
 
+mail_subjects:
+  verification: 'Bitte bestätige dein Benutzerkonto'
+  password_change: 'Passwort aktualisiert'
+  mail_change:
+    notice: 'E-Mail Adresse aktualisiert'
+    verification: 'Bitte bestätige deine neue E-Mail Adresse'
+
+profile:
+  title: 'Dein Benutzerkonto'
+  overview: 'Benutzerinformationen'
+  update_password: 'Passwort ändern'
+  update_mail: 'E-Mail Adresse ändern'
+  verify_mail: 'E-Mail Adresse bestätigen'
+
 login:
   submit: 'Einloggen'
 
 register:
-  submit: 'Account erstellen'
+  repeat_password: 'Passwort wiederholen'
+  submit: 'Benutzerkonto erstellen'
+
+verify:
+  title: 'Benutzerkonto bestätigen'
+  code: 'Bestätigungscode'
+  info: 'Während der Registrierung haben wir eine E-Mail mit einem Bestätigungscode an die angegebene E-Mail Adresse gesendet. <br/> Dein Benutzerkonto wird gelöscht, wenn deine E-Mail Adresse nicht innerhalb von 24 Stunden bestätigt wird. <br/> Bitte vergiss nicht, auch in den Junk-Mail Ordner zu schauen.'
+  submit: 'Bestätigen'
+  errors:
+    code_invalid: 'Der angegebene Bestätigungscode ist ungültig.'
+
+update_password:
+  old: 'Aktuelles Passwort'
+  new: 'Neues Passwort'
+  repeat: 'Neues Passwort wiederholen'
+  submit: 'Ändern'
+  errors:
+    old:
+      invalid: 'Fehlerhaftes Passwort'
+
+update_mail:
+  mail: 'Neue E-Mail Adresse'
+  submit: 'Ändern'
+  errors:
+    same_as_current: 'Diese E-Mail Adresse ist bereits hinterlegt.'
+    verification_in_progress: 'Die Aktualisierung deiner E-Mail Adresse wurde bereits gestartet.'
 
 messages:
   movie_added:
