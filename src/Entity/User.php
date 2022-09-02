@@ -157,7 +157,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addRole(string $role): self
     {
-        $this->roles[] = $role;
+        if (array_search($role, $this->roles) === false) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }

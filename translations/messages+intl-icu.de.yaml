@@ -16,7 +16,7 @@ menu:
     admin: 'Verwaltung'
     admin_index: 'Benutzer und System'
     admin_requests: 'Anfragen'
-    profile_index: 'Benutzerkonto'
+    profile: 'Benutzerkonto'
 
     logout: 'Ausloggen'
 
@@ -140,7 +140,7 @@ register:
 verify:
   title: 'Benutzerkonto bestätigen'
   code: 'Bestätigungscode'
-  info: 'Während der Registrierung haben wir eine E-Mail mit einem Bestätigungscode an die angegebene E-Mail Adresse gesendet. <br/> Dein Benutzerkonto wird gelöscht, wenn deine E-Mail Adresse nicht innerhalb von 24 Stunden bestätigt wird.'
+  info: 'Während der Registrierung haben wir eine E-Mail mit einem Bestätigungscode an die angegebene E-Mail Adresse gesendet. <br/> Dein Benutzerkonto wird gelöscht, wenn deine E-Mail Adresse nicht innerhalb von 24 Stunden bestätigt wird. <br/> Bitte vergiss nicht, auch in den Junk-Mail Ordner zu schauen.'
   submit: 'Bestätigen'
   errors:
     code_invalid: 'Der angegebene Bestätigungscode ist ungültig.'

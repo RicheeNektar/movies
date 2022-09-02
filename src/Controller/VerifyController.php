@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\RegistrationType;
 use App\Form\VerifyType;
 use App\Repository\UserMailRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -18,14 +20,17 @@ class VerifyController extends AbstractController
     private UserMailRepository $userMailRepository;
     private EntityManagerInterface $entityManager;
     private TranslatorInterface $translator;
+    private MailService $mailService;
 
     public function __construct(
         UserMailRepository $userMailRepository,
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        MailService $mailService
     ) {
         $this->userMailRepository = $userMailRepository;
         $this->entityManager = $entityManager;
+        $this->mailService = $mailService;
         $this->translator = $translator;
     }
 
@@ -36,8 +41,6 @@ class VerifyController extends AbstractController
     {
         $verifyForm = $this->createForm(VerifyType::class);
         $verifyForm->handleRequest($request);
-
-        $userMail = null;
 
         if ($verifyForm->isSubmitted() && $verifyForm->isValid()) {
             /**
@@ -61,6 +64,7 @@ class VerifyController extends AbstractController
                 $user->addRole('ROLE_VERIFIED');
 
                 $this->entityManager->flush();
+                $this->mailService->sendMailToUser($user, 'welcome');
                 return $this->redirectToRoute('movies');
             } else {
                 $verifyForm->addError(new FormError($this->translator->trans('verify.errors.code_invalid')));
@@ -70,7 +74,6 @@ class VerifyController extends AbstractController
         return $this->renderForm('verify/index.html.twig', [
             'verify_form' => $verifyForm,
             'status' => $status ?? 'none',
-            'mail' => ($userMail !== null) ? $userMail->getMail() : 'none',
         ]);
     }
 }

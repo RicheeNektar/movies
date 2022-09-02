@@ -42,7 +42,7 @@ class RegisterController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, ): Response
+    public function register(Request $request): Response
     {
         if ($this->getUser() !== null) {
             return $this->redirectToRoute('movies');
@@ -101,13 +101,5 @@ class RegisterController extends AbstractController
             'invitation' => $invitation,
             'register_user_form' => $registerUserForm,
         ]);
-    }
-
-    /**
-     * @Route("/verify", name="verify")
-     */
-    public function verify(Request $request)
-    {
-
     }
 }

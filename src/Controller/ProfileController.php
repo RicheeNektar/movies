@@ -24,9 +24,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/profile", name="profile_")
- */
 class ProfileController extends AbstractController
 {
     private UserPasswordHasherInterface $passwordHasher;
@@ -109,7 +106,6 @@ class ProfileController extends AbstractController
     private function handleVerifyMail(Request $request, User $user): FormInterface
     {
         $form = $this->createForm(VerifyType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -130,7 +126,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/", name="index")
+     * @Route("/profile", name="profile")
      */
     public function index(Request $request): Response
     {
