@@ -23,7 +23,7 @@ final class Version20220902175711 extends AbstractMigration
         $this->addSql('CREATE TABLE user_mail (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', verified_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', verification_code INT NOT NULL, mail VARCHAR(320) NOT NULL, INDEX IDX_2BA7E081A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE user_mail ADD CONSTRAINT FK_2BA7E081A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE user ADD created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('UPDATE user SET roles = CONCAT(SUBSTR(roles, -1), \', "ROLE_VERIFIED"]\')');
+        // $this->addSql('UPDATE user SET roles = CONCAT(SUBSTR(roles, -1), \', "ROLE_VERIFIED"]\')');
     }
 
     public function down(Schema $schema): void
