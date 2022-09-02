@@ -114,7 +114,11 @@ class ProfileController extends AbstractController
             $data = $form->getData();
 
             if ($data['code'] == $userMail->getVerificationCode()) {
-                $this->mailService->sendMailToUser($user, 'mail_change/notice');
+                $oldUserMail = $this->userMailRepository->getLatestVerifiedUserMail($user);
+
+                if ($oldUserMail) {
+                    $this->mailService->sendMail($user->getUserIdentifier(), $oldUserMail->getMail(), 'mail_change/notice');
+                }
 
                 $userMail->setVerifiedAt(new \DateTimeImmutable());
                 $this->entityManager->flush();
