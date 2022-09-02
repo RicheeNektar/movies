@@ -79,7 +79,8 @@ class ProfileController extends AbstractController
                 return $form;
             }
 
-            if ($data['mail'] === $this->userMailRepository->getLatestVerifiedUserMail($user)->getMail()) {
+            $userMail = $this->userMailRepository->getLatestVerifiedUserMail($user);
+            if ($userMail && $data['mail'] === $userMail->getMail()) {
                 $form->addError(new FormError($this->translator->trans('update_mail.errors.same_as_current')));
                 return $form;
             }
