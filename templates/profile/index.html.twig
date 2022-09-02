@@ -11,12 +11,12 @@
 
     <div class="row row-cols-1 mb-3">
         <div>
-            <span class="h6 d-inline-block">Username:</span>
-            <span class="d-inline-block">{{ user().username() }}</span>
+            <span class="h6">{{ 'base.username' | trans }}:</span>
+            <span>{{ user().username() }}</span>
         </div>
         <div>
-            <span class="h6 d-inline-block">E-Mail Adresse:</span>
-            <span class="d-inline-block">{{ mail.mail() }}</span>
+            <span class="h6">{{ 'base.mail' | trans }}:</span>
+            <span>{{ mail.mail() }}</span>
         </div>
     </div>
 
@@ -38,9 +38,9 @@
                     <h3>{{ 'profile.verify_mail' | trans }}</h3>
                     <div>
                         <span class="h6 d-inline-block">E-Mail Adresse:</span>
-                        <span class="d-inline-block">{{ mail.mail() }}</span>
+                        <span class="d-inline-block">{{ unverified_mail.mail() }}</span>
                     </div>
-                    {{ form(verify_mail_form) }}
+                    {{ form(verify_mail_form, {'attr':{'action':'/profile'}}) }}
                 </div>
             {% endif %}
         </div>

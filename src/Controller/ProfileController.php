@@ -95,7 +95,7 @@ class ProfileController extends AbstractController
             $this->mailService->sendMail(
                 $user->getUserIdentifier(),
                 $data['mail'],
-                'verification',
+                'mail_change/verification',
                 [],
                 ['verification_code' => $userMail->getVerificationCode()]
             );
@@ -109,10 +109,21 @@ class ProfileController extends AbstractController
     private function handleVerifyMail(Request $request, User $user): FormInterface
     {
         $form = $this->createForm(VerifyType::class);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userMail = $this->userMailRepository->getLatestUnverifiedUserMail($user);
+            $data = $form->getData();
 
+            if ($data['code'] == $userMail->getVerificationCode()) {
+                $this->mailService->sendMailToUser($user, 'mail_change/notice');
+
+                $userMail->setVerifiedAt(new \DateTimeImmutable());
+                $this->entityManager->flush();
+            } else {
+                $form->addError(new FormError($this->translator->trans('verify.errors.code_invalid')));
+            }
         }
 
         return $form;

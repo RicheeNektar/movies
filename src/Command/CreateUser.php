@@ -67,6 +67,8 @@ class CreateUser extends Command
         $userMail = new UserMail();
         $userMail->setMail($input->getArgument('mail'));
         $userMail->setVerifiedAt(new \DateTimeImmutable());
+        $userMail->setVerificationCode(random_int(111111,999999));
+        $user->addRole('ROLE_VERIFIED');
 
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         $user->addUserMail($userMail);

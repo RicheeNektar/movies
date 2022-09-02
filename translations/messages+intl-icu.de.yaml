@@ -4,7 +4,7 @@ base:
   description: 'Private Streaming-Plattform'
   username: 'Benutzername'
   password: 'Passwort'
-  mail: 'E-Mail'
+  mail: 'E-Mail Adresse'
   no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="{url}">melde dich an</a>.'
 
 menu:
@@ -119,7 +119,9 @@ admin:
 mail_subjects:
   verification: 'Bitte bestätige dein Benutzerkonto'
   password_change: 'Passwort aktualisiert'
-  mail_change: 'E-Mail Adresse aktualisiert'
+  mail_change:
+    notice: 'E-Mail Adresse aktualisiert'
+    verification: 'Bitte bestätige deine neue E-Mail Adresse'
 
 profile:
   title: 'Dein Benutzerkonto'

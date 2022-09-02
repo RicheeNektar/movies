@@ -34,10 +34,10 @@ class MailService
 
     public function sendMail(string $username, string $mail, string $template, array $subjectParams = [], array $params = []): void
     {
-        $subject = $this->translator->trans("mail_subjects.$template", $subjectParams);
+        $subject = $this->translator->trans("mail_subjects." . preg_replace('/\//', '.', $template), $subjectParams);
 
         $message = (new TemplatedEmail())
-            ->from(new Address('no-reply@movies.richee.me'))
+            ->from(new Address('no-reply@richee.video'))
             ->addTo(new Address($mail, $username))
             ->subject($subject)
             ->htmlTemplate("mail/" . $this->translator->getLocale() . "/$template.html.twig")
