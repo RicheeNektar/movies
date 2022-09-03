@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -125,7 +126,7 @@ class PlayerController extends AbstractController
                     'no_store' => true,
                     'must_revalidate' => true,
                 ]
-            )
+            )->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE)
         );
     }
 
@@ -147,7 +148,7 @@ class PlayerController extends AbstractController
                     'no_store' => true,
                     'must_revalidate' => true,
                 ]
-            )
+            )->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE)
         );
     }
 }
