@@ -10,23 +10,8 @@
             <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <form action="{{ url('login') }}" method="post">
-            <input type="hidden" name="_target_path" value="/"/>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <div class="mb-3">
-                <label class="form-label" for="username">{{ 'base.username' | trans }}</label>
-                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label" for="password">{{ 'base.password' | trans }}</label>
-                <input class="form-control" type="password" name="_password" />
-            </div>
-
-            <div class="mb-3">
-                <button class="btn btn-primary" type="submit">{{ 'login.submit' | trans }}</button>
-            </div>
-        </form>
+        {{ form_start(login_form) }}
+            {{ form_widget(login_form.csrf, {value: csrf_token('authenticate')}) }}
+        {{ form_end(login_form) }}
     </div>
 {% endblock %}

@@ -6,6 +6,7 @@ base:
   password: 'Passwort'
   mail: 'E-Mail Adresse'
   no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a href="{url}">melde dich an</a>.'
+  remember_me: 'Angemeldet bleiben'
 
 menu:
   title: 'Menü'

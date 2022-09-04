@@ -26,14 +26,18 @@ security:
                 login_path: login
                 check_path: login
                 enable_csrf: true
+                username_parameter: login[username]
+                password_parameter: login[password]
+                csrf_parameter: login[csrf]
 
             login_throttling:
                 max_attempts: 3
                 interval: '15 minutes'
 
             remember_me:
-                secret: '%env(APP_SECRET)%'
-                lifetime: 13800
+                remember_me_parameter: login[remember_me]
+                secret: '%kernel.secret%'
+                lifetime: 86400
 
             logout:
                 path: logout
