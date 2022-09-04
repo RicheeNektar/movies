@@ -29,6 +29,7 @@ security:
                 username_parameter: login[username]
                 password_parameter: login[password]
                 csrf_parameter: login[csrf]
+                use_referer: true
 
             login_throttling:
                 max_attempts: 3
