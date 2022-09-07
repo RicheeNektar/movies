@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Controller } from "@hotwired/stimulus";
-import LoginCode from '../features/LoginCode';
+import LoginCodeVerify from '../features/LoginCodeVerify';
 
 export default class extends Controller
 {
-    static targets = ['qr'];
+    static targets = ['selection'];
 
     connect() {
         ReactDOM.render(
-          <LoginCode />,
-          this.qrTarget
+          <LoginCodeVerify />,
+          this.selectionTarget
         );
     }
 }

@@ -130,6 +130,10 @@ profile:
   update_password: 'Passwort ändern'
   update_mail: 'E-Mail Adresse ändern'
   verify_mail: 'E-Mail Adresse bestätigen'
+  easy_login:
+    title: 'Easy Login'
+    step1: 'Videogerät aus der Liste auswählen.'
+    step2: 'QR-Code der Login Seite des Zieltgeräts scannen.'
 
 login:
   submit: 'Einloggen'

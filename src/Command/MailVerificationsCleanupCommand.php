@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MailVerificationsCleanupCommand extends Command
 {
-    protected static $defaultName = 'app:mail-verifications:cleanup';
+    protected static $defaultName = 'app:cleanup:mail-verifications';
     protected static $defaultDescription = 'Cleans up all verifications older than 24 Hours and user accounts if it has no addresses';
 
     private UserMailRepository $userMailRepository;

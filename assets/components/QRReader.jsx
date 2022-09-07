@@ -1,9 +1,9 @@
 import jsQR from 'jsqr';
 import React, { useEffect, useRef, useState } from 'react';
 
-const QRReader = ({ deviceId, onData, onError }) => {
-  const videoRef = useRef<HTMLVideoElement>();
-  const canvasRef = useRef<HTMLCanvasElement>();
+const QRReader = ({ className, deviceId, onData, onError }) => {
+  const videoRef = useRef();
+  const canvasRef = useRef();
   const [mediaStream, setMediaStream] = useState(null);
   const [videoTrack, setVideoTrack] = useState(null);
 
@@ -58,7 +58,7 @@ const QRReader = ({ deviceId, onData, onError }) => {
 
   return (
     <>
-      <video ref={videoRef} autoPlay />
+      <video ref={videoRef} autoPlay className={className} />
       <canvas ref={canvasRef} style={{display: 'none'}} />
     </>
   );

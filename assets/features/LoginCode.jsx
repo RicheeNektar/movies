@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
-import QRCode from './QRCode';
+import QRCode from '../components/QRCode';
 
 const LoginCode = () => {
   const [code, setCode] = useState('');

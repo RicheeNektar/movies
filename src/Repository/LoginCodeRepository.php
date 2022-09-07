@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Tests\Models\Cache\Login;
 
 /**
  * @method LoginCode|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,5 +44,17 @@ class LoginCodeRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function findUnexpiredById(int $id): LoginCode
+    {
+        return $this->createQueryBuilder('lc')
+            ->andWhere('lc.createdAt > :expire')
+            ->setParameter('expire', new \DateTimeImmutable('-15 Minutes'))
+            ->andWhere('lc.usedBy IS NULL')
+            ->andWhere('lc.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
     }
 }
