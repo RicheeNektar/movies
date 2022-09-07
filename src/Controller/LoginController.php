@@ -16,6 +16,10 @@ class LoginController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('movies');
+        }
+
         return $this->renderForm('login/index.html.twig', [
             'login_form' => $this->createForm(LoginType::class),
             'last_username' => $authenticationUtils->getLastUsername(),

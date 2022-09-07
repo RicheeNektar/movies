@@ -44,14 +44,16 @@ security:
                 path: logout
                 target: login
 
+            custom_authenticators:
+                - App\Security\LoginCodeAuthenticator
+
     access_denied_url: /verify
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/(profile|request), roles: ROLE_VERIFIED }
         - { path: ^/(verify|logout), roles: ROLE_USER }
-        - { path: ^/(login|register), roles: null }
-        - { path: ^/(tv|movie)/\d+/file/\w+, roles: null }
-        - { path: ^/, roles: ROLE_VERIFIED }
+        - { path: ^/, roles: null }
 
     hide_user_not_found: true
 

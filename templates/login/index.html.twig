@@ -3,15 +3,24 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <div class="container col-lg-4 my-5 text-white">
+    <div class="container my-5 text-white">
 	    <img class="position-relative start-50 translate-middle-x" width="192px" height="192px" src="/favicon.ico" />
 
         {% if error %}
             <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {{ form_start(login_form) }}
-            {{ form_widget(login_form.csrf, {value: csrf_token('authenticate')}) }}
-        {{ form_end(login_form) }}
+        <div class="row row-cols-lg-2 row-cols-1">
+            <div class="col">
+                <h4 class="text-center">Login with credentials</h4>
+                {{ form_start(login_form, {'attr': {'class': 'm-lg-5 m-3'}}) }}
+                    {{ form_widget(login_form.csrf, {value: csrf_token('authenticate')}) }}
+                {{ form_end(login_form) }}
+            </div>
+            <div class="col" {{ stimulus_controller('login-code') }}>
+                <h4 class="my-3 text-center">Login with QR</h4>
+                <div class="d-flex justify-content-center" {{ stimulus_target('login-code', 'qr') }} />
+            </div>
+        </div>
     </div>
 {% endblock %}

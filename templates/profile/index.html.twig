@@ -34,6 +34,8 @@
             {{ form(update_password_form) }}
         </div>
 
+        {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
         <div class="col">
             <div class="row">
                 <h3>{{ 'profile.update_mail' | trans }}</h3>
@@ -49,6 +51,15 @@
                     {{ form(verify_mail_form, {'action':'/profile'}) }}
                 </div>
             {% endif %}
+        </div>
+    </div>
+
+    {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
+    <div class="row row-cols-2">
+        <div class="col">
+            <h3>{{ 'profile.easy_login' | trans }}</h3>
+            <div {{ stimulus_controller('easy-login-scan') }} />
         </div>
     </div>
 {% endblock %}
