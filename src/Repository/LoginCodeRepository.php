@@ -51,7 +51,6 @@ class LoginCodeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('lc')
             ->andWhere('lc.createdAt > :expire')
             ->setParameter('expire', new \DateTimeImmutable('-15 Minutes'))
-            ->andWhere('lc.usedBy IS NULL')
             ->andWhere('lc.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
