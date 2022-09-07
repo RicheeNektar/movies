@@ -28,11 +28,13 @@
 
     {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
 
-    <div class="row row-cols-2">
+    <div class="row row-cols-lg-2">
         <div class="col">
             <h3>{{ 'profile.update_password' | trans }}</h3>
             {{ form(update_password_form) }}
         </div>
+
+        {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
 
         <div class="col">
             <div class="row">
@@ -49,6 +51,19 @@
                     {{ form(verify_mail_form, {'action':'/profile'}) }}
                 </div>
             {% endif %}
+        </div>
+    </div>
+
+    {% include 'divider.html.twig' with {'hidden_at': 'lg'} %}
+
+    <div class="row row-cols-lg-2" {{ stimulus_controller('login-code-verify') }}>
+        <div class="col">
+            <h3>{{ 'profile.easy_login.title' | trans }}</h3>
+            <ol>
+                <li>{{ 'profile.easy_login.step1' | trans }}</li>
+                <li>{{ 'profile.easy_login.step2' | trans }}</li>
+            </ol>
+            <div class="col container d-flex flex-column justify-content-around align-items-center" {{ stimulus_target('login-code-verify', 'selection') }} />
         </div>
     </div>
 {% endblock %}
