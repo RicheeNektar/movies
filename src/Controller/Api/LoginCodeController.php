@@ -63,7 +63,7 @@ class LoginCodeController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $code = $this->loginCodeRepository->findUnexpiredById($data['id']);
+        $code = $this->loginCodeRepository->findUnusedById($data['id']);
 
         if (!$code) {
             return $this->json([
@@ -72,7 +72,6 @@ class LoginCodeController extends AbstractController
         }
 
         $code->setUsedBy($user);
-        $code->setUsedAt(new \DateTimeImmutable());
         $this->entityManager->flush();
 
         return $this->json([
@@ -86,7 +85,7 @@ class LoginCodeController extends AbstractController
     public function checkLoginCode(Request $request): Response
     {
         $id = $request->query->get('id');
-        $code = $this->loginCodeRepository->findUnexpiredById($id);
+        $code = $this->loginCodeRepository->findUnusedById($id);
 
         if (!$code) {
             return $this->json(['ok' => false, 'message' => 'invalid_id']);

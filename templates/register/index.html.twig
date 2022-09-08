@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container col-lg-4 my-5 text-white">
-	    <img class="position-relative start-50 translate-middle-x" width="192px" height="192px" src="/favicon.ico" />
+	    <img class="position-relative start-50 translate-middle-x" width="192px" height="192px" src="{{ asset('icon.png') }}" />
 
         {{ form_start(register_user_form) }}
             {{ form_widget(register_user_form.invitation, {value: invitation.id()}) }}

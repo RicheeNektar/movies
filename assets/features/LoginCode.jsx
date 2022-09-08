@@ -4,6 +4,7 @@ import QRCode from '../components/QRCode';
 
 const LoginCode = () => {
   const [code, setCode] = useState('');
+  const [info, setInfo] = useState(null);
 
   const createLoginCode = () => {
     $.post({
@@ -37,7 +38,7 @@ const LoginCode = () => {
                 window.location.search
               ).get('target_path') ?? '/';
             } else if (d.ok === false) {
-              createLoginCode();
+              setInfo(d.error);
             }
           })
         } else if (data.ok === false) {
@@ -53,7 +54,7 @@ const LoginCode = () => {
     createLoginCode();
   }, []);
 
-  return <QRCode value={code.toString()} />;
+  return info ? <p>{info}</p> : <QRCode value={code.toString()} />;
 };
 
 export default LoginCode;

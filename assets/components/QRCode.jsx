@@ -7,15 +7,15 @@ const QRCode = ({ value }) => {
   const styling = new QRCodeStyling({
     cornersDotOptions: {
       type: 'dot',
-      color: '#6c757d',
+      color: '#99492a',
     },
     cornersSquareOptions: {
       type: 'extra-rounded',
-      color: '#6c757d',
+      color: '#99492a',
     },
     dotsOptions: {
       type: 'rounded',
-      color: '#0d6efd',
+      color: '#eeb871',
     },
     backgroundOptions: {
       color: '#00000000',

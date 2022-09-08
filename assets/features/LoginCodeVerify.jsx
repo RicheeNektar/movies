@@ -84,7 +84,6 @@ const LoginCodeVerify = () => {
       </select>
       {device && (
         <QRReader
-          className={""}
           onData={handleData}
           onError={console.error}
           deviceId={device.id}

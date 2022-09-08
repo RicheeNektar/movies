@@ -42,7 +42,7 @@ class LoginCodeCleanupCommand extends Command
             ->createQueryBuilder('lc')
             ->andWhere('lc.createdAt > :expire')
             ->setParameter('expire', new DateTimeImmutable('-15 Minutes'))
-            ->andWhere('lc.usedBy IS NULL')
+            ->andWhere('lc.usedAt IS NULL')
             ->getQuery()
             ->getResult();
 

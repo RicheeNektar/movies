@@ -46,12 +46,13 @@ class LoginCodeRepository extends ServiceEntityRepository
         }
     }
 
-    public function findUnexpiredById(int $id): LoginCode
+    public function findUnusedById(int $id): LoginCode
     {
         return $this->createQueryBuilder('lc')
             ->andWhere('lc.createdAt > :expire')
             ->setParameter('expire', new \DateTimeImmutable('-15 Minutes'))
             ->andWhere('lc.id = :id')
+            ->andWhere('lc.usedAt IS NULL')
             ->setParameter('id', $id)
             ->getQuery()
             ->getSingleResult();
