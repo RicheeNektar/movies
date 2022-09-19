@@ -1,9 +1,15 @@
 <div class="carousel-item{% if is_active %} active{% endif %}">
     <a
-            style="background: url({% if media.poster() %}https://image.tmdb.org/t/p/w300{{ media.poster() }}{% else %}{{ asset('missing.png') }}{% endif %}) center top no-repeat;background-size: cover;aspect-ratio: 1;"
-            href="{{ href }}"
-            class="d-block w-100"
-    ></a>
+        style="{% apply spaceless %}
+            background: {% if media.poster() %}
+                url('{{ asset('images/' ~ media.getAsset() ~ '.webp') }}'),
+                url('{{ asset('images/' ~ media.getAsset() ~ '.jpeg') }}'),
+            {% endif %}
+            url('{{ asset('images/missing.webp') }}'),
+            url('{{ asset('images/missing.jpeg') }}'); background-position: center; background-repeat:no-repeat; background-size: cover; aspect-ratio: 1;
+            {% endapply %}"
+        href="{{ href }}"
+        class="d-block w-100"></a>
     <div class="carousel-caption">
         <a
                 href="{{ href }}"

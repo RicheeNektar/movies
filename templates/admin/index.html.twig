@@ -102,13 +102,13 @@
             <h3 class="text-white">Disk Space:</h3>
             <ul>
                 {% for i, size in sizes %}
-                    <li class="row"><span class="col-3 badge p-2 m-1 text-{{ cycle(['dark', 'light', 'light'], i) }} bg-{{ cycle(['primary', 'secondary', 'dark'], i) }}">{{ ('admin.disk_space.' ~ sizes_map[i]) | trans }}</span><span class="text-end col-8">{{ size | bytes }}</span></li>
+                    <li class="row"><span class="col-3 badge p-2 m-1 text-{{ cycle(['dark', 'light', 'dark', 'light'], i) }} bg-{{ cycle(['primary', 'secondary', 'light', 'dark'], i) }}">{{ ('admin.disk_space.' ~ sizes_map[i]) | trans }}</span><span class="text-end col-8">{{ size | bytes }}</span></li>
                 {% endfor %}
                 <li class="row"><span class="col-3 badge p-2 m-1 text-white bg-black">{{ 'admin.disk_space.free' | trans }}</span><span class="text-end col-8">{{ free_size | bytes }}</span></li>
             </ul>
             <div class="row progress bg-black mx-3">
                 {% for i, size in sizes %}
-                    <div class="progress-bar bg-{{ cycle(['primary', 'secondary', 'dark'], i) }}" style="width: {{ size / total_size * 100 }}%"></div>
+                    <div class="progress-bar bg-{{ cycle(['primary', 'secondary', 'light', 'dark'], i) }}" style="width: {{ size / total_size * 100 }}%"></div>
                 {% endfor %}
             </div>
         </div>

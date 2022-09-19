@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Command\Images\Download;
+
+use App\Repository\SeriesRepository;
+use App\Service\ImageService;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+class DownloadSeriesImagesCommand extends Command
+{
+    protected static $defaultName = 'app:images:download:series';
+    protected static $defaultDescription = 'Saves all series images as webp.';
+
+    private SeriesRepository $seriesRepository;
+    private ImageService $imageService;
+
+    public function __construct(
+        SeriesRepository $seriesRepository,
+        ImageService $imageService
+    ) {
+        parent::__construct();
+        $this->imageService = $imageService;
+        $this->seriesRepository = $seriesRepository;
+    }
+
+    protected function configure()
+    {
+        $this->addOption('seasons', 's', InputOption::VALUE_NONE, 'With this, it will also download season images.');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $full = $input->getOption('seasons');
+        $io = new SymfonyStyle($input, $output);
+
+        $basePath = "public/images/series";
+
+        foreach ($this->seriesRepository->findAll() as $series) {
+            $filename = "$basePath/{$series->getId()}";
+
+            if (file_exists("$filename.webp")
+                && file_exists("$filename.jpeg")
+            ) {
+                continue;
+            }
+
+            $this->imageService->downloadImage($series, $filename);
+            $io->writeln("Downloaded cover for '{$series->getTitle()}'.");
+        }
+
+        if ($full) {
+           $app = $this->getApplication();
+           $app->setAutoExit(false);
+
+           $io->info('Downloading season images...');
+
+           try {
+               $in = new ArrayInput([
+                   'command' => 'app:images:download:seasons',
+               ]);
+               $out = new BufferedOutput();
+               $app->run($in, $out);
+               $io->text($out->fetch());
+           } catch(\ErrorException $e) {
+               $io->error($e->getMessage());
+           }
+        }
+
+        return Command::SUCCESS;
+    }
+}

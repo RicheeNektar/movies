@@ -1,0 +1,7 @@
+<picture>
+    <source srcset='{{ asset('images/' ~ asset ~ '.webp') }}' type="image/webp" />
+    <img
+            {{ attributes | map((v,k) => "#{k}='#{v}'") | join("") | raw }}
+            src='{{ asset('images/' ~ asset ~ '.jpeg') }}'
+            type="image/jpeg" />
+</picture>
