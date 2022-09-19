@@ -1,1 +1,1 @@
-sitemap: https://richee.video/sitemap.xml
+Sitemap: https://richee.video/sitemap.xml

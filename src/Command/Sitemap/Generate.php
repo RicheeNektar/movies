@@ -43,7 +43,7 @@ class Generate extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" />');
+        $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" />');
 
         $baseUrl = "https://richee.video";
 
@@ -52,7 +52,7 @@ class Generate extends Command
             $xmlUrl->addChild('loc', "$baseUrl/movie/{$movie->getId()}");
             $xmlUrl->addChild('lastmod', $movie->getCreationDate()->format(DATE_ATOM));
 
-            $xmlVideo = $xmlUrl->addChild('video:video', null, 'https://www.google.com/schemas/sitemap-video/1.1/sitemap-video.xsd');
+            $xmlVideo = $xmlUrl->addChild('video:video', null, 'https://www.google.com/schemas/sitemap-video/1.1');
             $xmlVideo->addChild('video:title', $movie->getTitle());
             $xmlVideo->addChild('video:thumbnail_loc', "$baseUrl/images/{$movie->getAsset()}.webp");
             $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ATOM));
