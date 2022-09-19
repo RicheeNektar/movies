@@ -15,8 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class Generate extends Command
 {
@@ -25,13 +23,13 @@ class Generate extends Command
 
     private MovieRepository $movieRepository;
     private EpisodeRepository $episodeRepository;
-    private RouterInterface $router;
+    private UrlGeneratorInterface $router;
     private KernelInterface $kernel;
 
     public function __construct(
         MovieRepository $movieRepository,
         EpisodeRepository $episodeRepository,
-        RouterInterface $router,
+        UrlGeneratorInterface $router,
         KernelInterface $kernel
     ) {
         parent::__construct();
@@ -47,7 +45,7 @@ class Generate extends Command
 
         $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="https://www.google.com/schemas/sitemap-video/1.1" />');
 
-        $baseUrl = $this->router->generate('movies', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $baseUrl = "{$this->router->getContext()->getScheme()}://{$this->router->getContext()->getHost()}";
 
         foreach ($this->movieRepository->findAll() as $movie) {
             $xmlUrl = $root->addChild('url');
@@ -56,7 +54,7 @@ class Generate extends Command
 
             $xmlVideo = $xmlUrl->addChild('video:video');
             $xmlVideo->addChild('video:title', $movie->getTitle());
-            $xmlVideo->addChild('video:thumbnail_loc', $baseUrl . "images/{$movie->getAsset()}.webp");
+            $xmlVideo->addChild('video:thumbnail_loc', "$baseUrl/images/{$movie->getAsset()}.webp");
             $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ISO8601));
         }
 
