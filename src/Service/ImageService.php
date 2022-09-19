@@ -49,7 +49,7 @@ class ImageService
         }
 
         imageantialias($image, true);
-        imageresolution($image, 1280, 720);
+        imageresolution($image, 640, 360);
         imagewebp($image, "$this->dir/public/images/{$backdrop->getAsset()}.webp");
         imagejpeg($image, "$this->dir/public/images/{$backdrop->getAsset()}.jpeg");
 
