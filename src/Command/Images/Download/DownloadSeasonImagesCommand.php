@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class DownloadSeasonImagesCommand extends Command
 {
     protected static $defaultName = 'app:images:download:seasons';
-    protected static $defaultDescription = 'Saves all season images as webp.';
+    protected static $defaultDescription = 'Downloads all season images.';
 
     private SeasonRepository $seasonRepository;
     private ImageService $imageService;
@@ -45,10 +45,10 @@ class DownloadSeasonImagesCommand extends Command
                 continue;
             }
 
-            if ($this->imageService->downloadImage($season, 'season')) {
+            if ($this->imageService->downloadImage($season)) {
                 $io->writeln("Downloaded poster for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
             } else {
-                $io->error("Downloaded failed for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
+                $io->error("Download failed for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
             }
         }
 

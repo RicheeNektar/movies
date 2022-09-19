@@ -97,7 +97,7 @@ class UpdateSeriesCommand extends Command
                     $series = $this->seriesService->findSeriesById($seriesId);
                 }
 
-                $this->imageService->downloadImage($series, 'series');
+                $this->imageService->downloadImage($series);
 
                 $seasonDir = "$seriesDir/$seriesId";
                 foreach (scandir($seasonDir) as $seasonF) {
@@ -113,7 +113,7 @@ class UpdateSeriesCommand extends Command
                             $season->setSeries($series);
                             $season->setSeasonId($seasonNumber);
                             $series->addSeason($season);
-                            $this->imageService->downloadImage($season, 'season');
+                            $this->imageService->downloadImage($season);
                         }
 
                         foreach (scandir("$seasonDir/$seasonNumber") as $episodeF) {

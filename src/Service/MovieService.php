@@ -88,7 +88,7 @@ class MovieService {
         $movie->setPoster($info['poster_path']);
         $movie->setDescription($info['overview']);
 
-        $this->imageService->downloadImage($movie, 'movie');
+        $this->imageService->downloadImage($movie);
 
         if ($info['release_date'] !== '') {
             $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));

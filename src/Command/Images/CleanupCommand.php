@@ -2,8 +2,10 @@
 
 namespace App\Command\Images;
 
+use App\Repository\MovieBackdropRepository;
 use App\Repository\MoviesRepository;
 use App\Repository\SeasonRepository;
+use App\Repository\SeriesBackdropRepository;
 use App\Repository\SeriesRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,17 +20,23 @@ class CleanupCommand extends Command
     private MoviesRepository $moviesRepository;
     private SeriesRepository $seriesRepository;
     private SeasonRepository $seasonRepository;
+    private SeriesBackdropRepository $seriesBackdropRepository;
+    private MovieBackdropRepository $movieBackdropRepository;
 
     public function __construct(
         MoviesRepository $moviesRepository,
         SeriesRepository $seriesRepository,
-        SeasonRepository $seasonRepository
+        SeasonRepository $seasonRepository,
+        SeriesBackdropRepository $seriesBackdropRepository,
+        MovieBackdropRepository $movieBackdropRepository
     )
     {
         parent::__construct();
         $this->moviesRepository = $moviesRepository;
         $this->seriesRepository = $seriesRepository;
         $this->seasonRepository = $seasonRepository;
+        $this->seriesBackdropRepository = $seriesBackdropRepository;
+        $this->movieBackdropRepository = $movieBackdropRepository;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -36,10 +44,12 @@ class CleanupCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         foreach ([
-                     'movie' => $this->moviesRepository,
-                     'series' => $this->seriesRepository,
-                     'season' => $this->seasonRepository,
-                 ] as $folder => $repo) {
+                'movie' => $this->moviesRepository,
+                'series' => $this->seriesRepository,
+                'season' => $this->seasonRepository,
+                'series/backdrop' => $this->seriesBackdropRepository,
+                'movie/backdrop' => $this->movieBackdropRepository,
+            ] as $folder => $repo) {
             $deleted = 0;
             $dir = "public/images/$folder";
             foreach (scandir($dir) as $posterFile) {

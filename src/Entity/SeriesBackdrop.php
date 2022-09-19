@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=SeriesBackdropRepository::class)
  */
-class SeriesBackdrop
+class SeriesBackdrop extends AbstractBackdrop
 {
     /**
      * @ORM\Id
@@ -28,7 +28,7 @@ class SeriesBackdrop
      */
     private $series;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -55,5 +55,10 @@ class SeriesBackdrop
         $this->file = $file;
 
         return $this;
+    }
+
+    protected function getImageBasePath(): string
+    {
+        return "series/backdrop";
     }
 }

@@ -18,7 +18,10 @@
                 overflow-x: hidden;
 
                 {% if backdrop is defined and backdrop is not null %}
-                    background: url("https://image.tmdb.org/t/p/original{{ backdrop.file() }}") center center no-repeat fixed;
+                    background: url('{{ asset('/images/' ~ backdrop.getAsset() ~ '.webp') }}'), url('{{ asset('/images/' ~ backdrop.getAsset() ~ '.jpeg') }}');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
                     background-size: cover;
                 {% endif %}
             }

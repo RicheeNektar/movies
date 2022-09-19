@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class DownloadSeriesImagesCommand extends Command
 {
     protected static $defaultName = 'app:images:download:series';
-    protected static $defaultDescription = 'Saves all series images as webp.';
+    protected static $defaultDescription = 'Downloads all series images.';
 
     private SeriesRepository $seriesRepository;
     private ImageService $imageService;
@@ -35,12 +35,12 @@ class DownloadSeriesImagesCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('seasons', 's', InputOption::VALUE_NONE, 'With this, it will also download season images.');
+        $this->addOption('all', 'a', InputOption::VALUE_NONE, 'With this, it will also download season images.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $full = $input->getOption('seasons');
+        $all = $input->getOption('all');
         $io = new SymfonyStyle($input, $output);
 
         $basePath = "{$this->kernel->getProjectDir()}/public/images/season";
@@ -54,14 +54,14 @@ class DownloadSeriesImagesCommand extends Command
                 continue;
             }
 
-            if ($this->imageService->downloadImage($series, 'series')) {
+            if ($this->imageService->downloadImage($series)) {
                 $io->writeln("Downloaded poster for '{$series->getTitle()}'.");
             } else {
                 $io->error("Download failed for '{$series->getTitle()}'.");
             }
         }
 
-        if ($full) {
+        if ($all) {
            $app = $this->getApplication();
            $app->setAutoExit(false);
 

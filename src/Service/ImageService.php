@@ -2,8 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\AbstractBackdrop;
 use App\Entity\AbstractMedia;
-use Exception;
+use App\Entity\Backdrop;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class ImageService
@@ -15,7 +16,7 @@ class ImageService
         $this->dir = $kernel->getProjectDir();
     }
 
-    public function downloadImage(AbstractMedia $media, string $mediaType): bool
+    public function downloadImage(AbstractMedia $media): bool
     {
         $curl = curl_init('https://image.tmdb.org/t/p/w300' . $media->getPoster());
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -29,8 +30,28 @@ class ImageService
 
         imageantialias($image, true);
         imageresolution($image, 200, 300);
-        imagewebp($image, "$this->dir/public/images/$mediaType/{$media->getId()}.webp");
-        imagejpeg($image, "$this->dir/public/images/$mediaType/{$media->getId()}.jpeg");
+        imagewebp($image, "$this->dir/public/images/{$media->getAsset()}.webp");
+        imagejpeg($image, "$this->dir/public/images/{$media->getAsset()}.jpeg");
+
+        return true;
+    }
+
+    public function downloadBackdrop(AbstractBackdrop $backdrop): bool
+    {
+        $curl = curl_init('https://image.tmdb.org/t/p/original' . $backdrop->getFile());
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($curl);
+        $image = imagecreatefromstring($response);
+
+        if (!$image) {
+            return false;
+        }
+
+        imageantialias($image, true);
+        imageresolution($image, 1280, 720);
+        imagewebp($image, "$this->dir/public/images/{$backdrop->getAsset()}.webp");
+        imagejpeg($image, "$this->dir/public/images/{$backdrop->getAsset()}.jpeg");
 
         return true;
     }

@@ -125,7 +125,7 @@ class SeriesService
         $series->setPoster($info['poster_path']);
         $series->setDescription($info['overview']);
 
-        $this->imageService->downloadImage($series, 'series');
+        $this->imageService->downloadImage($series);
 
         if ($info['first_air_date']) {
             $series->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['first_air_date']));
@@ -139,7 +139,7 @@ class SeriesService
         $season->setTitle($info['name']);
         $season->setPoster($info['poster_path']);
 
-        $this->imageService->downloadImage($season, 'season');
+        $this->imageService->downloadImage($season);
 
         if ($info['air_date']) {
             $season->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));
