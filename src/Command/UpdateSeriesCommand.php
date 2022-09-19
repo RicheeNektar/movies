@@ -9,11 +9,13 @@ use App\Entity\SeriesBackdrop;
 use App\Repository\EpisodeRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\SeriesRepository;
+use App\Service\ImageService;
 use App\Service\SeriesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function PHPUnit\Framework\directoryExists;
 
@@ -26,29 +28,37 @@ class UpdateSeriesCommand extends Command
     private SeasonRepository $seasonRepository;
     private EpisodeRepository $episodeRepository;
     private SeriesService $seriesService;
+    private ImageService $imageService;
+    private KernelInterface $kernel;
 
     public function __construct(
+        KernelInterface $kernel,
         EntityManagerInterface $entityManager,
         SeriesRepository $seriesRepository,
         SeasonRepository $seasonRepository,
         EpisodeRepository $episodeRepository,
-        SeriesService $seriesService
+        SeriesService $seriesService,
+        ImageService $imageService
     ) {
         parent::__construct();
+        $this->kernel = $kernel;
         $this->seriesRepository = $seriesRepository;
         $this->entityManager = $entityManager;
         $this->seasonRepository = $seasonRepository;
         $this->episodeRepository = $episodeRepository;
         $this->seriesService = $seriesService;
+        $this->imageService = $imageService;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $seriesDir = "{$this->kernel->getProjectDir()}/series";
+
         foreach ($this->episodeRepository->findAll() as $episode) {
             $seriesId = $episode->getSeries()->getId();
             $seasonId = $episode->getSeason()->getSeasonId();
             $episodeId = $episode->getEpisodeId();
-            if (!file_exists("../series/$seriesId/$seasonId/$episodeId.mp4")) {
+            if (!file_exists("$seriesDir/$seriesId/$seasonId/$episodeId.mp4")) {
                 $this->entityManager->remove($episode);
             }
         }
@@ -56,7 +66,7 @@ class UpdateSeriesCommand extends Command
         foreach ($this->seasonRepository->findAll() as $season) {
             $seriesId = $season->getSeries()->getId();
             $seasonId = $season->getSeasonId();
-            if (!file_exists("../series/$seriesId/$seasonId")) {
+            if (!file_exists("$seriesDir/$seriesId/$seasonId")) {
                 foreach($season->getEpisodes() as $episode) {
                     $this->entityManager->remove($episode);
                 }
@@ -66,7 +76,7 @@ class UpdateSeriesCommand extends Command
 
         foreach ($this->seriesRepository->findAll() as $series) {
             $seriesId = $series->getId();
-            if (!file_exists("../series/$seriesId")) {
+            if (!file_exists("$seriesDir/$seriesId")) {
                 foreach($series->getSeasons() as $season) {
                     foreach ($season->getEpisodes() as $episode) {
                         $this->entityManager->remove($episode);
@@ -79,7 +89,7 @@ class UpdateSeriesCommand extends Command
 
         $this->entityManager->flush();
 
-        foreach (scandir('../series') as $seriesF) {
+        foreach (scandir($seriesDir) as $seriesF) {
             if (preg_match('/(\d+)/', $seriesF, $matches)) {
                 $seriesId = (int)$matches[0];
 
@@ -87,7 +97,10 @@ class UpdateSeriesCommand extends Command
                     $series = $this->seriesService->findSeriesById($seriesId);
                 }
 
-                foreach (scandir("../series/$seriesId") as $seasonF) {
+                $this->imageService->downloadImage($series, 'series');
+
+                $seasonDir = "$seriesDir/$seriesId";
+                foreach (scandir($seasonDir) as $seasonF) {
                     if (preg_match('/(\d+)/', $seasonF, $matches)) {
                         $seasonNumber = (int)$matches[1];
 
@@ -100,9 +113,10 @@ class UpdateSeriesCommand extends Command
                             $season->setSeries($series);
                             $season->setSeasonId($seasonNumber);
                             $series->addSeason($season);
+                            $this->imageService->downloadImage($season, 'season');
                         }
 
-                        foreach (scandir("../series/$seriesId/$seasonNumber/") as $episodeF) {
+                        foreach (scandir("$seasonDir/$seasonNumber") as $episodeF) {
                             if (preg_match('/(\d+)\.mp4/', $episodeF, $matches)) {
                                 $episodeNumber = (int)$matches[0];
 

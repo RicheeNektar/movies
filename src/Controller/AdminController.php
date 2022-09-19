@@ -12,6 +12,7 @@ use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use App\Service\MovieService;
 use App\Service\SeriesService;
+use App\Service\UtilService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,8 +31,10 @@ class AdminController extends AbstractController
     private MovieService $movieService;
     private SeriesService $seriesService;
     private InvitationRepository $invitationRepository;
+    private UtilService $utilService;
 
     public function __construct(
+        UtilService $utilService,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         RequestRepository $requestRepository,
@@ -39,6 +42,7 @@ class AdminController extends AbstractController
         SeriesService $seriesService,
         InvitationRepository $invitationRepository
     ) {
+        $this->utilService = $utilService;
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->requestRepository = $requestRepository;
@@ -75,6 +79,7 @@ class AdminController extends AbstractController
         $sizes = [
             $this->movieService->getFolderSize(),
             $this->seriesService->getFolderSize(),
+            $this->utilService->getFolderSize('../public/images'),
         ];
 
         $free_size = disk_free_space(__DIR__);
@@ -93,6 +98,7 @@ class AdminController extends AbstractController
             'sizes_map' => [
                 'movies',
                 'series',
+                'images',
                 'others',
             ],
             'invitation' => $invitation,

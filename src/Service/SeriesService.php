@@ -12,13 +12,16 @@ class SeriesService
 {
     private HttpClientInterface $tmdbClient;
     private UtilService $utilService;
+    private ImageService $imageService;
 
     public function __construct(
         HttpClientInterface $tmdbClient,
-        UtilService $utilService
+        UtilService $utilService,
+        ImageService $imageService
     ) {
         $this->tmdbClient = $tmdbClient;
         $this->utilService = $utilService;
+        $this->imageService = $imageService;
     }
 
     public function findEpisodeById(int $seriesId, int $seasonNumber, int $episodeNumber): Episode
@@ -122,6 +125,8 @@ class SeriesService
         $series->setPoster($info['poster_path']);
         $series->setDescription($info['overview']);
 
+        $this->imageService->downloadImage($series, 'series');
+
         if ($info['first_air_date']) {
             $series->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['first_air_date']));
         }
@@ -133,6 +138,8 @@ class SeriesService
 
         $season->setTitle($info['name']);
         $season->setPoster($info['poster_path']);
+
+        $this->imageService->downloadImage($season, 'season');
 
         if ($info['air_date']) {
             $season->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));

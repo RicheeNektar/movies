@@ -114,6 +114,7 @@ admin:
   disk_space:
     movies: 'Filme'
     series: 'Serien'
+    images: 'Bilder'
     others: 'Sonstiges'
     free: 'Verfügbar'
 

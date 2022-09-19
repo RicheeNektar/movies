@@ -77,4 +77,9 @@ class Request extends AbstractMedia
         return $this->movie->getTitle();
     }
     //#endregion
+
+    protected function getImageBasePath(): string
+    {
+        return "";
+    }
 }

@@ -155,4 +155,9 @@ class Episode extends AbstractMedia
 
         return $this;
     }
+
+    public function getImageBasePath(): string
+    {
+        return "episode";
+    }
 }

@@ -4,18 +4,22 @@ namespace App\Service;
 
 use App\Entity\Movie;
 use App\Entity\MovieBackdrop;
+use App\Twig\Image;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MovieService {
     private HttpClientInterface $tmdbClient;
     private UtilService $utilService;
+    private ImageService $imageService;
 
     public function __construct(
         HttpClientInterface $tmdbClient,
-        UtilService $utilService
+        UtilService $utilService,
+        ImageService $imageService
     ) {
         $this->tmdbClient = $tmdbClient;
         $this->utilService = $utilService;
+        $this->imageService = $imageService;
     }
 
     public function fetchMovieInfo(int $tmdbId): array
@@ -83,6 +87,8 @@ class MovieService {
         $movie->setTitle($info['title']);
         $movie->setPoster($info['poster_path']);
         $movie->setDescription($info['overview']);
+
+        $this->imageService->downloadImage($movie, 'movie');
 
         if ($info['release_date'] !== '') {
             $movie->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['release_date']));

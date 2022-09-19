@@ -9,6 +9,13 @@ abstract class AbstractMedia {
 
     public abstract function getPoster(): ?string;
 
+    protected abstract function getImageBasePath(): string;
+
+    public function getAsset(): string
+    {
+        return "{$this->getImageBasePath()}/{$this->getId()}";
+    }
+
     public function getCreationDate(): ?\DateTimeImmutable
     {
         return null;

@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container my-5 text-white">
-	    <img class="position-relative start-50 translate-middle-x" width="192px" height="192px" src="{{ asset('icon.png') }}" />
+        {% include 'logo.part.html.twig' %}
 
         {% if error %}
             <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

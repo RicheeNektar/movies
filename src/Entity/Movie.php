@@ -207,4 +207,9 @@ class Movie extends AbstractMedia
 
         return $this;
     }
+
+    public function getImageBasePath(): string
+    {
+        return "movie";
+    }
 }
