@@ -7,6 +7,7 @@ use App\Repository\EpisodeRepository;
 use App\Repository\MovieRepository;
 use SimpleXMLElement;
 use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,9 +44,9 @@ class Generate extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns:video="https://www.google.com/schemas/sitemap-video/1.1/sitemap-video.xsd" />');
+        $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="https://www.google.com/schemas/sitemap-video/1.1" />');
 
-        $imagePackage = new PathPackage("/images", new StaticVersionStrategy('v1'));
+        $imagePackage = new PathPackage("/images", new EmptyVersionStrategy());
 
         foreach ($this->movieRepository->findAll() as $movie) {
             $xmlUrl = $root->addChild('url');
@@ -54,15 +55,8 @@ class Generate extends Command
 
             $xmlVideo = $xmlUrl->addChild('video:video');
             $xmlVideo->addChild('video:title', $movie->getTitle());
-            $xmlVideo->addChild('video:content_loc', $this->router->generate('movie-file', ['movie' => $movie->getId(), 'token' => 'invalid']));
             $xmlVideo->addChild('video:thumbnail_loc', $imagePackage->getUrl("/{$movie->getAsset()}.webp"));
             $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ISO8601));
-        }
-
-        foreach ($this->movieRepository->findAll() as $movie) {
-            $xmlUrl = $root->addChild('url');
-            $xmlUrl->addChild('loc', $this->router->generate('movie-player', ['movie' => $movie->getId()]));
-            $xmlUrl->addChild('lastmod', $movie->getCreationDate()->format(DATE_ISO8601));
         }
 
         $root->asXML("{$this->kernel->getProjectDir()}/public/sitemap.xml");
