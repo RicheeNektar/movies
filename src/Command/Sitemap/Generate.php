@@ -44,12 +44,11 @@ class Generate extends Command
         $io = new SymfonyStyle($input, $output);
 
         $root = new SimpleXMLElement('<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="https://www.google.com/schemas/sitemap-video/1.1" />');
-
-        $baseUrl = "{$this->router->getContext()->getScheme()}://{$this->router->getContext()->getHost()}";
+        $baseUrl = "https://richee.video";
 
         foreach ($this->movieRepository->findAll() as $movie) {
             $xmlUrl = $root->addChild('url');
-            $xmlUrl->addChild('loc', $this->router->generate('movie-player', ['movie' => $movie->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+            $xmlUrl->addChild('loc', "$baseUrl/movie/{$movie->getId()}");
             $xmlUrl->addChild('lastmod', $movie->getCreationDate()->format(DATE_ISO8601));
 
             $xmlVideo = $xmlUrl->addChild('video:video');
