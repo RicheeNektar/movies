@@ -57,7 +57,7 @@ class Generate extends Command
             $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ISO8601));
         }
 
-        $root->asXML("{$this->kernel->getProjectDir()}/public/sitemap.xml");
+        $root->saveXML("{$this->kernel->getProjectDir()}/public/sitemap.xml");
 
         return Command::SUCCESS;
     }
