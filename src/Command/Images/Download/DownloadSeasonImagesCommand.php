@@ -45,8 +45,11 @@ class DownloadSeasonImagesCommand extends Command
                 continue;
             }
 
-            $this->imageService->downloadImage($season, 'season');
-            $io->writeln("Downloaded poster for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
+            if ($this->imageService->downloadImage($season, 'season')) {
+                $io->writeln("Downloaded poster for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
+            } else {
+                $io->error("Downloaded failed for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
+            }
         }
 
         return Command::SUCCESS;

@@ -54,8 +54,11 @@ class DownloadSeriesImagesCommand extends Command
                 continue;
             }
 
-            $this->imageService->downloadImage($series, 'series');
-            $io->writeln("Downloaded poster for '{$series->getTitle()}'.");
+            if ($this->imageService->downloadImage($series, 'series')) {
+                $io->writeln("Downloaded poster for '{$series->getTitle()}'.");
+            } else {
+                $io->error("Download failed for '{$series->getTitle()}'.");
+            }
         }
 
         if ($full) {

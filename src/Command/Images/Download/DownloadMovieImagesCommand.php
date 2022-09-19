@@ -45,8 +45,11 @@ class DownloadMovieImagesCommand extends Command
                 continue;
             }
 
-            $this->imageService->downloadImage($movie, 'movie');
-            $io->writeln("Downloaded poster for '{$movie->getTitle()}'.");
+            if ($this->imageService->downloadImage($movie, 'movie')) {
+                $io->writeln("Downloaded poster for '{$movie->getTitle()}'.");
+            } else {
+                $io->error("Downloaded failed for '{$movie->getTitle()}'.");
+            }
         }
 
         return Command::SUCCESS;
