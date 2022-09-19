@@ -50,12 +50,12 @@ class Generate extends Command
         foreach ($this->movieRepository->findAll() as $movie) {
             $xmlUrl = $root->addChild('url');
             $xmlUrl->addChild('loc', "$baseUrl/movie/{$movie->getId()}");
-            $xmlUrl->addChild('lastmod', $movie->getCreationDate()->format(DATE_ISO8601));
+            $xmlUrl->addChild('lastmod', $movie->getCreationDate()->format(DATE_ATOM));
 
             $xmlVideo = $xmlUrl->addChild('video:video', null, 'https://www.google.com/schemas/sitemap-video/1.1/sitemap-video.xsd');
             $xmlVideo->addChild('video:title', $movie->getTitle());
             $xmlVideo->addChild('video:thumbnail_loc', "$baseUrl/images/{$movie->getAsset()}.webp");
-            $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ISO8601));
+            $xmlVideo->addChild('video:publication_date', $movie->getAirDate()->format(DATE_ATOM));
         }
 
         $doc = dom_import_simplexml($root)->ownerDocument;
