@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class DownloadSeasonImagesCommand extends Command
 {
@@ -16,12 +17,15 @@ class DownloadSeasonImagesCommand extends Command
 
     private SeasonRepository $seasonRepository;
     private ImageService $imageService;
+    private KernelInterface $kernel;
 
     public function __construct(
+        KernelInterface $kernel,
         SeasonRepository $seasonRepository,
         ImageService $imageService
     ) {
         parent::__construct();
+        $this->kernel = $kernel;
         $this->imageService = $imageService;
         $this->seasonRepository = $seasonRepository;
     }
@@ -30,7 +34,7 @@ class DownloadSeasonImagesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $basePath = "public/images/season";
+        $basePath = "{$this->kernel->getProjectDir()}/public/images/season";
 
         foreach ($this->seasonRepository->findAll() as $season) {
             $filename = "$basePath/{$season->getId()}";
@@ -41,8 +45,8 @@ class DownloadSeasonImagesCommand extends Command
                 continue;
             }
 
-            $this->imageService->downloadImage($season, $filename);
-            $io->writeln("Downloaded cover for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
+            $this->imageService->downloadImage($season, 'season');
+            $io->writeln("Downloaded poster for '{$season->getSeries()->getTitle()}' S{$season->getSeasonId()}.");
         }
 
         return Command::SUCCESS;

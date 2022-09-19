@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class DownloadSeriesImagesCommand extends Command
 {
@@ -19,12 +20,15 @@ class DownloadSeriesImagesCommand extends Command
 
     private SeriesRepository $seriesRepository;
     private ImageService $imageService;
+    private KernelInterface $kernel;
 
     public function __construct(
+        KernelInterface $kernel,
         SeriesRepository $seriesRepository,
         ImageService $imageService
     ) {
         parent::__construct();
+        $this->kernel = $kernel;
         $this->imageService = $imageService;
         $this->seriesRepository = $seriesRepository;
     }
@@ -39,7 +43,7 @@ class DownloadSeriesImagesCommand extends Command
         $full = $input->getOption('seasons');
         $io = new SymfonyStyle($input, $output);
 
-        $basePath = "public/images/series";
+        $basePath = "{$this->kernel->getProjectDir()}/public/images/season";
 
         foreach ($this->seriesRepository->findAll() as $series) {
             $filename = "$basePath/{$series->getId()}";
@@ -50,8 +54,8 @@ class DownloadSeriesImagesCommand extends Command
                 continue;
             }
 
-            $this->imageService->downloadImage($series, $filename);
-            $io->writeln("Downloaded cover for '{$series->getTitle()}'.");
+            $this->imageService->downloadImage($series, 'series');
+            $io->writeln("Downloaded poster for '{$series->getTitle()}'.");
         }
 
         if ($full) {

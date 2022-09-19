@@ -125,6 +125,8 @@ class SeriesService
         $series->setPoster($info['poster_path']);
         $series->setDescription($info['overview']);
 
+        $this->imageService->downloadImage($series, 'series');
+
         if ($info['first_air_date']) {
             $series->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['first_air_date']));
         }

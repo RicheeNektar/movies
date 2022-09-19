@@ -97,6 +97,8 @@ class UpdateSeriesCommand extends Command
                     $series = $this->seriesService->findSeriesById($seriesId);
                 }
 
+                $this->imageService->downloadImage($series, 'series');
+
                 $seasonDir = "$seriesDir/$seriesId";
                 foreach (scandir($seasonDir) as $seasonF) {
                     if (preg_match('/(\d+)/', $seasonF, $matches)) {
