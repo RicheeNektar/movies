@@ -85,7 +85,7 @@
         </div>
         {% if not isLoggedIn() %}
             <span>
-                {{ 'base.no_account' | trans({url: url('login', {'target_path': app.request.query.get('target_path') ?? app.request.pathInfo })}) | raw }}
+                {{ 'base.no_account' | trans({color: 'primary', url: url('login', {target_path: app.request.query.get('target_path') ?? app.request.pathInfo })}) | raw }}
             </span>
         {% endif %}
     </div>

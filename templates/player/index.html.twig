@@ -24,7 +24,7 @@
                     {% block player_source %}{% endblock %}
                 </video>
             {% else %}
-                <div class="alert alert-danger">{{ 'base.no_account' | trans }}</div>
+                <div class="alert alert-danger">{{ 'base.no_account' | trans({color: 'dark', url: url('login', {target_path: app.request.query.get('target_path') ?? app.request.pathInfo })}) | raw }}</div>
             {% endif %}
         </div>
         {% block after_player %}{% endblock %}
