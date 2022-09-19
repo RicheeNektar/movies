@@ -10,7 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ConvertLocalCommand extends Command
 {
     protected static $defaultName = 'app:images:convert-local';
-    protected static $defaultDescription = 'Converts local images in the images folder to webp and jpeg';
+    protected static $defaultDescription = 'Converts local images in the images folder to webp';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -25,7 +25,6 @@ class ConvertLocalCommand extends Command
                 imagesavealpha($image, true);
                 imageantialias($image, true);
                 imagewebp($image, "public/images/$filename.webp");
-                imagejpeg($image, "public/images/$filename.jpeg");
                 imagedestroy($image);
                 $io->writeln("Converted $filename");
             } else {

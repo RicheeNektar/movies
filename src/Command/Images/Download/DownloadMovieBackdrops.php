@@ -41,7 +41,6 @@ class DownloadMovieBackdrops extends Command
             $filename = "$basePath/{$backdrop->getId()}";
 
             if (file_exists("$filename.webp")
-                && file_exists("$filename.jpeg")
             ) {
                 continue;
             }

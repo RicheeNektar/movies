@@ -18,10 +18,7 @@
                 overflow-x: hidden;
 
                 {% if backdrop is defined and backdrop is not null %}
-                    background: url('{{ asset('/images/' ~ backdrop.getAsset() ~ '.webp') }}'), url('{{ asset('/images/' ~ backdrop.getAsset() ~ '.jpeg') }}');
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-attachment: fixed;
+                    background: url('{{ asset('/images/' ~ backdrop.getAsset() ~ '.webp') }}') center fixed no-repeat;
                     background-size: cover;
                 {% endif %}
             }

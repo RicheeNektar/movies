@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\AbstractBackdrop;
 use App\Entity\AbstractMedia;
-use App\Entity\Backdrop;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class ImageService
@@ -31,7 +30,6 @@ class ImageService
         imageantialias($image, true);
         imageresolution($image, 200, 300);
         imagewebp($image, "$this->dir/public/images/{$media->getAsset()}.webp");
-        imagejpeg($image, "$this->dir/public/images/{$media->getAsset()}.jpeg");
 
         return true;
     }
@@ -51,7 +49,6 @@ class ImageService
         imageantialias($image, true);
         imageresolution($image, 640, 360);
         imagewebp($image, "$this->dir/public/images/{$backdrop->getAsset()}.webp");
-        imagejpeg($image, "$this->dir/public/images/{$backdrop->getAsset()}.jpeg");
 
         return true;
     }

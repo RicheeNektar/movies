@@ -49,7 +49,6 @@ class DownloadSeriesImagesCommand extends Command
             $filename = "$basePath/{$series->getId()}";
 
             if (file_exists("$filename.webp")
-                && file_exists("$filename.jpeg")
             ) {
                 continue;
             }

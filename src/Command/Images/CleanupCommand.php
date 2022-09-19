@@ -53,7 +53,7 @@ class CleanupCommand extends Command
             $deleted = 0;
             $dir = "public/images/$folder";
             foreach (scandir($dir) as $posterFile) {
-                if (preg_match('/(?<id>\d+)\.(?:jpeg|webp)$/i', $posterFile, $matches)) {
+                if (preg_match('/(?<id>\d+)\.webp$/i', $posterFile, $matches)) {
                     $id = $matches['id'];
                     if (!$repo->find((int)$id)) {
                         unlink("$dir/$posterFile");

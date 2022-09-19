@@ -40,7 +40,6 @@ class DownloadSeasonImagesCommand extends Command
             $filename = "$basePath/{$season->getId()}";
 
             if (file_exists("$filename.webp")
-                && file_exists("$filename.jpeg")
             ) {
                 continue;
             }
