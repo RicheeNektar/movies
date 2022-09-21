@@ -5,7 +5,7 @@ base:
   username: 'Benutzername'
   password: 'Passwort'
   mail: 'E-Mail Adresse'
-  no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a class="text-{color}" href="{url}">melde dich an</a>.'
+  no_account: 'Kein Benutzerkonto: Du darfst nur durchstöbern oder <a rel="nofollow" class="text-{color}" href="{url}">melde dich an</a>.'
   remember_me: 'Angemeldet bleiben'
 
 menu:

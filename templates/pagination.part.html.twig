@@ -31,14 +31,14 @@
     -->
 
     <li class="page-item{% if isFirstPage %} disabled{% endif %}">
-        <a class="page-link"{% if not isFirstPage %} href="?page={{ page - 1 }}"{% endif %}>&NestedLessLess;</a>
+        <a rel="nofollow" class="page-link"{% if not isFirstPage %} href="?page={{ page - 1 }}"{% endif %}>&NestedLessLess;</a>
     </li>
 
     {% if prePages > -1 %}
         {% for i in 0..(max(min(prePages, 4), 0)) %}
             {% set target_page = page - (prePages - i) - 1 %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ target_page }}">{{ target_page + 1 }}</a>
+                <a rel="nofollow" class="page-link" href="?page={{ target_page }}">{{ target_page + 1 }}</a>
             </li>
         {% endfor %}
     {% endif %}
@@ -54,12 +54,12 @@
 
             <li class="page-item{% if disabled %} disabled{% endif %}">
                 <!-- target: {{ target_page }}, disabled= {{ disabled }} -->
-                <a class="page-link{% if not disabled %}" href="?page={{ target_page }}{% endif %}">{{ target_page + 1 }}</a>
+                <a rel="nofollow" class="page-link{% if not disabled %}" href="?page={{ target_page }}{% endif %}">{{ target_page + 1 }}</a>
             </li>
         {% endfor %}
     {% endif %}
 
     <li class="page-item{% if isLastPage %} disabled{% endif %}">
-        <a class="page-link"{% if not isLastPage %} href="?page={{ page + 1 }}{% endif %}">&NestedGreaterGreater;</a>
+        <a rel="nofollow" class="page-link"{% if not isLastPage %} href="?page={{ page + 1 }}{% endif %}">&NestedGreaterGreater;</a>
     </li>
 </nav>
