@@ -34,7 +34,7 @@ class DownloadMovieImagesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $basePath = "{$this->kernel->getProjectDir()}/public/images/season";
+        $basePath = "{$this->kernel->getProjectDir()}/public/images/movie";
 
         foreach ($this->movieRepository->findAll() as $movie) {
             $filename = "$basePath/{$movie->getId()}";
