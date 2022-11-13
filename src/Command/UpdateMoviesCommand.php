@@ -61,7 +61,7 @@ class UpdateMoviesCommand extends Command
         $files = scandir($moviesDir);
 
         foreach ($files as $file) {
-            if (preg_match('/((\d+)\.mp4)/', $file, $matches)) {
+            if (preg_match('/^((\d+)\.mp4)$/', $file, $matches)) {
                 $id = (int) $matches[0];
                 $movie = $this->movieRepository->find($id);
 

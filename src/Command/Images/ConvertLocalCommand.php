@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function PHPUnit\Framework\directoryExists;
 
 class ConvertLocalCommand extends Command
 {
@@ -20,11 +21,18 @@ class ConvertLocalCommand extends Command
         foreach ($files as $file) {
             $filename = pathinfo($file, PATHINFO_FILENAME);
             if (preg_match('/\w+\.png$/', $file)) {
+                $path =  "public/images/$filename.webp";
+
+                $dir = dirname($path);
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+
                 $image = imagecreatefrompng("images/$file");
                 imagepalettetotruecolor($image);
                 imagesavealpha($image, true);
                 imageantialias($image, true);
-                imagewebp($image, "public/images/$filename.webp");
+                imagewebp($image, $path);
                 imagedestroy($image);
                 $io->writeln("Converted $filename");
             } else {

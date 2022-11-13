@@ -50,8 +50,10 @@ class CleanupCommand extends Command
                 'series/backdrop' => $this->seriesBackdropRepository,
                 'movie/backdrop' => $this->movieBackdropRepository,
             ] as $folder => $repo) {
+
             $deleted = 0;
             $dir = "public/images/$folder";
+
             foreach (scandir($dir) as $posterFile) {
                 if (preg_match('/(?<id>\d+)\.webp$/i', $posterFile, $matches)) {
                     $id = $matches['id'];

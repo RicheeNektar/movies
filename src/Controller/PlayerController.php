@@ -113,7 +113,7 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/movie/{movie<\d+>}/file/{token}", name="movie-file")
+     * @Route("/movie/{movie<\d+>}/file/{token}.mp4", name="movie-file")
      */
     public function movieFile(Movie $movie, string $token, ?UserInterface $user): Response
     {
@@ -131,7 +131,7 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/tv/{episode<\d+>}/file/{token}", name="tv-file")
+     * @Route("/tv/{episode<\d+>}/file/{token}.mp4", name="tv-file")
      */
     public function tvFile(Episode $episode, ?UserInterface $user, string $token): Response
     {

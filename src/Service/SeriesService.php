@@ -29,7 +29,7 @@ class SeriesService
         $info = $this->fetchEpisodeInfo($seriesId, $seasonNumber, $episodeNumber);
 
         $episode = new Episode();
-        $episode->setId($episodeNumber);
+        $episode->setEpisodeId($episodeNumber);
         $episode->setTitle($info['name']);
         $episode->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));
 
@@ -41,7 +41,7 @@ class SeriesService
         $info = $this->fetchSeasonInfo($seriesId, $seasonNumber);
 
         $season = new Season();
-        $season->setId($seasonNumber);
+        $season->setSeasonId($seasonNumber);
         $season->setTitle($info['name']);
         $season->setPoster($info['poster_path']);
         $season->setAirDate(\DateTimeImmutable::createFromFormat('Y-m-d', $info['air_date']));

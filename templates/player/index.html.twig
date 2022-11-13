@@ -3,7 +3,10 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet" />
+    <link
+            href="https://unpkg.com/@videojs/themes@1/dist/city/index.css"
+            rel="stylesheet"
+    />
 {% endblock %}
 
 {% block scripts %}
@@ -20,7 +23,7 @@
         </div>
         <div class="row py-3" {{ stimulus_controller('watchtime') }}>
             {% if user() is not null %}
-                <video controls class="video-js vjs-theme-forest" data-setup="{}" {{ stimulus_target('watchtime', 'player') }} {{ stimulus_action('watchtime', 'ontimeupdate', 'timeupdate') }}>
+                <video controls class="video-js vjs-theme-city" {{ stimulus_target('watchtime', 'player') }} {{ stimulus_action('watchtime', 'ontimeupdate', 'timeupdate') }}>
                     {% block player_source %}{% endblock %}
                 </video>
             {% else %}

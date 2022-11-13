@@ -2,8 +2,6 @@
 
 namespace App\Command\Images\Download;
 
-use App\Repository\BackdropRepository;
-use App\Repository\MovieBackdropRepository;
 use App\Repository\SeriesBackdropRepository;
 use App\Service\ImageService;
 use Symfony\Component\Console\Command\Command;

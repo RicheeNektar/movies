@@ -2,7 +2,6 @@
 
 namespace App\Command\Images\Download;
 
-use App\Repository\BackdropRepository;
 use App\Repository\MovieBackdropRepository;
 use App\Service\ImageService;
 use Symfony\Component\Console\Command\Command;
@@ -37,19 +36,36 @@ class DownloadMovieBackdrops extends Command
 
         $basePath = "{$this->kernel->getProjectDir()}/public/images/movie/backdrop";
 
+        $groups = [];
+
         foreach ($this->movieBackdropRepository->findAll() as $backdrop) {
-            $filename = "$basePath/{$backdrop->getId()}";
+            if(!isset($groups[$backdrop->getMovie()->getTitle()])) {
+                $groups[$backdrop->getMovie()->getTitle()] = [];
+            }
+            $groups[$backdrop->getMovie()->getTitle()][] = $backdrop;
+        }
 
-            if (file_exists("$filename.webp")
-            ) {
-                continue;
+        foreach ($groups as $movie => $backdrops) {
+            $io->writeln("Downloading backdrops for '$movie'");
+            $io->progressStart(count($backdrops));
+
+            foreach($backdrops as $backdrop) {
+                $filename = "$basePath/{$backdrop->getId()}";
+
+                if (file_exists("$filename.webp")
+                ) {
+                    continue;
+                }
+
+                if ($this->imageService->downloadBackdrop($backdrop)) {
+                    $io->writeln("Downloaded backdrop for '{$backdrop->getMovie()->getTitle()}'");
+                } else {
+                    $io->error("Download failed for '{$backdrop->getMovie()->getTitle()}'.");
+                }
+                $io->progressAdvance();
             }
 
-            if ($this->imageService->downloadBackdrop($backdrop)) {
-                $io->writeln("Downloaded backdrop for '{$backdrop->getMovie()->getTitle()}'");
-            } else {
-                $io->error("Download failed for '{$backdrop->getMovie()->getTitle()}'.");
-            }
+            $io->progressFinish();
         }
 
         return Command::SUCCESS;

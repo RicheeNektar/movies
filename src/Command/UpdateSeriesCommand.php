@@ -2,22 +2,15 @@
 
 namespace App\Command;
 
-use App\Entity\Episode;
-use App\Entity\Season;
-use App\Entity\Series;
-use App\Entity\SeriesBackdrop;
 use App\Repository\EpisodeRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\SeriesRepository;
-use App\Service\ImageService;
 use App\Service\SeriesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use function PHPUnit\Framework\directoryExists;
 
 class UpdateSeriesCommand extends Command
 {
@@ -28,7 +21,6 @@ class UpdateSeriesCommand extends Command
     private SeasonRepository $seasonRepository;
     private EpisodeRepository $episodeRepository;
     private SeriesService $seriesService;
-    private ImageService $imageService;
     private KernelInterface $kernel;
 
     public function __construct(
@@ -37,8 +29,7 @@ class UpdateSeriesCommand extends Command
         SeriesRepository $seriesRepository,
         SeasonRepository $seasonRepository,
         EpisodeRepository $episodeRepository,
-        SeriesService $seriesService,
-        ImageService $imageService
+        SeriesService $seriesService
     ) {
         parent::__construct();
         $this->kernel = $kernel;
@@ -47,7 +38,6 @@ class UpdateSeriesCommand extends Command
         $this->seasonRepository = $seasonRepository;
         $this->episodeRepository = $episodeRepository;
         $this->seriesService = $seriesService;
-        $this->imageService = $imageService;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -90,40 +80,37 @@ class UpdateSeriesCommand extends Command
         $this->entityManager->flush();
 
         foreach (scandir($seriesDir) as $seriesF) {
-            if (preg_match('/(\d+)/', $seriesF, $matches)) {
+            if (preg_match('/^(\d+)$/', $seriesF, $matches)) {
                 $seriesId = (int)$matches[0];
 
                 if (!($series = $this->seriesRepository->find($seriesId))) {
                     $series = $this->seriesService->findSeriesById($seriesId);
                 }
 
-                $this->imageService->downloadImage($series);
-
                 $seasonDir = "$seriesDir/$seriesId";
                 foreach (scandir($seasonDir) as $seasonF) {
-                    if (preg_match('/(\d+)/', $seasonF, $matches)) {
+                    if (preg_match('/^(\d+)$/', $seasonF, $matches)) {
                         $seasonNumber = (int)$matches[1];
 
                         if (!($season = $this->seasonRepository->findOneBy([
                             'seasonId' => $seasonNumber,
-                            'series' => $series->getId(),
+                            'series' => $series,
                         ]))
                         ) {
                             $season = $this->seriesService->findSeasonById($seriesId, $seasonNumber);
                             $season->setSeries($series);
                             $season->setSeasonId($seasonNumber);
                             $series->addSeason($season);
-                            $this->imageService->downloadImage($season);
                         }
 
                         foreach (scandir("$seasonDir/$seasonNumber") as $episodeF) {
-                            if (preg_match('/(\d+)\.mp4/', $episodeF, $matches)) {
+                            if (preg_match('/^(\d+)\.mp4$/', $episodeF, $matches)) {
                                 $episodeNumber = (int)$matches[0];
 
                                 if (!$this->episodeRepository->findOneBy([
                                     'episodeId' => $episodeNumber,
-                                    'season' => $season->getId(),
-                                    'series' => $series->getId(),
+                                    'season' => $season,
+                                    'series' => $series,
                                 ])
                                 ) {
                                     $episode = $this->seriesService->findEpisodeById($seriesId, $seasonNumber, $episodeNumber);
