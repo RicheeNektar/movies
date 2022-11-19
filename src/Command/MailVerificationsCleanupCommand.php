@@ -41,8 +41,8 @@ class MailVerificationsCleanupCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $deletedMails = 0;
-        $deletedUsers = 0;
 
+        // Delete unverified mails older than a day
         $userMails = $this->userMailRepository->createQueryBuilder('um')
             ->andWhere('um.verifiedAt IS NULL')
             ->andWhere('um.createdAt < :expire')
@@ -54,31 +54,11 @@ class MailVerificationsCleanupCommand extends Command
             $this->entityManager->remove($userMail);
             $io->info("Deleted UserMail " . $userMail->getId());
             $deletedMails++;
-
-            $user = $userMail->getUser();
-
-            if (count($user->getUserMails()) === 1) {
-                $this->entityManager->remove($user);
-                $io->info("Deleted User " . $user->getUserIdentifier() . " with no more mails");
-                $deletedUsers++;
-            }
-        }
-
-        $usersWithoutMail = $this->userRepository->createQueryBuilder('u')
-            ->leftJoin(UserMail::class, 'um', Join::WITH, 'u.id = um.user')
-            ->where('um.mail IS NULL')
-            ->getQuery()
-            ->getResult();
-
-        foreach ($usersWithoutMail as $userWithoutMail) {
-            $this->entityManager->remove($userWithoutMail);
-            $io->info("Deleted user " . $userWithoutMail->getId() . " with no mails");
-            $deletedUsers++;
         }
 
         $this->entityManager->flush();
 
-        $io->info("Deleted $deletedUsers users and $deletedMails mails");
+        $io->info("Deleted $deletedMails mails");
         return Command::SUCCESS;
     }
 }
