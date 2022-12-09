@@ -25,10 +25,10 @@
             {% include 'media/carousel/indicator.html.twig' with {'target': id, 'slide_to': loop.index0, 'is_active': loop.first} only %}
         {% endfor %}
     </div>
-    <button class="bg-black bg-opacity-50 bg-blur-5 carousel-control-prev" data-bs-target="#{{ id }}" data-bs-slide="prev">
+    <button class="bg-black bg-opacity-50 carousel-control-prev" data-bs-target="#{{ id }}" data-bs-slide="prev">
         <span class="carousel-control-prev-icon d-block"></span>
     </button>
-    <button class="bg-black bg-opacity-50 bg-blur-5 carousel-control-next" data-bs-target="#{{ id }}" data-bs-slide="next">
+    <button class="bg-black bg-opacity-50 carousel-control-next" data-bs-target="#{{ id }}" data-bs-slide="next">
         <span class="carousel-control-next-icon d-block"></span>
     </button>
 </div>

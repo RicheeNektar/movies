@@ -1,6 +1,6 @@
 {% set has_href = href is defined and href != null %}
 
-<div class="card scroller-item bg-blur-3  border-0 my-2">
+<div class="card scroller-item  border-0 my-2">
     {{ img(media.poster() ? media.getAsset() : 'missing', {height: "300px", width: "200px", class: "rounded-3 card-img-top"}) | raw }}
     <div class="card-body card-img-overlay">
         <a
@@ -10,10 +10,10 @@
                 target="_blank"
             {% endif %}
         >
-            <h5 class="card-title bg-opacity-50 bg-black rounded-3 p-2 bg-blur-3">
+            <h5 class="card-title bg-opacity-50 bg-black rounded-3 p-2">
                 {{ media.title() }}
             </h5>
-            <h6 class="card-subtitle bg-opacity-50 bg-black rounded-3 p-2 bg-blur-3">
+            <h6 class="card-subtitle bg-opacity-50 bg-black rounded-3 p-2">
                 {{ media.airDate() | date('d.m.Y') }}
             </h6>
         </a>
