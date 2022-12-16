@@ -1,10 +1,8 @@
 #!/bin/bash
 
-mkdir /var/log/apache2/
+crontab ./config/docker/cron/crontab
+cp ./config/docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-a2dissite 000-default.conf && a2ensite vhost.conf;
-
-crontab /richee.movie.cron
 service cron start
 
 apache2ctl -DFOREGROUND

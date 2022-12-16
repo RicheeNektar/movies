@@ -12,7 +12,7 @@ services:
     ports:
       - '9906:3306'
     volumes:
-      - ./var/data/mysql:/var/lib/mysql/
+      - ./var/data/mysql:/var/lib/mysql/:rw
     networks:
       movies:
 
@@ -24,8 +24,7 @@ services:
     ports:
       - '8001:80'
     volumes:
-      - ./:/var/www/html
-      - ./var/log/docker:/var/log/
+      - ./:/var/www/html/
     depends_on:
       - database
     networks:

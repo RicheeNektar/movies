@@ -1,0 +1,25 @@
+HOME=/var/www/richee.video/
+
+# cleanup verification codes
+0 * * * *    php bin/console app:cleanup:mail-verifications
+
+# cleanup login codes
+*/15 * * * * php bin/console app:cleanup:login-codes
+
+# cleanup images
+* * * * *    php bin/console app:images:cleanup
+
+# download movie posters
+* * * * *    php bin/console app:images:download:movies
+
+# download movie backdrops
+* * * * *    php bin/console app:images:download:movie-backdrops
+
+# download series posters
+* * * * *    php bin/console app:images:download:series
+
+# download series backdrops
+* * * * *    php bin/console app:images:download:series-backdrops
+
+# download season posters
+* * * * *    php bin/console app:images:download:seasons
