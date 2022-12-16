@@ -26,6 +26,7 @@ services:
     volumes:
       - ./:/var/www/html
       - ./var/log/docker:/var/log/
+      - ./config/docker:/config:r
     depends_on:
       - database
     networks:

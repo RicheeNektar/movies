@@ -21,11 +21,4 @@ RUN docker-php-ext-install \
     intl \
     gd
 
-COPY /config/docker/vhost.conf /etc/apache2/sites-available/vhost.conf
-COPY /config/docker/crontab /richee.movie.dos.cron
-
-RUN sed -e "s/\r//g" /richee.movie.dos.cron > /richee.movie.cron
-
-ADD /config/docker/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT /entrypoint.sh
+ENTRYPOINT /config/entrypoint.sh
