@@ -12,6 +12,10 @@ RUN apt-get install -y \
     cron \
     unzip
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && \
+    apt-get install nodejs
+
 RUN docker-php-ext-configure intl && \
     docker-php-ext-configure gd --with-jpeg --with-webp
 
@@ -21,5 +25,7 @@ RUN docker-php-ext-install \
     pdo_mysql \
     intl \
     gd
+
+RUN npm install -g yarn
 
 ENTRYPOINT ["/var/www/html/config/docker/entrypoint.sh"]

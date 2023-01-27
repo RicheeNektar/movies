@@ -24,8 +24,8 @@ start:
 	$(build)
 	@$(DOCKER_COMPOSE_CMD) up -d
 
-.PHONY: composer-install
-composer-install:
+.PHONY: composer
+composer:
 	@$(DOCKER_COMPOSE_EXEC) php ./composer.phar install
 
 .PHONY: composer-update
@@ -40,10 +40,10 @@ migrate:
 console:
 	@$(DOCKER_COMPOSE_EXEC) /bin/bash
 
-.PHONY: yarn
-yarn:
+.PHONY: yarn-install
+yarn-install:
 	@$(DOCKER_COMPOSE_EXEC) yarn install
 
-.PHONY: yarn-dev
-yarn-dev:
+.PHONY: yarn
+yarn:
 	@$(DOCKER_COMPOSE_EXEC) yarn dev
