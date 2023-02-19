@@ -17,11 +17,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LoginCodeCleanupCommand extends Command
+#[AsCommand('app:cleanup:login-codes', 'Cleans up all login-codes older than 15 Minutes')]
+final class LoginCodeCleanupCommand extends Command
 {
-    protected static $defaultName = 'app:cleanup:login-codes';
-    protected static $defaultDescription = 'Cleans up all login-codes older than 15 Minutes';
-
     private LoginCodeRepository $loginCodeRepository;
     private EntityManagerInterface $entityManager;
 

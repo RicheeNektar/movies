@@ -7,15 +7,15 @@ use App\Repository\SeasonRepository;
 use App\Repository\SeriesRepository;
 use App\Service\SeriesService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class UpdateSeriesCommand extends Command
+#[AsCommand('app:update-series')]
+final class UpdateSeriesCommand extends Command
 {
-    protected static $defaultName = 'app:update-series';
-
     private EntityManagerInterface $entityManager;
     private SeriesRepository $seriesRepository;
     private SeasonRepository $seasonRepository;
@@ -40,7 +40,7 @@ class UpdateSeriesCommand extends Command
         $this->seriesService = $seriesService;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $seriesDir = "{$this->kernel->getProjectDir()}/series";
 

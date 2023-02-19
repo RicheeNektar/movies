@@ -5,7 +5,7 @@ namespace App\Twig;
 use App\Entity\User;
 use App\Repository\MessageRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

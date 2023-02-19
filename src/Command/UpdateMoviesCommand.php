@@ -7,6 +7,7 @@ use App\Repository\MovieRepository;
 use App\Repository\RequestRepository;
 use App\Service\MovieService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,10 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UpdateMoviesCommand extends Command
+#[AsCommand('app:update-movies')]
+final class UpdateMoviesCommand extends Command
 {
-    protected static $defaultName = 'app:update-movies';
-
     private EntityManagerInterface $entityManager;
     private MovieRepository $movieRepository;
     private RequestRepository $requestRepository;

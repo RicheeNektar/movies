@@ -7,16 +7,15 @@ use App\Repository\MovieRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\SeriesBackdropRepository;
 use App\Repository\SeriesRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CleanupCommand extends Command
+#[AsCommand('app:images:cleanup', 'Deletes images, that are not used anymore.')]
+final class CleanupCommand extends Command
 {
-    protected static $defaultName = 'app:images:cleanup';
-    protected static $defaultDescription = 'Deletes images, that are not used anymore.';
-
     private MovieRepository $movieRepository;
     private SeriesRepository $seriesRepository;
     private SeasonRepository $seasonRepository;

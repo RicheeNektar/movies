@@ -4,17 +4,16 @@ namespace App\Command\Images\Download;
 
 use App\Repository\SeriesBackdropRepository;
 use App\Service\ImageService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class DownloadSeriesBackdrops extends Command
+#[AsCommand('app:images:download:series-backdrops', 'Downloads all series backdrops.')]
+final class DownloadSeriesBackdrops extends Command
 {
-    protected static $defaultName = 'app:images:download:series-backdrops';
-    protected static $defaultDescription = 'Downloads all series backdrops.';
-
     private SeriesBackdropRepository $seriesBackdropRepository;
     private ImageService $imageService;
     private KernelInterface $kernel;

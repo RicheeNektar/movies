@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Repository\MoviesRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,11 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ConvertOldMoviesCommand extends Command
+#[AsCommand('app:convert-old-movies', 'Converts old movie structure to newer one')]
+final class ConvertOldMoviesCommand extends Command
 {
-    protected static $defaultName = 'app:convert-old-movies';
-    protected static $defaultDescription = 'Converts old movie structure to newer one';
-
     private MoviesRepository $moviesRepository;
     private EntityManagerInterface $entityManager;
 
