@@ -10,7 +10,6 @@ export default class extends Controller {
 
     ontimeupdate(e) {
         const player = e?.target;
-        console.log(e);
 
         if (player && player?.currentTime && player?.duration) {
             if (!(this.sent || this.debounce) &&
