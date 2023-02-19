@@ -1,7 +1,7 @@
 {% set has_href = href is defined and href != null %}
 
-<div class="card scroller-item  border-0 my-2">
-    {{ img(media.poster() ? media.getAsset() : 'missing', {height: "300px", width: "200px", class: "rounded-3 card-img-top"}) | raw }}
+<div class="card scroller-item rounded-3 border-0 my-2">
+    {{ img(media.poster() ? media.asset() : 'missing', {height: "300px", width: "200px", class: "card-img-top"}) | raw }}
     <div class="card-body card-img-overlay">
         <a
             href="{% if has_href %}{{ href }}{% else %}https://themoviedb.org/movie/{{ media.id() }}{% endif %}"

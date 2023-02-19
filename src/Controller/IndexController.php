@@ -53,7 +53,6 @@ class IndexController extends AbstractController
         }
 
         return $this->render('movies/index.html.twig', [
-            'latest_movies' => $this->movieRepository->findLatestMovies(8),
             'backdrop' => $backdrop ?? null,
             'movie_count' => $this->movieRepository->count(),
             'total_pages' => $totalPages,

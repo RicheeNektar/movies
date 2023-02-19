@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
@@ -61,12 +62,12 @@ class MovieRepository extends AbstractRepository
         return $movies[random_int(0, $count - 1)];
     }
 
-    public function findMoviesOnPage(int $page)
+    public function findMoviesOnPage(int $page, bool $sortByTitle = false)
     {
         return $this->onlyVisible(
             $this->paginate($this->createQueryBuilder('b'), $page)
         )
-            ->orderBy('b.title')
+            ->orderBy($sortByTitle ? 'b.title' : 'b.creationDate', $sortByTitle ? 'ASC' : 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -81,16 +82,6 @@ class MovieRepository extends AbstractRepository
             ->setParameters([
                 'title' => "%$title%",
             ])
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findLatestMovies(int $limit)
-    {
-        return $this->onlyVisible($this->createQueryBuilder('b'))
-            ->orderBy('b.creationDate', 'DESC')
-            ->addOrderBy('b.title')
-            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

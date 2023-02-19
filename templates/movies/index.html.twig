@@ -40,12 +40,5 @@
 
             {% include 'pagination.part.html.twig' %}
         </div>
-
-        <div class="col-12 col-lg-4">
-            {% if latest_movies | length > 0 %}
-                <h1>Neuste Filme auf der Seite:</h1>
-                {% include 'media/carousel/index.html.twig' with {'id': 'latest-movies', 'medias': latest_movies, 'route': 'movie-player'} only %}
-            {% endif %}
-        </div>
     </div>
 {% endblock %}

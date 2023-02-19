@@ -80,6 +80,6 @@ class Request extends AbstractMedia
 
     protected function getImageBasePath(): string
     {
-        return "";
+        return "movie";
     }
 }
