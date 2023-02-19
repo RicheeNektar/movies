@@ -4,17 +4,16 @@ namespace App\Command\Images\Download;
 
 use App\Repository\SeasonRepository;
 use App\Service\ImageService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class DownloadSeasonImagesCommand extends Command
+#[AsCommand('app:images:download:seasons', 'Downloads all season images.')]
+final class DownloadSeasonImagesCommand extends Command
 {
-    protected static $defaultName = 'app:images:download:seasons';
-    protected static $defaultDescription = 'Downloads all season images.';
-
     private SeasonRepository $seasonRepository;
     private ImageService $imageService;
     private KernelInterface $kernel;

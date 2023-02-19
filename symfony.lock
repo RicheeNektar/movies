@@ -349,18 +349,6 @@
     "symfony/intl": {
         "version": "v6.0.1"
     },
-    "symfony/lock": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "a1c8800e40ae735206bb14586fdd6c4630a51b8d"
-        },
-        "files": [
-            "config/packages/lock.yaml"
-        ]
-    },
     "symfony/mailer": {
         "version": "6.0",
         "recipe": {
@@ -451,14 +439,8 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.23.1"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.23.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.23.1"
-    },
-    "symfony/polyfill-php81": {
-        "version": "v1.23.0"
     },
     "symfony/process": {
         "version": "v6.0.0"
@@ -508,9 +490,6 @@
     },
     "symfony/security-csrf": {
         "version": "v6.0.1"
-    },
-    "symfony/security-guard": {
-        "version": "v5.4.0"
     },
     "symfony/security-http": {
         "version": "v6.0.1"

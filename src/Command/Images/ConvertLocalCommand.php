@@ -2,17 +2,16 @@
 
 namespace App\Command\Images;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function PHPUnit\Framework\directoryExists;
 
-class ConvertLocalCommand extends Command
+#[AsCommand('app:images:convert-local', 'Converts local images in the images folder to webp')]
+final class ConvertLocalCommand extends Command
 {
-    protected static $defaultName = 'app:images:convert-local';
-    protected static $defaultDescription = 'Converts local images in the images folder to webp';
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

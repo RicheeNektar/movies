@@ -11,7 +11,7 @@ use Twig\TwigFunction;
 
 class Common extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('bytes', [$this, "formatBytes"]),
@@ -19,7 +19,7 @@ class Common extends AbstractExtension
         ];
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('isSeason', [$this, "isSeason"]),

@@ -16,11 +16,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MailVerificationsCleanupCommand extends Command
+#[AsCommand('app:cleanup:mail-verifications', 'Cleans up all verifications older than 24 Hours and user accounts if it has no addresses')]
+final class MailVerificationsCleanupCommand extends Command
 {
-    protected static $defaultName = 'app:cleanup:mail-verifications';
-    protected static $defaultDescription = 'Cleans up all verifications older than 24 Hours and user accounts if it has no addresses';
-
     private UserMailRepository $userMailRepository;
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;

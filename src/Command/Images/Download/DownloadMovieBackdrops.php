@@ -4,17 +4,16 @@ namespace App\Command\Images\Download;
 
 use App\Repository\MovieBackdropRepository;
 use App\Service\ImageService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class DownloadMovieBackdrops extends Command
+#[AsCommand('app:images:download:movie-backdrops', 'Downloads all movie backdrops.')]
+final class DownloadMovieBackdrops extends Command
 {
-    protected static $defaultName = 'app:images:download:movie-backdrops';
-    protected static $defaultDescription = 'Downloads all movie backdrops.';
-
     private MovieBackdropRepository $movieBackdropRepository;
     private ImageService $imageService;
     private KernelInterface $kernel;

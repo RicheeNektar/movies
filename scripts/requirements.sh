@@ -15,4 +15,4 @@ apt install -y docker \
   php8.1-curl \
   nodejs
 
-npm i -g
+npm i -g yarn

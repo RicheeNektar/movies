@@ -8,17 +8,16 @@ use App\Repository\SeriesRepository;
 use App\Service\MovieService;
 use App\Service\SeriesService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class UpdateSeriesInfosCommand extends Command
+#[AsCommand('app:update-series-infos', 'Updates all series')]
+final class UpdateSeriesInfosCommand extends Command
 {
-    protected static $defaultName = 'app:update-series-infos';
-    protected static $defaultDescription = 'Updates all series';
-
     private SeriesRepository $seriesRepository;
     private EntityManagerInterface $entityManager;
     private SeriesService $seriesService;

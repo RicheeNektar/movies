@@ -6,17 +6,16 @@ use App\Entity\Movie;
 use App\Repository\MovieRepository;
 use App\Service\MovieService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class UpdateMovieInfosCommand extends Command
+#[AsCommand('app:update-movie-infos', 'Updates all movies')]
+final class UpdateMovieInfosCommand extends Command
 {
-    protected static $defaultName = 'app:update-movie-infos';
-    protected static $defaultDescription = 'Updates all movies';
-
     private MovieRepository $movieRepository;
     private EntityManagerInterface $entityManager;
     private MovieService $movieService;
