@@ -4,20 +4,26 @@
     {% set isLastPage = page >= total_pages - 1 %}
     {% set isFirstPage = page <= 0 %}
 
-    {% set prePages = page < 2
-        ? page - 1
-        : (pagesAfter < 2
-            ? 3 - pagesAfter
-            : 1
+    {% set prePages = total_pages > 5
+        ? (page < 2
+            ? page - 1
+            : (pagesAfter < 2
+                ? 3 - pagesAfter
+                : 1
+            )
         )
+        : page - 1
     %}
 
-    {% set postPages = page < 2
-        ? 3 - page
-        : (pagesAfter < 2
-            ? pagesAfter - 1
-            : 1
+    {% set postPages = total_pages > 5
+        ? (page < 2
+            ? 3 - page
+            : (pagesAfter < 2
+                ? pagesAfter - 1
+                : 1
+            )
         )
+        : total_pages - page - 2
     %}
 
     <!--

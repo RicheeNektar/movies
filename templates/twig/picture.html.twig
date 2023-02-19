@@ -2,4 +2,5 @@
     {{ attributes | map((v,k) => "#{k}='#{v}'") | join("") | raw }}
     src='{{ asset('images/' ~ asset ~ '.webp') }}'
     type="image/webp"
+    onerror="this.src='{{ asset('images/missing.webp') }}'"
 />
