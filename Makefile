@@ -47,3 +47,14 @@ yarn-install:
 .PHONY: yarn
 yarn:
 	@$(DOCKER_COMPOSE_EXEC) yarn dev
+
+.PHONY: images
+images:
+	@$(DOCKER_COMPOSE_EXEC) php bin/console app:images:convert-local
+
+.PHONY: setup
+setup:
+	$(start)
+	$(composer)
+	$(yarn)
+	@./scripts/init_folders.sh
