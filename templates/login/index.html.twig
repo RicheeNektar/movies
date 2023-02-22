@@ -15,6 +15,7 @@
                 <h4 class="text-center">Login with credentials</h4>
                 {{ form_start(login_form, {'attr': {'class': 'm-lg-5 m-3'}}) }}
                     {{ form_widget(login_form.csrf, {value: csrf_token('authenticate')}) }}
+                    {{ form_widget(login_form.target_path, {value: target_path}) }}
                 {{ form_end(login_form) }}
             </div>
             <div class="col" {{ stimulus_controller('login-code') }}>

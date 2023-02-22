@@ -28,6 +28,7 @@ class LoginType extends AbstractType
                 'required' => false,
             ])
             ->add('csrf', HiddenType::class)
+            ->add('target_path', HiddenType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'login.submit',
             ])
