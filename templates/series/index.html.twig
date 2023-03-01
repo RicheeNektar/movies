@@ -10,16 +10,14 @@
 
 {% block body %}
     <div class="row container">
-        <div class="col-12 col-lg-8 order-lg-2">
-            <h1>Serien: </h1>
+        <h1>Serien: </h1>
 
-            {% if series | length == 0 %}
-                {% include 'movies/no_movies.html.twig' %}
-            {% else %}
-                {% include 'media/scroller/index.html.twig' with {'medias': series, 'route': 'seasons'} only %}
-            {% endif %}
+        {% if series | length == 0 %}
+            {% include 'movies/no_movies.html.twig' %}
+        {% else %}
+            {% include 'media/scroller/index.html.twig' with {'medias': series, 'route': 'seasons'} only %}
+        {% endif %}
 
-            {% include 'pagination.part.html.twig' %}
-        </div>
+        {% include 'pagination.part.html.twig' %}
     </div>
 {% endblock %}
