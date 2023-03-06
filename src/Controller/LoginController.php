@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 
 class LoginController extends AbstractController
 {
@@ -21,10 +20,10 @@ class LoginController extends AbstractController
             return $this->redirectToRoute('movies');
         }
 
-        return $this->renderForm('login/index.html.twig', [
-            'login_form' => $this->createForm(LoginType::class),
+        return $this->render('login/index.html.twig', [
+            'login_form' => ($this->createForm(LoginType::class))->createView(),
             'last_username' => $authenticationUtils->getLastUsername(),
-            'target_path' => $request->query->get('target_path') ?? '/',
+            'target_path' => $request->getSession()->get('target_path') ?? $request->query->get('target_path') ?? '/',
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);
     }
@@ -33,5 +32,6 @@ class LoginController extends AbstractController
      * @Route("/logout", name="logout", methods={"GET"})
      */
     public function logout(): void
-    {}
+    {
+    }
 }
